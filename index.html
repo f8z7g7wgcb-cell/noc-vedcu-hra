@@ -37,18 +37,19 @@
         }
 
         header {
-            padding: 10px 20px;
-            background: rgba(15, 23, 42, 0.85);
+            padding: 8px 16px;
+            background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(56, 189, 248, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 10;
+            flex-shrink: 0;
         }
 
         .title-box h1 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
@@ -63,12 +64,12 @@
 
         .phase-indicator {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             align-items: center;
         }
 
         .phase-step {
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 600;
@@ -111,7 +112,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 10px;
+            width: 8px;
             height: 100%;
             background: rgba(15, 23, 42, 0.6);
             border-right: 1px solid rgba(56, 189, 248, 0.2);
@@ -131,15 +132,15 @@
 
         #stats-overlay {
             position: absolute;
-            top: 16px;
-            left: 20px;
+            top: 10px;
+            left: 14px;
             background: rgba(15, 23, 42, 0.85);
             border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 8px 14px;
-            font-size: 13px;
+            border-radius: 10px;
+            padding: 6px 10px;
+            font-size: 11px;
             display: flex;
-            gap: 14px;
+            gap: 10px;
             z-index: 10;
             backdrop-filter: blur(8px);
         }
@@ -151,54 +152,54 @@
 
         .stat-label {
             color: #94a3b8;
-            font-size: 10px;
+            font-size: 9px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: 15px;
+            font-size: 13px;
             font-weight: 800;
             color: #38bdf8;
         }
 
         #single-bottle-container {
             position: absolute;
-            bottom: 20px;
-            left: 24px;
+            bottom: 15px;
+            left: 14px;
             display: none;
             flex-direction: column;
             align-items: center;
             z-index: 20;
             pointer-events: none;
-            width: 100px;
+            width: 75px;
         }
 
         .bottle-graphic {
             position: relative;
-            width: 90px;
-            height: 180px;
+            width: 70px;
+            height: 135px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .bottle-nipple {
-            width: 36px;
-            height: 38px;
+            width: 28px;
+            height: 28px;
             background: rgba(255, 255, 255, 0.7);
             border: 2px solid rgba(255, 255, 255, 0.9);
             border-radius: 50% 50% 20% 20% / 70% 70% 30% 30%;
             box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.8);
-            margin-bottom: -5px;
+            margin-bottom: -4px;
             z-index: 3;
         }
 
         .bottle-ring {
-            width: 78px;
-            height: 20px;
+            width: 60px;
+            height: 16px;
             background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
-            border-radius: 8px 8px 5px 5px;
+            border-radius: 6px 6px 4px 4px;
             border: 1px solid #94a3b8;
             box-shadow: 0 4px 8px rgba(0,0,0,0.4);
             z-index: 4;
@@ -206,12 +207,12 @@
 
         .bottle-body {
             position: relative;
-            width: 72px;
-            height: 120px;
+            width: 55px;
+            height: 90px;
             background: rgba(255, 255, 255, 0.08);
             border: 2px solid rgba(255, 255, 255, 0.4);
             border-top: none;
-            border-radius: 6px 6px 18px 18px;
+            border-radius: 5px 5px 14px 14px;
             backdrop-filter: blur(6px);
             overflow: hidden;
             box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0,0,0,0.5);
@@ -223,11 +224,11 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 18px;
-            height: 32px;
+            width: 14px;
+            height: 24px;
             background: rgba(45, 212, 191, 0.45);
             border: 1px solid rgba(45, 212, 191, 0.8);
-            border-radius: 0 0 8px 8px;
+            border-radius: 0 0 6px 6px;
             z-index: 2;
         }
 
@@ -245,10 +246,10 @@
 
         .bottle-ticks {
             position: absolute;
-            right: 6px;
-            top: 16px;
-            bottom: 12px;
-            width: 10px;
+            right: 5px;
+            top: 10px;
+            bottom: 10px;
+            width: 8px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -257,29 +258,29 @@
             opacity: 0.6;
         }
 
-        .tick { width: 6px; height: 2px; background: #cbd5e1; }
-        .tick.sub { width: 4px; opacity: 0.6; }
+        .tick { width: 5px; height: 1.5px; background: #cbd5e1; }
+        .tick.sub { width: 3px; opacity: 0.6; }
 
         .bottle-label {
-            margin-top: 6px;
+            margin-top: 4px;
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid #38bdf8;
-            padding: 4px 8px;
-            border-radius: 8px;
+            padding: 3px 6px;
+            border-radius: 6px;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
             width: 100%;
         }
 
         .bottle-label-title {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             color: #38bdf8;
             text-transform: uppercase;
         }
 
         .bottle-label-value {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 800;
             color: #ffffff;
             margin-top: 1px;
@@ -287,20 +288,20 @@
 
         #instruction-bar {
             position: absolute;
-            top: 16px;
+            top: 10px;
             left: 50%;
             transform: translateX(-50%) translateY(0);
             background: rgba(15, 23, 42, 0.92);
             border: 1px solid #38bdf8;
-            padding: 10px 22px;
-            border-radius: 30px;
-            font-size: 13px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
             color: #f8fafc;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             pointer-events: none;
             z-index: 20;
             text-align: center;
-            max-width: 85%;
+            max-width: 90%;
             backdrop-filter: blur(8px);
             opacity: 1;
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -313,10 +314,10 @@
 
         #control-panel {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
+            bottom: 15px;
+            right: 15px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
             z-index: 10;
         }
 
@@ -324,16 +325,16 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: none;
-            padding: 12px 22px;
-            font-size: 14px;
+            padding: 10px 18px;
+            font-size: 13px;
             font-weight: 700;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
         .btn:hover {
@@ -359,13 +360,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 11, 16, 0.92);
+            background: rgba(8, 11, 16, 0.94);
             backdrop-filter: blur(12px);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 16px;
+            padding: 12px;
             z-index: 100;
             opacity: 0;
             pointer-events: none;
@@ -381,19 +382,19 @@
             background: #0f172a;
             border: 1px solid #38bdf8;
             border-radius: 16px;
-            padding: 24px;
-            max-width: 700px;
-            width: 95%;
-            max-height: 90vh;
+            padding: 20px;
+            max-width: 680px;
+            width: 96%;
+            max-height: 92vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.2);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .modal-card h2 {
-            font-size: 22px;
+            font-size: 20px;
             color: #38bdf8;
         }
 
@@ -401,38 +402,38 @@
             align-self: flex-start;
             background: linear-gradient(90deg, #2563eb, #38bdf8);
             color: white;
-            padding: 5px 12px;
-            border-radius: 16px;
+            padding: 4px 10px;
+            border-radius: 14px;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 6px;
+            gap: 8px;
+            margin-top: 4px;
         }
 
         .summary-card {
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 10px 14px;
+            border-radius: 8px;
+            padding: 8px 12px;
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
 
         .summary-card-title {
-            font-size: 10px;
+            font-size: 9px;
             color: #94a3b8;
             text-transform: uppercase;
             font-weight: 700;
         }
 
         .summary-card-val {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 800;
             color: #38bdf8;
         }
@@ -440,20 +441,20 @@
         .leaderboard-box {
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 10px;
-            padding: 12px;
-            margin-top: 6px;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 4px;
         }
 
         .leaderboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .leaderboard-title {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #facc15;
             text-transform: uppercase;
@@ -463,19 +464,19 @@
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .leaderboard-table th {
             text-align: left;
-            padding: 5px 6px;
+            padding: 4px 6px;
             color: #94a3b8;
             border-bottom: 1px solid #334155;
             font-weight: 600;
         }
 
         .leaderboard-table td {
-            padding: 5px 6px;
+            padding: 4px 6px;
             border-bottom: 1px solid rgba(51, 65, 85, 0.4);
             color: #f8fafc;
         }
@@ -491,44 +492,44 @@
 
         .info-box, .task-box, .time-box {
             background: #1e293b;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             color: #cbd5e1;
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         .info-box { border-left: 4px solid #a855f7; }
         .task-box { border-left: 4px solid #22c55e; }
         .time-box { border-left: 4px solid #38bdf8; }
 
-        .info-box b, .task-box b, .time-box b { color: #f8fafc; font-size: 15px; display: block; margin-bottom: 4px; }
+        .info-box b, .task-box b, .time-box b { color: #f8fafc; font-size: 14px; display: block; margin-bottom: 3px; }
 
         #legend {
             position: absolute;
-            top: 16px;
-            right: 20px;
+            top: 10px;
+            right: 14px;
             background: rgba(15, 23, 42, 0.85);
             border: 1px solid #334155;
-            padding: 10px 14px;
-            border-radius: 10px;
-            font-size: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 11px;
             z-index: 5;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 4px;
             backdrop-filter: blur(8px);
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .legend-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
         }
 
@@ -569,7 +570,7 @@
 
         .intro-left-content {
             width: 48%;
-            padding: 30px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -581,49 +582,49 @@
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid rgba(56, 189, 248, 0.4);
             color: #38bdf8;
-            padding: 5px 12px;
-            border-radius: 16px;
-            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 14px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: 1px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             text-transform: uppercase;
         }
 
         .intro-left-content h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
             line-height: 1.1;
             text-transform: uppercase;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .intro-subtitle {
-            font-size: 18px;
+            font-size: 16px;
             color: #cbd5e1;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .intro-description {
-            font-size: 13.5px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.45;
             color: #94a3b8;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .nickname-box {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            margin-bottom: 18px;
+            gap: 4px;
+            margin-bottom: 14px;
         }
 
         .nickname-box label {
-            font-size: 11px;
+            font-size: 10px;
             color: #cbd5e1;
             font-weight: 700;
             text-transform: uppercase;
@@ -633,8 +634,8 @@
             background: #1e293b;
             border: 2px solid #334155;
             border-radius: 8px;
-            padding: 10px 14px;
-            font-size: 15px;
+            padding: 8px 12px;
+            font-size: 14px;
             color: #ffffff;
             font-weight: 600;
             outline: none;
@@ -650,14 +651,14 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 14px 28px;
-            font-size: 15px;
+            padding: 12px 24px;
+            font-size: 14px;
             font-weight: 800;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-transform: uppercase;
         }
 
@@ -689,17 +690,40 @@
             opacity: 0.8;
         }
 
+        /* --- MOBILNÍ SPECIFICKÉ ROZVRŽENÍ --- */
         @media (max-width: 768px) {
-            header { padding: 6px 12px; }
-            .title-box h1 { font-size: 14px; }
+            header { 
+                padding: 4px 10px; 
+                height: 38px;
+            }
+            .title-box h1 { font-size: 13px; }
             .title-box p { display: none; }
             .phase-indicator { display: none; }
-            .intro-card { flex-direction: column; height: auto; max-height: 95vh; }
-            .intro-left-content { width: 100%; padding: 20px; }
+
+            .intro-card { flex-direction: column; height: auto; max-height: 94vh; }
+            .intro-left-content { width: 100%; padding: 18px; }
             .intro-right-graphic { display: none; }
+
             #legend { display: none; }
-            #single-bottle-container { transform: scale(0.85); bottom: 10px; left: 10px; }
-            #control-panel { bottom: 12px; right: 12px; }
+            #instruction-bar { display: none; } /* Uvolní horní prostor pro větve */
+
+            #stats-overlay {
+                top: 6px;
+                left: 10px;
+                padding: 4px 8px;
+                font-size: 10px;
+                gap: 8px;
+            }
+            .stat-value { font-size: 12px; }
+
+            #single-bottle-container { 
+                transform: scale(0.8); 
+                transform-origin: bottom left;
+                bottom: 8px; 
+                left: 8px; 
+            }
+            #control-panel { bottom: 8px; right: 8px; }
+            .btn { padding: 8px 14px; font-size: 12px; }
         }
     </style>
 </head>
@@ -709,7 +733,7 @@
     <header>
         <div class="title-box">
             <h1>Architekt Mléčné Žlázy</h1>
-            <p>Interaktivní simulace pro Noc vědců - Ústav molekulární genetiky AV ČR, v. v. i.</p>
+            <p>Interaktivní simulace pro Noc vědců - ÚMG AV ČR</p>
         </div>
         <div class="phase-indicator">
             <div id="phase-1" class="phase-step">1. Puberta</div>
@@ -727,7 +751,7 @@
         <div id="stats-overlay">
             <div class="stat-item">
                 <span class="stat-label">Hráč</span>
-                <span id="player-display" class="stat-value" style="color: #facc15; font-size: 13px;">Host</span>
+                <span id="player-display" class="stat-value" style="color: #facc15;">Host</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Větve</span>
@@ -776,11 +800,10 @@
         <canvas id="gameCanvas"></canvas>
 
         <div id="control-panel">
-            <button id="reset-btn" class="btn btn-secondary">🔄 Restartovat</button>
+            <button id="reset-btn" class="btn btn-secondary">🔄 Restart</button>
             <button id="next-btn" class="btn">Přeskočit ➔</button>
         </div>
 
-        <!-- ÚVODNÍ STRÁNKA SE SCHÉMATEM -->
         <div id="intro-screen">
             <div class="intro-card">
                 <div class="intro-left-content">
@@ -788,7 +811,7 @@
                     <h1>Architekt<br>mléčné žlázy</h1>
                     <div class="intro-subtitle">Vítejte ve hře!</div>
                     <p class="intro-description">
-                        Prozkoumejte fascinující architekturu a životní cyklus mléčné žlázy. Vyzkoušejte si větvení v pubertě, tvorbu alveol v graviditě, produkci mléka i zmenšení tkáně při involuci.
+                        Prozkoumejte architekturu a životní cyklus mléčné žlázy. Vyzkoušejte si větvení v pubertě, tvorbu alveol v graviditě, produkci mléka i zmenšení tkáně při involuci.
                     </p>
                     
                     <div class="nickname-box">
@@ -933,14 +956,13 @@
             </div>
         </div>
 
-        <!-- MODÁL PRO POPISY FÁZÍ A GLOBÁLNÍ REPORT -->
         <div id="modal">
             <div class="modal-card">
                 <div id="modal-badge" class="badge">FÁZE</div>
                 <h2 id="modal-title">1. Fáze: Puberta</h2>
 
                 <div id="modal-summary-box" style="display: none;">
-                    <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 6px;">Úspěšně jste dokončili celý cyklus. Zde je přehled vašich výsledků:</p>
+                    <p style="color: #cbd5e1; font-size: 13px; margin-bottom: 4px;">Úspěšně jste dokončili celý cyklus. Zde je přehled vašich výsledků:</p>
                     <div class="summary-grid">
                         <div class="summary-card">
                             <span class="summary-card-title">Hráč</span>
@@ -951,16 +973,15 @@
                             <span id="summary-milk" class="summary-card-val" style="color: #22c55e;">0 ml</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Počet vytvořených větví</span>
+                            <span class="summary-card-title">Počet větví</span>
                             <span id="summary-branches" class="summary-card-val">0</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Počet vytvořených alveolů</span>
+                            <span class="summary-card-title">Počet alveolů</span>
                             <span id="summary-alveoli" class="summary-card-val">0</span>
                         </div>
                     </div>
 
-                    <!-- GLOBÁLNÍ CLOUDOVÝ ŽEBŘÍČEK -->
                     <div class="leaderboard-box">
                         <div class="leaderboard-header">
                             <span class="leaderboard-title">🏆 SDÍLENÝ TOP 10 ŽEBŘÍČEK (ONLINE)</span>
@@ -975,7 +996,7 @@
                                 </tr>
                             </thead>
                             <tbody id="leaderboard-body">
-                                <tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:12px;">Načítám online žebříček...</td></tr>
+                                <tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:8px;">Načítám online žebříček...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -996,18 +1017,17 @@
                     <p id="modal-time"></p>
                 </div>
 
-                <button id="modal-btn" class="btn" style="margin-top: 10px; align-self: flex-end;">Dále k úkolu ➔</button>
+                <button id="modal-btn" class="btn" style="margin-top: 8px; align-self: flex-end;">Dále k úkolu ➔</button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- FIREBASE SKRIPTY (MODULAR CDN) -->
+<!-- FIREBASE SDK -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Konfigurace z vašeho Firebase projektu
     const firebaseConfig = {
         apiKey: "AIzaSyDnWJNGtLOV0rGCOHa0wbVepxCo5EAfZwY",
         authDomain: "noc-vedcu---morfologicka-hra.firebaseapp.com",
@@ -1021,10 +1041,9 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Globální funkce pro uložení a stažení online žebříčku
     window.saveAndLoadCloudLeaderboard = async function(entry) {
         const leaderboardBody = document.getElementById('leaderboard-body');
-        leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#38bdf8; padding:12px;">Ukládám a stahuji výsledky z cloudu...</td></tr>';
+        leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#38bdf8; padding:8px;">Ukládám a stahuji z cloudu...</td></tr>';
 
         try {
             if (entry) {
@@ -1059,27 +1078,26 @@
                     <td>${medal}</td>
                     <td><b>${data.name}</b></td>
                     <td style="color: #22c55e; font-weight: 700;">${data.milk} ml</td>
-                    <td>${data.branches} větví / ${data.alveoli} alveol</td>
+                    <td>${data.branches}v / ${data.alveoli}a</td>
                 `;
                 leaderboardBody.appendChild(tr);
                 index++;
             });
 
-            // Doplnění prázdných řádků do 10
             for (let i = index; i < 10; i++) {
                 let medal = i === 0 ? '🥇 1.' : (i === 1 ? '🥈 2.' : (i === 2 ? '🥉 3.' : `#${i + 1}`));
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="color: #475569;">${medal}</td>
-                    <td style="color: #475569; font-style: italic;">— volné místo —</td>
+                    <td style="color: #475569; font-style: italic;">— volné —</td>
                     <td style="color: #475569;">—</td>
                     <td style="color: #475569;">—</td>
                 `;
                 leaderboardBody.appendChild(tr);
             }
         } catch (error) {
-            console.error("Chyba při komunikaci s Firebase:", error);
-            leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#f87171; padding:12px;">Nepodařilo se připojit k online žebříčku. Zkontrolujte připojení k internetu.</td></tr>';
+            console.error("Chyba Firebase:", error);
+            leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#f87171; padding:8px;">Nelze načíst online žebříček.</td></tr>';
         }
     };
 </script>
@@ -1161,33 +1179,33 @@
         1: {
             badge: "FÁZE 1 z 4",
             title: "1. Fáze: Puberta",
-            bio: "V období dospívání (pubertě) se probouzí do té doby spící a velmi jednoduchý základ mlékovodů (duktální síť). Ty se začínají aktivně zvětšovat a jejich hlavním znakem je postupné větvení (větvící morfogeneze). Tento růst řídí takzvané koncové pupeny (terminální koncové pupeny neboli TEB) – speciální baňaté struktury na koncích kanálků. Jak se kanálky prodlužují, tyto pupeny se rozdělují na dva další (hlavní větvení neboli bifurkace) a postupně z nich vyrůstají i boční větvičky (druhotné postranní větvení). Původně jednoduché kanálky tak prorůstají do okolní podpůrné tkáně (stromatu / mezenchymu), prodlužují se a dělí na stále menší větvičky, čímž vytvářejí hustou síť. Pohlavní dospělosti dívky obvykle dosahují mezi 11. a 14. rokem, síť mlékovodů se však uvnitř prsu vyvíjí dál až do 18. až 24. roku.",
-            task: "Klikejte na červená kolečka značící terminální koncové pupeny (TEB) pro větvení a růst epitelového stromu od bradavky směrem do tkáně!",
+            bio: "V pubertě se začíná aktivně zvětšovat a větvit základ mlékovodů (duktální síť). Růst řídí terminální koncové pupeny (TEB) na koncích kanálků, které se rozdělují na dva další (bifurkace) a prorůstají do okolní tkáně.",
+            task: "Klikejte na červená kolečka (TEB) pro větvení a růst epitelového stromu!",
             timeLimit: "15 sekund",
             duration: 15
         },
         2: {
             badge: "FÁZE 2 z 4",
             title: "2. Fáze: Těhotenství (Gravidita)",
-            bio: "Zatímco během dospívání (v pubertě) se vytvořila základní síť mlékovodů, těhotenství spouští finální architektonickou přestavbu mléčné žlázy. Vlivem těhotenských hormonů (estrogenu, progesteronu a prolaktinu) dochází k masivnímu větvení sítě mlékovodů (epitelové sítě) a dozrávají specializované mléčné váčky připomínající hrozny vína (alveoly), které umožňují budoucí tvorbu mléka. Tomuto procesu vývoje váčků se říká tvorba alveolů (alveologeneze). Tyto nově vzniklé váčky postupně vytlačují tukovou tkáň (adipocyty) a rozdělují se (diferencují) na dva klíčové buněčné typy: vnitřní buňky tvořící mléko (sekreční luminální buňky) a vnější stahovací buňky vytlačující mléko (kontraktilní myoepitelové buňky). Ačkoliv je žláza plně připravena k produkci, vysoké hladiny hormonu progesteronu zatím tvorbu a vylučování mléka (laktaci) tlumí a udržují systém v pohotovostním režimu.",
-            task: "Klikáním na větve nechte vyrůst fialové váčky (alveoly) a připravte tak žlázu na kojení (laktaci)!",
+            bio: "Těhotenské hormony spouští finální přestavbu mléčné žlázy. Dozrávají specializované mléčné váčky (alveoly), které umožňují budoucí tvorbu mléka.",
+            task: "Klikáním na větve nechte vyrůst fialové váčky (alveoly)!",
             timeLimit: "30 sekund",
             duration: 30
         },
         3: {
             badge: "FÁZE 3 z 4",
             title: "3. Fáze: Kojení (Laktace)",
-            bio: "Po porodu prudce klesá hladina těhotenských hormonů (progesteronu a estrogenu), což odblokuje a naplno spustí období kojení (laktaci). Tato fáze se dělí na dva úzce propojené děje: tvorbu mléka a jeho vylučování. Tvorbu mléka (syntézu) zajišťuje hormon prolaktin, který stimuluje vnitřní buňky výstelky (sekreční luminální buňky), v nichž dochází k masivní produkci bílkovin, tuků a cukru (laktózy) přímo do vnitřní dutiny váčků (lumina alveolů). Vylučování mléka (ejekční reflex) se spouští mechanickým sáním bradavky, které vyšle signál k uvolnění hormonu oxytocinu. Ten vyvolá stahy vnějších stahovacích buněk (myoepitelu) obepínajících váčky, stlačí je a vytlačí mléko systémem mlékovodů ven přes bradavku.",
-            task: "Klikáním na fialové váčky (alveoly) spusťte produkci mléka a naplňte tak kojeneckou láhev!",
+            bio: "Po porodu hormony prolaktin a oxytocin stimulují tvorbu a vytlačování mléka z alveolů ven přes bradavku.",
+            task: "Klikáním na váčky (alveoly) produkujte mléko a naplňte kojeneckou láhev!",
             timeLimit: "30 sekund",
             duration: 30
         },
         4: {
             badge: "FÁZE 4 z 4",
             title: "4. Fáze: Návrat k klidovému stavu (Involuce)",
-            bio: "Jakmile kojení ustane (odstavením dítěte), dochází k nahromadění mléka ve váčcích, což vyvolá mechanický tlak a prudký pokles stimulačních hormonů (prolaktinu a oxytocinu). Pro mléčnou žlázu to znamená povel k řízenému odbourání nepotřebného sekrečního aparátu. Spouští se rozsáhlý řízený zánik buněk (programovaná buněčná smrt neboli apoptóza) vnitřních buněk tvořících mléko (sekrečních luminálních buněk). Mléčné váčky (alveoly) se hroutí a jejich zbytky jsou pohlceny úklidovými buňkami (požírači neboli makrofágy) i okolní tkání, čímž se odstraní většina váčků i nadbytečné větvení. Vyprázdněný prostor je opětovně vyplněn tukovou tkání (adipocyty) a podpůrná tkáň (stroma) se vrací do původního, klidového stavu a v prsu zůstává pouze základní síť mlékovodů.",
-            task: "Klikáním na fialové váčky (alveoly) spusťte jejich programovanou buněčnou smrt (apoptózu) a označte je pro úklidovou četu (makrofágy), kteří je přijdou pohltit!",
-            timeLimit: "Bez časového limitu (odstraňte všechny alveoly)",
+            bio: "Po odstavení dítěte se spouští řízený zánik buněk (apoptóza). Zbytky alveolů jsou pohlceny úklidovými buňkami (makrofágy).",
+            task: "Klikejte na alveoly pro spuštění apoptózy a úklid makrofágy!",
+            timeLimit: "Bez limitu (odstraňte všechny alveoly)",
             duration: 0
         },
         5: {
@@ -1213,7 +1231,7 @@
             this.isTip = true;
             this.hasAlveolus = false;
             this.alveolusRadius = 0;
-            this.maxAlveolusRadius = 14 + Math.random() * 5;
+            this.maxAlveolusRadius = (canvas.width < 500 ? 11 : 14) + Math.random() * 4;
             this.pulse = Math.random() * Math.PI;
             this.isEaten = false;
             this.isApoptotic = false;
@@ -1224,8 +1242,8 @@
             this.budOffsets = [];
             for (let i = 0; i < this.budCount; i++) {
                 const angle = (i / this.budCount) * Math.PI * 2 + (Math.random() * 0.4 - 0.2);
-                const dist = 5 + Math.random() * 5;
-                const r = 5.5 + Math.random() * 3.5;
+                const dist = (canvas.width < 500 ? 4 : 5) + Math.random() * 4;
+                const r = (canvas.width < 500 ? 4 : 5.5) + Math.random() * 2.5;
                 this.budOffsets.push({ angle, dist, r });
             }
         }
@@ -1249,7 +1267,8 @@
         constructor(startNode, endNode) {
             this.startNode = startNode;
             this.endNode = endNode;
-            this.thickness = Math.max(3, 16 - endNode.level * 2.2);
+            const baseThick = canvas.width < 500 ? 11 : 16;
+            this.thickness = Math.max(2.5, baseThick - endNode.level * 1.8);
             this.isEaten = false;
             this.isTargetedByMacrophage = false;
         }
@@ -1261,8 +1280,8 @@
             this.y = y;
             this.target = target;
             this.targetType = target instanceof Node ? 'node' : 'branch';
-            this.speed = 5.5;
-            this.size = 18;
+            this.speed = canvas.width < 500 ? 4.5 : 5.5;
+            this.size = canvas.width < 500 ? 14 : 18;
             this.state = 'hunting';
             this.exitX = Math.random() < 0.5 ? -40 : canvas.width + 40;
             this.exitY = Math.random() * canvas.height;
@@ -1297,10 +1316,10 @@
                     if (this.targetType === 'node') {
                         this.target.hasAlveolus = false;
                         this.target.isEaten = true;
-                        createParticles(targetX, targetY, '#581c87', 18);
+                        createParticles(targetX, targetY, '#581c87', 15);
                     } else {
                         this.target.isEaten = true;
-                        createParticles(targetX, targetY, '#38bdf8', 15);
+                        createParticles(targetX, targetY, '#38bdf8', 12);
                     }
                     this.target = null;
                     this.state = 'leaving';
@@ -1330,13 +1349,13 @@
             ctx.translate(this.x, this.y);
             ctx.fillStyle = '#eab308';
             ctx.shadowColor = '#eab308';
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 8;
             
             ctx.beginPath();
             const time = Date.now() * 0.005;
             for (let i = 0; i < 8; i++) {
                 const a = (i / 8) * Math.PI * 2;
-                const r = this.size + Math.sin(time + i * 2) * 3;
+                const r = this.size + Math.sin(time + i * 2) * 2.5;
                 const px = Math.cos(a) * r;
                 const py = Math.sin(a) * r;
                 if (i === 0) ctx.moveTo(px, py);
@@ -1347,7 +1366,7 @@
 
             ctx.fillStyle = '#854d0e';
             ctx.beginPath();
-            ctx.arc(0, 0, 5, 0, Math.PI * 2);
+            ctx.arc(0, 0, 4, 0, Math.PI * 2);
             ctx.fill();
 
             ctx.restore();
@@ -1371,13 +1390,16 @@
             }
 
             const rootX = canvas.width / 2;
-            const nippleTipY = canvas.height - 60;
+            const isMobile = canvas.width < 500;
+            const areolaY = isMobile ? canvas.height - 75 : canvas.height - 120;
+            const nippleTipY = areolaY + (isMobile ? 35 : 60);
+
             this.path.push({x: rootX, y: nippleTipY});
 
             const bRect = singleBottleContainer.getBoundingClientRect();
             const cRect = canvas.getBoundingClientRect();
             const bottleTargetX = (bRect.left + bRect.width / 2) - cRect.left;
-            const bottleTargetY = (bRect.top + 40) - cRect.top;
+            const bottleTargetY = (bRect.top + 30) - cRect.top;
 
             this.pathIndex = 0;
             this.path.push({x: bottleTargetX, y: bottleTargetY});
@@ -1385,7 +1407,7 @@
             this.x = this.path[0].x;
             this.y = this.path[0].y;
             this.speed = 10;
-            this.radius = 5;
+            this.radius = isMobile ? 4 : 5;
             this.isDone = false;
         }
 
@@ -1420,7 +1442,7 @@
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.shadowColor = '#ffffff';
-            ctx.shadowBlur = 12;
+            ctx.shadowBlur = 10;
             ctx.fill();
             ctx.shadowBlur = 0;
         }
@@ -1438,8 +1460,8 @@
             const bRect = singleBottleContainer.getBoundingClientRect();
             const cRect = canvas.getBoundingClientRect();
             const bx = (bRect.left + bRect.width / 2) - cRect.left;
-            const by = (bRect.top + 50) - cRect.top;
-            createParticles(bx, by, '#38bdf8', 25);
+            const by = (bRect.top + 30) - cRect.top;
+            createParticles(bx, by, '#38bdf8', 20);
         }
 
         updateBottleUI();
@@ -1529,12 +1551,13 @@
 
         resizeCanvas();
 
+        const isMobile = canvas.width < 500;
         const rootX = canvas.width / 2;
-        const rootY = canvas.height - 120; 
+        const rootY = isMobile ? canvas.height - 75 : canvas.height - 120; 
         const rootNode = new Node(rootX, rootY, 0, -Math.PI / 2);
         
         const firstTipX = rootX;
-        const firstTipY = rootY - 35; 
+        const firstTipY = rootY - (isMobile ? 25 : 35); 
         const firstTipNode = new Node(firstTipX, firstTipY, 1, -Math.PI / 2);
         rootNode.isTip = false;
 
@@ -1616,8 +1639,14 @@
     function branchFromNode(node) {
         if (!node.isTip || currentPhase !== 1) return;
 
-        const branchLength = Math.max(50, 110 - node.level * 8);
-        const spreadAngle = 0.55 + (Math.random() * 0.2 - 0.1);
+        const isMobile = canvas.width < 500;
+        
+        // Dynamické škálování délky a úhlu větví pro mobily
+        const baseLen = isMobile ? Math.min(65, canvas.height * 0.08) : Math.max(50, 110 - node.level * 8);
+        const branchLength = Math.max(isMobile ? 36 : 45, baseLen - node.level * (isMobile ? 5 : 8));
+        
+        // Na mobilu zvolíme užší úhel větvení, aby stromeček rostl strměji nahoru
+        const spreadAngle = isMobile ? (0.42 + Math.random() * 0.12) : (0.55 + Math.random() * 0.18);
 
         const angle1 = node.angle - spreadAngle;
         const angle2 = node.angle + spreadAngle;
@@ -1628,8 +1657,11 @@
         const x2 = node.x + Math.cos(angle2) * branchLength;
         const y2 = node.y + Math.sin(angle2) * branchLength;
 
-        if (x1 < 20 || x1 > canvas.width - 20 || y1 < 20 || y1 > canvas.height - 130 ||
-            x2 < 20 || x2 > canvas.width - 20 || y2 < 20 || y2 > canvas.height - 130) {
+        const marginX = isMobile ? 12 : 20;
+        const marginY = isMobile ? 42 : 20;
+
+        if (x1 < marginX || x1 > canvas.width - marginX || y1 < marginY || y1 > canvas.height - (isMobile ? 80 : 130) ||
+            x2 < marginX || x2 > canvas.width - marginX || y2 < marginY || y2 > canvas.height - (isMobile ? 80 : 130)) {
             return;
         }
 
@@ -1642,7 +1674,7 @@
         branches.push(new Branch(node, child1));
         branches.push(new Branch(node, child2));
 
-        createParticles(node.x, node.y, '#38bdf8', 12);
+        createParticles(node.x, node.y, '#38bdf8', 10);
         updateUI(false);
     }
 
@@ -1650,14 +1682,14 @@
         if (currentPhase !== 2 || node.hasAlveolus) return;
 
         node.hasAlveolus = true;
-        createParticles(node.x, node.y, '#a855f7', 15);
+        createParticles(node.x, node.y, '#a855f7', 12);
         updateUI(false);
     }
 
     function triggerMilkEjection(node) {
         if (currentPhase !== 3 || !node.hasAlveolus || !isTimerRunning) return;
 
-        createParticles(node.x, node.y, '#ffffff', 10);
+        createParticles(node.x, node.y, '#ffffff', 8);
         milkDroplets.push(new MilkDroplet(node));
     }
 
@@ -1665,12 +1697,12 @@
         if (currentPhase !== 4 || !node.hasAlveolus || node.isApoptotic || node.isEaten) return;
 
         node.startApoptosis();
-        createParticles(node.x, node.y, '#7e22ce', 12);
+        createParticles(node.x, node.y, '#7e22ce', 10);
 
         if (!node.isTargetedByMacrophage) {
             node.isTargetedByMacrophage = true;
             const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
-            const startY = Math.random() * (canvas.height - 150) + 50;
+            const startY = Math.random() * (canvas.height - 120) + 40;
             macrophages.push(new Macrophage(startX, startY, node));
         }
 
@@ -1689,7 +1721,7 @@
         for (let branch of outerBranches) {
             branch.isTargetedByMacrophage = true;
             const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
-            const startY = Math.random() * (canvas.height - 150) + 50;
+            const startY = Math.random() * (canvas.height - 120) + 40;
             macrophages.push(new Macrophage(startX, startY, branch));
         }
     }
@@ -1699,9 +1731,9 @@
             particles.push({
                 x: x,
                 y: y,
-                vx: (Math.random() - 0.5) * 5,
-                vy: (Math.random() - 0.5) * 5,
-                radius: Math.random() * 4 + 2,
+                vx: (Math.random() - 0.5) * 4,
+                vy: (Math.random() - 0.5) * 4,
+                radius: Math.random() * 3 + 1.5,
                 color: color,
                 life: 1
             });
@@ -1709,6 +1741,7 @@
     }
 
     function showInstructionBar(htmlContent) {
+        if (canvas.width < 768) return; // Na mobilu neukazovat lištu
         if (instructionTimer) clearTimeout(instructionTimer);
         
         instructionBar.innerHTML = htmlContent;
@@ -1716,16 +1749,19 @@
 
         instructionTimer = setTimeout(() => {
             instructionBar.classList.add('hidden');
-        }, 6000);
+        }, 5000);
     }
 
     function handleInteraction(clickX, clickY) {
         if (modal.classList.contains('active') || !introScreen.classList.contains('hidden')) return;
 
+        const isMobile = canvas.width < 500;
+        const hitRadius = isMobile ? 42 : 36; // Větší tolerance pro prst
+
         if (currentPhase === 1 && isTimerRunning) {
             for (let node of nodes) {
                 if (node.isTip) {
-                    if (Math.hypot(node.x - clickX, node.y - clickY) < 38) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
                         branchFromNode(node);
                         break;
                     }
@@ -1734,7 +1770,7 @@
         } else if (currentPhase === 2 && isTimerRunning) {
             for (let node of nodes) {
                 if (!node.hasAlveolus) {
-                    if (Math.hypot(node.x - clickX, node.y - clickY) < 34) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
                         addAlveolusToNode(node);
                         break;
                     }
@@ -1743,7 +1779,7 @@
         } else if (currentPhase === 3 && isTimerRunning) {
             for (let node of nodes) {
                 if (node.hasAlveolus) {
-                    if (Math.hypot(node.x - clickX, node.y - clickY) < 34) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
                         triggerMilkEjection(node);
                         break;
                     }
@@ -1752,7 +1788,7 @@
         } else if (currentPhase === 4) {
             for (let node of nodes) {
                 if (node.hasAlveolus && !node.isApoptotic && !node.isEaten) {
-                    if (Math.hypot(node.x - clickX, node.y - clickY) < 36) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
                         triggerApoptosisAndTarget(node);
                     }
                 }
@@ -1760,7 +1796,6 @@
         }
     }
 
-    // Podpora pro dotyky i myš
     canvas.addEventListener('pointerdown', (e) => {
         const rect = canvas.getBoundingClientRect();
         handleInteraction(e.clientX - rect.left, e.clientY - rect.top);
@@ -1857,55 +1892,59 @@
     function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        const isMobile = canvas.width < 500;
         const rootX = canvas.width / 2;
-        const areolaY = canvas.height - 120; 
+        const areolaY = isMobile ? canvas.height - 75 : canvas.height - 120; 
+        const areolaR = isMobile ? 38 : 55;
 
         // Dvorec (Areola)
         ctx.beginPath();
-        ctx.arc(rootX, areolaY, 55, 0, Math.PI, false);
+        ctx.arc(rootX, areolaY, areolaR, 0, Math.PI, false);
         ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
         ctx.strokeStyle = 'rgba(236, 72, 153, 0.65)';
-        ctx.lineWidth = 3;
-        ctx.shadowColor = '#ec4899';
-        ctx.shadowBlur = 15;
-        ctx.fill();
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-
-        ctx.beginPath();
-        ctx.moveTo(rootX - 55, areolaY);
-        ctx.lineTo(rootX + 55, areolaY);
-        ctx.strokeStyle = 'rgba(251, 207, 232, 0.45)';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Bradavka
-        ctx.beginPath();
-        ctx.moveTo(rootX - 20, areolaY + 55);
-        ctx.bezierCurveTo(rootX - 20, areolaY + 80, rootX + 20, areolaY + 80, rootX + 20, areolaY + 55);
-        ctx.fillStyle = '#ec4899';
+        ctx.lineWidth = isMobile ? 2 : 3;
         ctx.shadowColor = '#ec4899';
         ctx.shadowBlur = 12;
         ctx.fill();
-        ctx.strokeStyle = '#f472b6';
-        ctx.lineWidth = 2;
         ctx.stroke();
         ctx.shadowBlur = 0;
 
         ctx.beginPath();
-        ctx.arc(rootX, areolaY, 9, 0, Math.PI * 2);
+        ctx.moveTo(rootX - areolaR, areolaY);
+        ctx.lineTo(rootX + areolaR, areolaY);
+        ctx.strokeStyle = 'rgba(251, 207, 232, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Bradavka
+        const nipW = isMobile ? 14 : 20;
+        const nipH = isMobile ? 22 : 30;
+        ctx.beginPath();
+        ctx.moveTo(rootX - nipW, areolaY + areolaR);
+        ctx.bezierCurveTo(rootX - nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR);
+        ctx.fillStyle = '#ec4899';
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.strokeStyle = '#f472b6';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        ctx.beginPath();
+        ctx.arc(rootX, areolaY, isMobile ? 6 : 9, 0, Math.PI * 2);
         ctx.fillStyle = '#0284c7';
         ctx.fill();
 
         ctx.fillStyle = '#fbcfe8';
-        ctx.font = 'bold 11px "Segoe UI", sans-serif';
+        ctx.font = isMobile ? 'bold 9px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
         ctx.textAlign = 'right';
-        ctx.fillText('DVOREC', rootX - 65, areolaY + 28);
+        ctx.fillText('DVOREC', rootX - (areolaR + 6), areolaY + (isMobile ? 16 : 28));
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = 'bold 11px "Segoe UI", sans-serif';
+        ctx.font = isMobile ? 'bold 9px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('BRADAVKA', rootX, areolaY + 95);
+        ctx.fillText('BRADAVKA', rootX, areolaY + areolaR + (isMobile ? 22 : 36));
 
         // Větve stromu
         for (let branch of branches) {
@@ -1923,7 +1962,7 @@
             ctx.lineWidth = branch.thickness;
             ctx.lineCap = 'round';
             ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
-            ctx.shadowBlur = 8;
+            ctx.shadowBlur = isMobile ? 4 : 8;
             ctx.stroke();
             ctx.shadowBlur = 0;
         }
@@ -1944,25 +1983,25 @@
                     ctx.arc(node.x, node.y, currentR, 0, Math.PI * 2);
                     ctx.fillStyle = '#3b0764';
                     ctx.strokeStyle = '#6b21a8';
-                    ctx.lineWidth = 2;
+                    ctx.lineWidth = 1.5;
                     ctx.shadowColor = 'rgba(88, 28, 135, 0.6)';
-                    ctx.shadowBlur = 8;
+                    ctx.shadowBlur = 6;
                     ctx.fill();
                     ctx.stroke();
                     ctx.shadowBlur = 0;
 
                     for (let bleb of node.blebs) {
-                        const blebPulse = Math.sin(time * bleb.speed + bleb.offset) * 2;
+                        const blebPulse = Math.sin(time * bleb.speed + bleb.offset) * 1.5;
                         const blebDist = currentR + 2 + blebPulse;
                         const bx = node.x + Math.cos(bleb.angle) * blebDist;
                         const by = node.y + Math.sin(bleb.angle) * blebDist;
-                        const blebR = Math.max(2, currentR * bleb.sizeRatio + blebPulse * 0.5);
+                        const blebR = Math.max(1.5, currentR * bleb.sizeRatio + blebPulse * 0.4);
 
                         ctx.beginPath();
                         ctx.arc(bx, by, blebR, 0, Math.PI * 2);
                         ctx.fillStyle = '#581c87';
                         ctx.strokeStyle = '#7e22ce';
-                        ctx.lineWidth = 1.5;
+                        ctx.lineWidth = 1;
                         ctx.fill();
                         ctx.stroke();
                     }
@@ -1985,9 +2024,9 @@
                         ctx.arc(bx, by, br, 0, Math.PI * 2);
                         ctx.fillStyle = 'rgba(168, 85, 247, 0.65)';
                         ctx.strokeStyle = '#c084fc';
-                        ctx.lineWidth = 1.5;
+                        ctx.lineWidth = 1.2;
                         ctx.shadowColor = 'rgba(168, 85, 247, 0.4)';
-                        ctx.shadowBlur = 6;
+                        ctx.shadowBlur = 5;
                         ctx.fill();
                         ctx.stroke();
 
@@ -1998,7 +2037,7 @@
                     }
 
                     ctx.beginPath();
-                    ctx.arc(0, 0, 4.5 * scale, 0, Math.PI * 2);
+                    ctx.arc(0, 0, (isMobile ? 3.5 : 4.5) * scale, 0, Math.PI * 2);
                     ctx.fillStyle = '#c084fc';
                     ctx.fill();
 
@@ -2007,18 +2046,18 @@
             }
 
             if (node.isTip && currentPhase === 1) {
-                const pulseRadius = 9 + Math.sin(time * 4 + node.pulse) * 3;
+                const pulseRadius = (isMobile ? 8 : 9) + Math.sin(time * 4 + node.pulse) * 2.5;
                 
                 ctx.beginPath();
                 ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
                 ctx.fillStyle = '#f43f5e';
                 ctx.shadowColor = '#f43f5e';
-                ctx.shadowBlur = 15;
+                ctx.shadowBlur = 12;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, 3.5, 0, Math.PI * 2);
                 ctx.fillStyle = '#ffffff';
                 ctx.fill();
             }
