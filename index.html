@@ -2,7 +2,7 @@
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Architekt Mléčné Žlázy - Noc vědců</title>
     <style>
         * {
@@ -11,32 +11,40 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none;
         }
 
         html, body {
             width: 100%;
             height: 100%;
+            height: 100dvh;
+            min-height: -webkit-fill-available;
             overflow: hidden;
             background-color: #080b10;
             color: #ecf2f8;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         #game-container {
             position: relative;
             width: 100vw;
-            height: 100vh;
+            height: 100%;
+            height: 100dvh;
+            min-height: -webkit-fill-available;
             background: radial-gradient(circle at center, #111827 0%, #080b10 100%);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            padding-top: env(safe-area-inset-top);
         }
 
         header {
-            padding: clamp(6px, 1.2vh, 20px) clamp(12px, 2vw, 36px);
-            background: rgba(15, 23, 42, 0.9);
+            padding: clamp(6px, 1vh, 18px) clamp(10px, 2vw, 32px);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(56, 189, 248, 0.2);
             display: flex;
@@ -44,7 +52,6 @@
             align-items: center;
             z-index: 10;
             flex-shrink: 0;
-            min-height: clamp(44px, 6.5vh, 85px);
         }
 
         .title-box {
@@ -54,29 +61,31 @@
         }
 
         .title-box h1 {
-            font-size: clamp(15px, 2.2vw, 32px);
+            font-size: clamp(14px, 2vw, 30px);
             font-weight: 800;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .title-box p {
-            font-size: clamp(10px, 1.1vw, 17px);
+            font-size: clamp(9px, 1vw, 15px);
             color: #94a3b8;
+            line-height: 1.2;
         }
 
         .phase-indicator {
             display: flex;
-            gap: clamp(6px, 1vw, 18px);
+            gap: clamp(4px, 0.8vw, 14px);
             align-items: center;
         }
 
         .phase-step {
-            padding: clamp(6px, 1vh, 14px) clamp(10px, 1.4vw, 24px);
+            padding: clamp(4px, 0.8vh, 10px) clamp(8px, 1.1vw, 18px);
             border-radius: 999px;
-            font-size: clamp(11px, 1.1vw, 17px);
+            font-size: clamp(9.5px, 0.95vw, 15px);
             font-weight: 600;
             background: #1e293b;
             color: #64748b;
@@ -89,7 +98,7 @@
             background: rgba(56, 189, 248, 0.2);
             border-color: #38bdf8;
             color: #38bdf8;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
         }
 
         .phase-step.completed {
@@ -118,7 +127,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: clamp(6px, 0.8vw, 14px);
+            width: clamp(5px, 0.7vw, 12px);
             height: 100%;
             background: rgba(15, 23, 42, 0.6);
             border-right: 1px solid rgba(56, 189, 248, 0.2);
@@ -138,15 +147,15 @@
 
         #stats-overlay {
             position: absolute;
-            top: clamp(8px, 1.5vh, 24px);
-            left: clamp(8px, 1.5vw, 24px);
-            background: rgba(15, 23, 42, 0.85);
+            top: clamp(6px, 1.2vh, 18px);
+            left: clamp(6px, 1.2vw, 18px);
+            background: rgba(15, 23, 42, 0.88);
             border: 1px solid #334155;
-            border-radius: clamp(8px, 1vw, 14px);
-            padding: clamp(6px, 1vh, 14px) clamp(10px, 1.4vw, 22px);
-            font-size: clamp(11px, 1.2vw, 18px);
+            border-radius: clamp(6px, 0.8vw, 12px);
+            padding: clamp(4px, 0.8vh, 10px) clamp(8px, 1.1vw, 18px);
+            font-size: clamp(10px, 1vw, 16px);
             display: flex;
-            gap: clamp(10px, 1.6vw, 26px);
+            gap: clamp(8px, 1.3vw, 20px);
             z-index: 10;
             backdrop-filter: blur(8px);
             pointer-events: none;
@@ -159,21 +168,21 @@
 
         .stat-label {
             color: #94a3b8;
-            font-size: clamp(9px, 0.9vw, 14px);
+            font-size: clamp(8px, 0.75vw, 12px);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: clamp(14px, 1.6vw, 26px);
+            font-size: clamp(12px, 1.3vw, 22px);
             font-weight: 800;
             color: #38bdf8;
         }
 
         #single-bottle-container {
             position: absolute;
-            bottom: clamp(12px, 2vh, 32px);
-            left: clamp(12px, 2vw, 32px);
+            bottom: calc(clamp(14px, 2vh, 32px) + env(safe-area-inset-bottom, 12px));
+            left: clamp(10px, 1.8vw, 26px);
             display: none;
             flex-direction: column;
             align-items: center;
@@ -184,8 +193,8 @@
 
         .bottle-graphic {
             position: relative;
-            width: clamp(55px, 6vw, 100px);
-            height: clamp(110px, 12vw, 200px);
+            width: clamp(42px, 5.2vw, 80px);
+            height: clamp(84px, 10.4vw, 160px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -206,7 +215,7 @@
             width: 85%;
             height: 12%;
             background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
-            border-radius: 6px 6px 4px 4px;
+            border-radius: 5px 5px 3px 3px;
             border: 1px solid #94a3b8;
             box-shadow: 0 4px 8px rgba(0,0,0,0.4);
             z-index: 4;
@@ -219,10 +228,10 @@
             background: rgba(255, 255, 255, 0.08);
             border: 2px solid rgba(255, 255, 255, 0.4);
             border-top: none;
-            border-radius: 5px 5px 14px 14px;
+            border-radius: 4px 4px 12px 12px;
             backdrop-filter: blur(6px);
             overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.15), 0 6px 16px rgba(0,0,0,0.5);
             margin-top: -2px;
         }
 
@@ -235,7 +244,7 @@
             height: 25%;
             background: rgba(45, 212, 191, 0.45);
             border: 1px solid rgba(45, 212, 191, 0.8);
-            border-radius: 0 0 6px 6px;
+            border-radius: 0 0 5px 5px;
             z-index: 2;
         }
 
@@ -253,10 +262,10 @@
 
         .bottle-ticks {
             position: absolute;
-            right: 4px;
-            top: 10px;
-            bottom: 10px;
-            width: 8px;
+            right: 3px;
+            top: 8px;
+            bottom: 8px;
+            width: 6px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -265,50 +274,49 @@
             opacity: 0.6;
         }
 
-        .tick { width: 5px; height: 1.5px; background: #cbd5e1; }
-        .tick.sub { width: 3px; opacity: 0.6; }
+        .tick { width: 4px; height: 1.5px; background: #cbd5e1; }
+        .tick.sub { width: 2.5px; opacity: 0.6; }
 
         .bottle-label {
-            margin-top: 6px;
+            margin-top: 4px;
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid #38bdf8;
-            padding: clamp(3px, 0.5vh, 6px) clamp(6px, 0.8vw, 12px);
-            border-radius: 6px;
+            padding: 2px 6px;
+            border-radius: 5px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.5);
             width: 100%;
         }
 
         .bottle-label-title {
-            font-size: clamp(9px, 0.8vw, 13px);
+            font-size: clamp(8px, 0.75vw, 11px);
             font-weight: 700;
             color: #38bdf8;
             text-transform: uppercase;
         }
 
         .bottle-label-value {
-            font-size: clamp(11px, 1vw, 15px);
+            font-size: clamp(9px, 0.85vw, 13px);
             font-weight: 800;
             color: #ffffff;
-            margin-top: 1px;
         }
 
         #instruction-bar {
             position: absolute;
-            top: clamp(10px, 2vh, 24px);
+            top: clamp(6px, 1.5vh, 18px);
             left: 50%;
             transform: translateX(-50%) translateY(0);
             background: rgba(15, 23, 42, 0.92);
             border: 1px solid #38bdf8;
-            padding: clamp(8px, 1vh, 14px) clamp(16px, 2vw, 30px);
+            padding: clamp(5px, 0.8vh, 10px) clamp(10px, 1.5vw, 22px);
             border-radius: 999px;
-            font-size: clamp(12px, 1.3vw, 19px);
+            font-size: clamp(10px, 1vw, 15px);
             color: #f8fafc;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
             pointer-events: none;
             z-index: 20;
             text-align: center;
-            max-width: 85%;
+            max-width: 90%;
             backdrop-filter: blur(8px);
             opacity: 1;
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -321,10 +329,10 @@
 
         #control-panel {
             position: absolute;
-            bottom: clamp(12px, 2vh, 32px);
-            right: clamp(12px, 2vw, 32px);
+            bottom: calc(clamp(14px, 2vh, 32px) + env(safe-area-inset-bottom, 12px));
+            right: clamp(10px, 1.8vw, 26px);
             display: flex;
-            gap: clamp(8px, 1vw, 16px);
+            gap: clamp(6px, 0.8vw, 12px);
             z-index: 10;
         }
 
@@ -332,16 +340,16 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: none;
-            padding: clamp(8px, 1.2vh, 16px) clamp(14px, 1.8vw, 28px);
-            font-size: clamp(12px, 1.2vw, 18px);
+            padding: clamp(8px, 1.1vh, 13px) clamp(12px, 1.4vw, 22px);
+            font-size: clamp(11.5px, 1.1vw, 15px);
             font-weight: 700;
-            border-radius: clamp(8px, 0.8vw, 14px);
+            border-radius: clamp(6px, 0.7vw, 10px);
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             touch-action: manipulation;
         }
 
@@ -364,17 +372,17 @@
 
         #legend {
             position: absolute;
-            top: clamp(8px, 1.5vh, 24px);
-            right: clamp(8px, 1.5vw, 24px);
-            background: rgba(15, 23, 42, 0.85);
+            top: clamp(6px, 1.2vh, 16px);
+            right: clamp(6px, 1.2vw, 16px);
+            background: rgba(15, 23, 42, 0.88);
             border: 1px solid #334155;
-            padding: clamp(8px, 1.2vh, 16px) clamp(12px, 1.4vw, 20px);
-            border-radius: clamp(6px, 0.8vw, 12px);
-            font-size: clamp(11px, 1.1vw, 16px);
+            padding: clamp(5px, 0.8vh, 10px) clamp(8px, 1vw, 14px);
+            border-radius: clamp(5px, 0.6vw, 8px);
+            font-size: clamp(9.5px, 0.9vw, 13px);
             z-index: 5;
             display: flex;
             flex-direction: column;
-            gap: clamp(4px, 0.6vh, 8px);
+            gap: clamp(3px, 0.5vh, 5px);
             backdrop-filter: blur(8px);
             pointer-events: none;
         }
@@ -382,12 +390,12 @@
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .legend-dot {
-            width: clamp(8px, 0.8vw, 14px);
-            height: clamp(8px, 0.8vw, 14px);
+            width: clamp(7px, 0.7vw, 11px);
+            height: clamp(7px, 0.7vw, 11px);
             border-radius: 50%;
         }
 
@@ -403,11 +411,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: clamp(10px, 3vw, 40px);
+            padding: clamp(8px, 2vw, 24px);
             z-index: 100;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
+            touch-action: pan-y;
         }
 
         #modal.active {
@@ -418,20 +427,23 @@
         .modal-card {
             background: #0f172a;
             border: 1px solid #38bdf8;
-            border-radius: clamp(14px, 1.8vw, 24px);
-            padding: clamp(16px, 2.8vw, 36px);
-            max-width: min(950px, 94vw);
+            border-radius: clamp(12px, 1.5vw, 18px);
+            padding: clamp(14px, 2vw, 26px);
+            max-width: min(850px, 94vw);
             width: 96%;
-            max-height: 90vh;
+            max-height: 85vh;
+            max-height: 85dvh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.2);
             display: flex;
             flex-direction: column;
-            gap: clamp(10px, 1.6vh, 18px);
+            gap: clamp(8px, 1.3vh, 14px);
         }
 
         .modal-card h2 {
-            font-size: clamp(20px, 2.4vw, 34px);
+            font-size: clamp(17px, 2vw, 26px);
             color: #38bdf8;
         }
 
@@ -439,16 +451,16 @@
             align-self: flex-start;
             background: linear-gradient(90deg, #2563eb, #38bdf8);
             color: white;
-            padding: clamp(4px, 0.6vh, 8px) clamp(10px, 1.2vw, 16px);
+            padding: clamp(3px, 0.5vh, 5px) clamp(8px, 1vw, 12px);
             border-radius: 999px;
             font-weight: 700;
-            font-size: clamp(11px, 1.1vw, 15px);
+            font-size: clamp(9.5px, 0.85vw, 12px);
         }
 
         .summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: clamp(8px, 1.2vw, 16px);
+            gap: clamp(6px, 1vw, 10px);
             margin-top: 2px;
         }
 
@@ -456,21 +468,21 @@
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 8px;
-            padding: clamp(8px, 1.2vh, 16px) clamp(12px, 1.6vw, 22px);
+            padding: clamp(6px, 1vh, 10px) clamp(10px, 1.2vw, 16px);
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
 
         .summary-card-title {
-            font-size: clamp(9px, 0.9vw, 13px);
+            font-size: clamp(8px, 0.75vw, 10.5px);
             color: #94a3b8;
             text-transform: uppercase;
             font-weight: 700;
         }
 
         .summary-card-val {
-            font-size: clamp(18px, 2.2vw, 32px);
+            font-size: clamp(15px, 1.7vw, 24px);
             font-weight: 800;
             color: #38bdf8;
         }
@@ -479,19 +491,23 @@
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 8px;
-            padding: clamp(10px, 1.5vh, 18px);
+            padding: clamp(8px, 1vh, 12px);
             margin-top: 2px;
+            max-height: 200px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .leaderboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .leaderboard-title {
-            font-size: clamp(12px, 1.2vw, 17px);
+            font-size: clamp(10.5px, 1vw, 14px);
             font-weight: 700;
             color: #facc15;
             text-transform: uppercase;
@@ -501,19 +517,19 @@
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: clamp(11px, 1.1vw, 16px);
+            font-size: clamp(9.5px, 0.95vw, 13px);
         }
 
         .leaderboard-table th {
             text-align: left;
-            padding: clamp(4px, 0.8vh, 8px) clamp(6px, 0.8vw, 10px);
+            padding: clamp(3px, 0.5vh, 5px) clamp(4px, 0.6vw, 6px);
             color: #94a3b8;
             border-bottom: 1px solid #334155;
             font-weight: 600;
         }
 
         .leaderboard-table td {
-            padding: clamp(4px, 0.8vh, 8px) clamp(6px, 0.8vw, 10px);
+            padding: clamp(3px, 0.5vh, 5px) clamp(4px, 0.6vw, 6px);
             border-bottom: 1px solid rgba(51, 65, 85, 0.4);
             color: #f8fafc;
         }
@@ -529,22 +545,22 @@
 
         .info-box, .task-box, .time-box {
             background: #1e293b;
-            padding: clamp(10px, 1.6vh, 18px) clamp(12px, 1.8vw, 22px);
+            padding: clamp(8px, 1.2vh, 12px) clamp(10px, 1.3vw, 16px);
             border-radius: 8px;
-            font-size: clamp(12.5px, 1.25vw, 18px);
+            font-size: clamp(11px, 1.05vw, 14.5px);
             color: #cbd5e1;
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
-        .info-box { border-left: 5px solid #a855f7; }
-        .task-box { border-left: 5px solid #22c55e; }
-        .time-box { border-left: 5px solid #38bdf8; }
+        .info-box { border-left: 4px solid #a855f7; }
+        .task-box { border-left: 4px solid #22c55e; }
+        .time-box { border-left: 4px solid #38bdf8; }
 
         .info-box b, .task-box b, .time-box b { 
             color: #f8fafc; 
-            font-size: clamp(14px, 1.4vw, 20px); 
+            font-size: clamp(12px, 1.15vw, 16px); 
             display: block; 
-            margin-bottom: 4px; 
+            margin-bottom: 3px; 
         }
 
         #intro-screen {
@@ -553,7 +569,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 11, 16, 0.95);
+            background: rgba(8, 11, 16, 0.96);
             backdrop-filter: blur(14px);
             display: flex;
             align-items: center;
@@ -561,6 +577,8 @@
             z-index: 150;
             opacity: 1;
             transition: opacity 0.5s ease;
+            touch-action: pan-y;
+            padding: clamp(6px, 1.5vh, 16px);
         }
 
         #intro-screen.hidden {
@@ -570,23 +588,27 @@
 
         .intro-card {
             position: relative;
-            width: min(1100px, 94vw);
-            max-height: 92vh;
+            width: min(980px, 96vw);
+            max-height: 90vh;
+            max-height: 90dvh;
             background: radial-gradient(circle at 60% 50%, #111827 0%, #080b10 100%);
             border: 2px solid rgba(56, 189, 248, 0.3);
             border-radius: 16px;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
             display: flex;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .intro-left-content {
-            width: 50%;
-            padding: clamp(18px, 3vw, 36px);
+            width: 52%;
+            padding: clamp(12px, 2vw, 26px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             z-index: 5;
+            flex-shrink: 0;
         }
 
         .intro-badge-tag {
@@ -594,49 +616,49 @@
             background: rgba(56, 189, 248, 0.1);
             border: 1px solid rgba(56, 189, 248, 0.4);
             color: #38bdf8;
-            padding: 4px 10px;
+            padding: 3px 8px;
             border-radius: 12px;
-            font-size: clamp(10px, 1vw, 13px);
+            font-size: clamp(8.5px, 0.8vw, 11px);
             font-weight: 700;
             letter-spacing: 0.5px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             text-transform: uppercase;
         }
 
         .intro-left-content h1 {
-            font-size: clamp(24px, 3.2vw, 42px);
+            font-size: clamp(19px, 2.4vw, 34px);
             font-weight: 900;
             line-height: 1.1;
             text-transform: uppercase;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .intro-subtitle {
-            font-size: clamp(15px, 1.8vw, 22px);
+            font-size: clamp(12.5px, 1.4vw, 17px);
             color: #cbd5e1;
             font-weight: 600;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .intro-description {
-            font-size: clamp(12.5px, 1.25vw, 17px);
-            line-height: 1.45;
+            font-size: clamp(10.5px, 1.05vw, 13.5px);
+            line-height: 1.4;
             color: #94a3b8;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .nickname-box {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            margin-bottom: 16px;
+            gap: 4px;
+            margin-bottom: 12px;
         }
 
         .nickname-box label {
-            font-size: clamp(10px, 1vw, 14px);
+            font-size: clamp(8.5px, 0.8vw, 11.5px);
             color: #cbd5e1;
             font-weight: 700;
             text-transform: uppercase;
@@ -645,9 +667,9 @@
         .nickname-input {
             background: #1e293b;
             border: 2px solid #334155;
-            border-radius: 8px;
-            padding: clamp(8px, 1.2vh, 12px) clamp(12px, 1.4vw, 16px);
-            font-size: clamp(13px, 1.3vw, 17px);
+            border-radius: 6px;
+            padding: clamp(6px, 0.9vh, 9px) clamp(8px, 1vw, 12px);
+            font-size: clamp(11.5px, 1.1vw, 14.5px);
             color: #ffffff;
             font-weight: 600;
             outline: none;
@@ -664,14 +686,14 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: clamp(10px, 1.5vh, 16px) clamp(20px, 2.5vw, 32px);
-            font-size: clamp(13px, 1.3vw, 18px);
+            padding: clamp(8px, 1.1vh, 12px) clamp(16px, 1.8vw, 24px);
+            font-size: clamp(11.5px, 1.1vw, 15px);
             font-weight: 800;
             border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             text-transform: uppercase;
             touch-action: manipulation;
         }
@@ -682,13 +704,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px;
+            padding: 8px;
+            min-height: 240px;
         }
 
         .intro-right-graphic svg {
             width: 100%;
             height: auto;
-            max-height: 85vh;
+            max-height: 75vh;
+            display: block;
         }
 
         .anatomy-label {
@@ -708,21 +732,52 @@
             opacity: 0.8;
         }
 
+        /* Mobilní layout bez skrývání podstatných prvků */
         @media (max-width: 768px) {
             header { 
-                padding: 4px 10px; 
-                min-height: 40px;
+                padding: 6px 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
             }
-            .title-box h1 { font-size: 14px; }
-            .title-box p { display: none; }
             .phase-indicator { display: none; }
+            .title-box h1 { font-size: 13.5px; }
+            .title-box p { font-size: 9.5px; }
 
-            .intro-card { flex-direction: column; height: auto; max-height: 94vh; }
-            .intro-left-content { width: 100%; padding: 16px; }
-            .intro-right-graphic { display: none; }
+            .intro-card { 
+                flex-direction: column; 
+                height: auto; 
+                max-height: 88dvh;
+            }
+            .intro-left-content { 
+                width: 100%; 
+                padding: 12px 14px; 
+            }
+            .intro-right-graphic { 
+                display: flex !important;
+                width: 100%;
+                min-height: 190px;
+                max-height: 240px;
+                padding: 4px 10px 16px;
+            }
+            .intro-right-graphic svg {
+                max-height: 220px;
+            }
 
-            #legend { display: none; }
-            #instruction-bar { display: none; }
+            #legend {
+                top: 6px;
+                right: 6px;
+                padding: 4px 8px;
+                font-size: 8.5px;
+                gap: 3px;
+            }
+            .legend-dot { width: 6.5px; height: 6.5px; }
+
+            #instruction-bar {
+                font-size: 10px;
+                padding: 4px 8px;
+                top: 6px;
+            }
 
             #stats-overlay {
                 top: 6px;
@@ -730,8 +785,6 @@
                 padding: 4px 8px;
                 gap: 8px;
             }
-
-            #control-panel { bottom: 10px; right: 10px; }
         }
     </style>
 </head>
@@ -744,10 +797,10 @@
             <p>Interaktivní simulace pro Noc vědců - Ústav molekulární genetiky AV ČR, v. v. i., Laboratoř vývoje tkání a nádorů</p>
         </div>
         <div class="phase-indicator">
-            <div id="phase-1" class="phase-step">1. Puberta</div>
-            <div id="phase-2" class="phase-step">2. Těhotenství</div>
-            <div id="phase-3" class="phase-step">3. Kojení</div>
-            <div id="phase-4" class="phase-step">4. Návrat do klidového stavu</div>
+            <div id="phase-1" class="phase-step">1. Dospívání (Puberta)</div>
+            <div id="phase-2" class="phase-step">2. Těhotenství (Gravidita)</div>
+            <div id="phase-3" class="phase-step">3. Kojení (Laktace)</div>
+            <div id="phase-4" class="phase-step">4. Návrat do klidového stavu (Involuce)</div>
         </div>
     </header>
 
@@ -802,7 +855,7 @@
             <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Mlékovody (Duktální síť)</div>
             <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Terminální koncové pupeny (TEB)</div>
             <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Mléčné váčky (Alveoly)</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #f8fafc;"></div> Buňky imunitního systému (Makrofágy)</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #ffffff; border: 1px solid #cbd5e1; box-shadow: 0 0 4px rgba(255,255,255,0.8);"></div> Buňky imunitního systému (Makrofágy)</div>
         </div>
 
         <canvas id="gameCanvas"></canvas>
@@ -841,7 +894,6 @@
                             </filter>
                             <filter id="glow-pink" x="-20%" y="-20%" width="140%" height="140%">
                                 <feGaussianBlur stdDeviation="6" result="blur" />
-                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
                             </filter>
                             <filter id="blur-stroma-orig" x="-20%" y="-20%" width="140%" height="140%">
                                 <feGaussianBlur stdDeviation="11" />
@@ -949,7 +1001,7 @@
                 <h2 id="modal-title">1. Fáze: Puberta</h2>
 
                 <div id="modal-summary-box" style="display: none;">
-                    <p style="color: #cbd5e1; font-size: clamp(13px, 1.3vw, 18px); margin-bottom: 8px;">Úspěšně jste dokončili celý cyklus. Zde je přehled vašich výsledků:</p>
+                    <p style="color: #cbd5e1; font-size: clamp(11.5px, 1.1vw, 15px); margin-bottom: 6px;">Úspěšně jste dokončili celý cyklus. Zde je přehled vašich výsledků:</p>
                     <div class="summary-grid">
                         <div class="summary-card">
                             <span class="summary-card-title">Hráč</span>
@@ -1004,7 +1056,7 @@
                     <p id="modal-time"></p>
                 </div>
 
-                <button id="modal-btn" class="btn" style="margin-top: 8px; align-self: flex-end;">Dále k úkolu ➔</button>
+                <button id="modal-btn" class="btn" style="margin-top: 6px; align-self: flex-end;">Dále k úkolu ➔</button>
             </div>
         </div>
     </div>
@@ -1161,8 +1213,8 @@
     let nodes = [];
     let branches = [];
 
-    // Dynamický koeficient pro škálování vykreslování
     let scaleFactor = 1;
+    let bottomNippleOffset = 80;
 
     const phaseData = {
         1: {
@@ -1207,9 +1259,17 @@
         const wrapper = document.getElementById('canvas-wrapper');
         canvas.width = wrapper.clientWidth;
         canvas.height = wrapper.clientHeight;
-        // Referenční základ 1000px
-        scaleFactor = Math.min(canvas.width, canvas.height) / 850;
-        scaleFactor = Math.max(0.6, Math.min(scaleFactor, 2.2));
+        
+        const isPortrait = canvas.height > canvas.width;
+        if (isPortrait) {
+            scaleFactor = Math.min(canvas.width / 400, canvas.height / 700);
+            scaleFactor = Math.max(0.65, Math.min(scaleFactor, 1.1));
+            bottomNippleOffset = Math.max(90, canvas.height * 0.16);
+        } else {
+            scaleFactor = Math.min(canvas.width, canvas.height) / 780;
+            scaleFactor = Math.max(0.8, Math.min(scaleFactor, 2.0));
+            bottomNippleOffset = Math.max(85, 110 * scaleFactor);
+        }
     }
 
     window.addEventListener('resize', resizeCanvas);
@@ -1223,7 +1283,7 @@
             this.isTip = true;
             this.hasAlveolus = false;
             this.alveolusRadius = 0;
-            this.maxAlveolusRadius = (16 + Math.random() * 5) * scaleFactor;
+            this.maxAlveolusRadius = (13 + Math.random() * 3.5) * scaleFactor;
             this.pulse = Math.random() * Math.PI;
             this.isEaten = false;
             this.isApoptotic = false;
@@ -1234,8 +1294,8 @@
             this.budOffsets = [];
             for (let i = 0; i < this.budCount; i++) {
                 const angle = (i / this.budCount) * Math.PI * 2 + (Math.random() * 0.4 - 0.2);
-                const dist = (6 + Math.random() * 4) * scaleFactor;
-                const r = (6 + Math.random() * 3) * scaleFactor;
+                const dist = (5 + Math.random() * 3) * scaleFactor;
+                const r = (4.5 + Math.random() * 2) * scaleFactor;
                 this.budOffsets.push({ angle, dist, r });
             }
         }
@@ -1259,8 +1319,8 @@
         constructor(startNode, endNode) {
             this.startNode = startNode;
             this.endNode = endNode;
-            const baseThick = 18 * scaleFactor;
-            this.thickness = Math.max(3 * scaleFactor, baseThick - endNode.level * (2 * scaleFactor));
+            const baseThick = 13 * scaleFactor;
+            this.thickness = Math.max(2.5 * scaleFactor, baseThick - endNode.level * (1.6 * scaleFactor));
             this.isEaten = false;
             this.isTargetedByMacrophage = false;
         }
@@ -1272,8 +1332,8 @@
             this.y = y;
             this.target = target;
             this.targetType = target instanceof Node ? 'node' : 'branch';
-            this.speed = 6 * scaleFactor;
-            this.size = 20 * scaleFactor;
+            this.speed = 5 * scaleFactor;
+            this.size = 15 * scaleFactor;
             this.state = 'hunting';
             this.exitX = Math.random() < 0.5 ? -40 : canvas.width + 40;
             this.exitY = Math.random() * canvas.height;
@@ -1304,7 +1364,7 @@
                 const dy = targetY - this.y;
                 const dist = Math.hypot(dx, dy);
 
-                if (dist < 15 * scaleFactor) {
+                if (dist < 14 * scaleFactor) {
                     if (this.targetType === 'node') {
                         this.target.hasAlveolus = false;
                         this.target.isEaten = true;
@@ -1340,16 +1400,14 @@
             ctx.save();
             ctx.translate(this.x, this.y);
             
-            // Světle šedo-modré tělo s jemným ledovým glow efektem
-            ctx.fillStyle = '#94a3b8'; // Světle šedá (Slate 400)
-            ctx.shadowColor = '#38bdf8'; // Ledově modrý svit
-            ctx.shadowBlur = 10 * scaleFactor;
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.85)';
+            ctx.shadowBlur = 8 * scaleFactor;
             
             ctx.beginPath();
             const time = Date.now() * 0.005;
             for (let i = 0; i < 8; i++) {
                 const a = (i / 8) * Math.PI * 2;
-                const r = this.size + Math.sin(time + i * 2) * (3 * scaleFactor);
+                const r = this.size + Math.sin(time + i * 2) * (2.2 * scaleFactor);
                 const px = Math.cos(a) * r;
                 const py = Math.sin(a) * r;
                 if (i === 0) ctx.moveTo(px, py);
@@ -1357,18 +1415,16 @@
             }
             ctx.closePath();
             
-            // Gradient od světle šedé po světle modrou
             const grad = ctx.createRadialGradient(0, 0, 2, 0, 0, this.size);
-            grad.addColorStop(0, '#e2e8f0'); // Velmi světlá šedá uprostřed
-            grad.addColorStop(0.7, '#94a3b8'); // Středně šedá
-            grad.addColorStop(1, '#60a5fa'); // Světle modrý okraj
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.65, '#f1f5f9');
+            grad.addColorStop(1, '#cbd5e1');
             ctx.fillStyle = grad;
             ctx.fill();
 
-            // Tmavší šedo-modré jádro buňky
-            ctx.fillStyle = '#334155';
+            ctx.fillStyle = '#475569';
             ctx.beginPath();
-            ctx.arc(0, 0, 4.5 * scaleFactor, 0, Math.PI * 2);
+            ctx.arc(0, 0, 3.8 * scaleFactor, 0, Math.PI * 2);
             ctx.fill();
 
             ctx.restore();
@@ -1392,23 +1448,23 @@
             }
 
             const rootX = canvas.width / 2;
-            const areolaY = canvas.height - Math.max(65, 110 * scaleFactor);
-            const nippleTipY = areolaY + Math.max(25, 50 * scaleFactor);
+            const areolaY = canvas.height - bottomNippleOffset;
+            const nippleTipY = areolaY + Math.max(22, 38 * scaleFactor);
 
             this.path.push({x: rootX, y: nippleTipY});
 
             const bRect = singleBottleContainer.getBoundingClientRect();
             const cRect = canvas.getBoundingClientRect();
             const bottleTargetX = (bRect.left + bRect.width / 2) - cRect.left;
-            const bottleTargetY = (bRect.top + 25 * scaleFactor) - cRect.top;
+            const bottleTargetY = (bRect.top + 18 * scaleFactor) - cRect.top;
 
             this.pathIndex = 0;
             this.path.push({x: bottleTargetX, y: bottleTargetY});
 
             this.x = this.path[0].x;
             this.y = this.path[0].y;
-            this.speed = Math.max(9, 13 * scaleFactor);
-            this.radius = Math.max(4, 6.5 * scaleFactor);
+            this.speed = Math.max(8, 12 * scaleFactor);
+            this.radius = Math.max(3.5, 5.5 * scaleFactor);
             this.isDone = false;
         }
 
@@ -1443,7 +1499,7 @@
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.shadowColor = '#ffffff';
-            ctx.shadowBlur = 12 * scaleFactor;
+            ctx.shadowBlur = 8 * scaleFactor;
             ctx.fill();
             ctx.shadowBlur = 0;
         }
@@ -1461,8 +1517,8 @@
             const bRect = singleBottleContainer.getBoundingClientRect();
             const cRect = canvas.getBoundingClientRect();
             const bx = (bRect.left + bRect.width / 2) - cRect.left;
-            const by = (bRect.top + 25 * scaleFactor) - cRect.top;
-            createParticles(bx, by, '#38bdf8', 18);
+            const by = (bRect.top + 18 * scaleFactor) - cRect.top;
+            createParticles(bx, by, '#38bdf8', 16);
         }
 
         updateBottleUI();
@@ -1551,11 +1607,11 @@
         resizeCanvas();
 
         const rootX = canvas.width / 2;
-        const areolaY = canvas.height - Math.max(65, 110 * scaleFactor);
+        const areolaY = canvas.height - bottomNippleOffset;
         const rootNode = new Node(rootX, areolaY, 0, -Math.PI / 2);
         
         const firstTipX = rootX;
-        const firstTipY = areolaY - Math.max(28, 45 * scaleFactor); 
+        const firstTipY = areolaY - Math.max(26, 36 * scaleFactor); 
         const firstTipNode = new Node(firstTipX, firstTipY, 1, -Math.PI / 2);
         rootNode.isTip = false;
 
@@ -1637,11 +1693,11 @@
     function branchFromNode(node) {
         if (!node.isTip || currentPhase !== 1) return;
 
-        // Délka větve přímo úměrná velikosti okna
-        const baseLen = Math.max(45, Math.min(canvas.height * 0.16, 130 * scaleFactor));
-        const branchLength = Math.max(35 * scaleFactor, baseLen - node.level * (10 * scaleFactor));
+        const isPortrait = canvas.height > canvas.width;
+        const baseLen = isPortrait ? Math.min(canvas.height * 0.085, 52 * scaleFactor) : Math.min(canvas.height * 0.15, 115 * scaleFactor);
+        const branchLength = Math.max(26 * scaleFactor, baseLen - node.level * (3.8 * scaleFactor));
         
-        const spreadAngle = canvas.width < 500 ? (0.38 + Math.random() * 0.1) : (0.55 + Math.random() * 0.18);
+        const spreadAngle = isPortrait ? (0.34 + Math.random() * 0.08) : (0.52 + Math.random() * 0.16);
 
         const angle1 = node.angle - spreadAngle;
         const angle2 = node.angle + spreadAngle;
@@ -1652,11 +1708,11 @@
         const x2 = node.x + Math.cos(angle2) * branchLength;
         const y2 = node.y + Math.sin(angle2) * branchLength;
 
-        const marginX = 20 * scaleFactor;
-        const marginY = 30 * scaleFactor; 
+        const marginX = 14 * scaleFactor;
+        const marginY = 20 * scaleFactor; 
 
-        if (x1 < marginX || x1 > canvas.width - marginX || y1 < marginY || y1 > canvas.height - (70 * scaleFactor) ||
-            x2 < marginX || x2 > canvas.width - marginX || y2 < marginY || y2 > canvas.height - (70 * scaleFactor)) {
+        if (x1 < marginX || x1 > canvas.width - marginX || y1 < marginY || y1 > canvas.height - (bottomNippleOffset - 10) ||
+            x2 < marginX || x2 > canvas.width - marginX || y2 < marginY || y2 > canvas.height - (bottomNippleOffset - 10)) {
             return;
         }
 
@@ -1669,7 +1725,7 @@
         branches.push(new Branch(node, child1));
         branches.push(new Branch(node, child2));
 
-        createParticles(node.x, node.y, '#38bdf8', 12);
+        createParticles(node.x, node.y, '#38bdf8', 10);
         updateUI(false);
     }
 
@@ -1677,14 +1733,14 @@
         if (currentPhase !== 2 || node.hasAlveolus) return;
 
         node.hasAlveolus = true;
-        createParticles(node.x, node.y, '#a855f7', 14);
+        createParticles(node.x, node.y, '#a855f7', 12);
         updateUI(false);
     }
 
     function triggerMilkEjection(node) {
         if (currentPhase !== 3 || !node.hasAlveolus || !isTimerRunning) return;
 
-        createParticles(node.x, node.y, '#ffffff', 10);
+        createParticles(node.x, node.y, '#ffffff', 8);
         milkDroplets.push(new MilkDroplet(node));
     }
 
@@ -1692,12 +1748,12 @@
         if (currentPhase !== 4 || !node.hasAlveolus || node.isApoptotic || node.isEaten) return;
 
         node.startApoptosis();
-        createParticles(node.x, node.y, '#7e22ce', 12);
+        createParticles(node.x, node.y, '#7e22ce', 10);
 
         if (!node.isTargetedByMacrophage) {
             node.isTargetedByMacrophage = true;
             const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
-            const startY = Math.random() * (canvas.height - 110 * scaleFactor) + 30;
+            const startY = Math.random() * (canvas.height - bottomNippleOffset) + 30;
             macrophages.push(new Macrophage(startX, startY, node));
         }
 
@@ -1716,7 +1772,7 @@
         for (let branch of outerBranches) {
             branch.isTargetedByMacrophage = true;
             const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
-            const startY = Math.random() * (canvas.height - 110 * scaleFactor) + 30;
+            const startY = Math.random() * (canvas.height - bottomNippleOffset) + 30;
             macrophages.push(new Macrophage(startX, startY, branch));
         }
     }
@@ -1726,9 +1782,9 @@
             particles.push({
                 x: x,
                 y: y,
-                vx: (Math.random() - 0.5) * (5 * scaleFactor),
-                vy: (Math.random() - 0.5) * (5 * scaleFactor),
-                radius: (Math.random() * 3 + 1.5) * scaleFactor,
+                vx: (Math.random() - 0.5) * (4 * scaleFactor),
+                vy: (Math.random() - 0.5) * (4 * scaleFactor),
+                radius: (Math.random() * 2.2 + 1) * scaleFactor,
                 color: color,
                 life: 1
             });
@@ -1736,7 +1792,6 @@
     }
 
     function showInstructionBar(htmlContent) {
-        if (canvas.width < 768) return; 
         if (instructionTimer) clearTimeout(instructionTimer);
         
         instructionBar.innerHTML = htmlContent;
@@ -1744,14 +1799,13 @@
 
         instructionTimer = setTimeout(() => {
             instructionBar.classList.add('hidden');
-        }, 5000);
+        }, 4500);
     }
 
     function handleInteraction(clickX, clickY) {
         if (modal.classList.contains('active') || !introScreen.classList.contains('hidden')) return;
 
-        // Klikací oblast se dynamicky přizpůsobí velikosti obrazovky a prstům
-        const hitRadius = Math.max(40, 48 * scaleFactor);
+        const hitRadius = Math.max(38, 44 * scaleFactor);
 
         if (currentPhase === 1 && isTimerRunning) {
             for (let node of nodes) {
@@ -1820,25 +1874,25 @@
             phase2El.className = 'phase-step';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('💡 <b>Puberta:</b> Klikejte na červená kolečka (TEB) pro větvení!');
+            if (showNewInstruction) showInstructionBar('💡 <b>Puberta:</b> Klikejte na červená kolečka (TEB) pro růst!');
         } else if (currentPhase === 2) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step active';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('💡 <b>Gravidita:</b> Klikáním na větve nechte vyrašit alveolární pupeny!');
+            if (showNewInstruction) showInstructionBar('💡 <b>Gravidita:</b> Klikáním na větve tvořte fialové alveoly!');
         } else if (currentPhase === 3) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step active';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('🍼 <b>Laktace:</b> Klikejte na alveoly a naplňujte kojeneckou láhev!');
+            if (showNewInstruction) showInstructionBar('🍼 <b>Laktace:</b> Klikejte na alveoly a plňte kojeneckou láhev!');
         } else if (currentPhase === 4) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step completed';
             phase4El.className = 'phase-step active';
-            if (showNewInstruction) showInstructionBar('🧹 <b>Involuce:</b> Klikejte na fialové alveoly a spusťte apoptózu i úklid!');
+            if (showNewInstruction) showInstructionBar('🧹 <b>Involuce:</b> Klikejte na alveoly pro úklid makrofágy!');
         }
     }
 
@@ -1889,17 +1943,17 @@
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         const rootX = canvas.width / 2;
-        const areolaY = canvas.height - Math.max(65, 110 * scaleFactor); 
-        const areolaR = Math.max(34, 58 * scaleFactor);
+        const areolaY = canvas.height - bottomNippleOffset; 
+        const areolaR = Math.max(28, 48 * scaleFactor);
 
         // Dvorec (Areola)
         ctx.beginPath();
         ctx.arc(rootX, areolaY, areolaR, 0, Math.PI, false);
         ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
         ctx.strokeStyle = 'rgba(236, 72, 153, 0.65)';
-        ctx.lineWidth = Math.max(2, 3.5 * scaleFactor);
+        ctx.lineWidth = Math.max(2, 3 * scaleFactor);
         ctx.shadowColor = '#ec4899';
-        ctx.shadowBlur = 12 * scaleFactor;
+        ctx.shadowBlur = 8 * scaleFactor;
         ctx.fill();
         ctx.stroke();
         ctx.shadowBlur = 0;
@@ -1912,34 +1966,34 @@
         ctx.stroke();
 
         // Bradavka
-        const nipW = Math.max(14, 22 * scaleFactor);
-        const nipH = Math.max(20, 32 * scaleFactor);
+        const nipW = Math.max(12, 18 * scaleFactor);
+        const nipH = Math.max(16, 26 * scaleFactor);
         ctx.beginPath();
         ctx.moveTo(rootX - nipW, areolaY + areolaR);
         ctx.bezierCurveTo(rootX - nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR);
         ctx.fillStyle = '#ec4899';
         ctx.shadowColor = '#ec4899';
-        ctx.shadowBlur = 10 * scaleFactor;
+        ctx.shadowBlur = 7 * scaleFactor;
         ctx.fill();
         ctx.strokeStyle = '#f472b6';
-        ctx.lineWidth = 2 * scaleFactor;
+        ctx.lineWidth = 1.6 * scaleFactor;
         ctx.stroke();
         ctx.shadowBlur = 0;
 
         ctx.beginPath();
-        ctx.arc(rootX, areolaY, Math.max(6, 9 * scaleFactor), 0, Math.PI * 2);
+        ctx.arc(rootX, areolaY, Math.max(5, 7.5 * scaleFactor), 0, Math.PI * 2);
         ctx.fillStyle = '#0284c7';
         ctx.fill();
 
         ctx.fillStyle = '#fbcfe8';
-        ctx.font = `bold ${Math.max(10, 13 * scaleFactor)}px "Segoe UI", sans-serif`;
+        ctx.font = `bold ${Math.max(9, 11 * scaleFactor)}px "Segoe UI", sans-serif`;
         ctx.textAlign = 'right';
-        ctx.fillText('DVOREC', rootX - (areolaR + 6 * scaleFactor), areolaY + (16 * scaleFactor));
+        ctx.fillText('DVOREC', rootX - (areolaR + 5 * scaleFactor), areolaY + (12 * scaleFactor));
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = `bold ${Math.max(10, 13 * scaleFactor)}px "Segoe UI", sans-serif`;
+        ctx.font = `bold ${Math.max(9, 11 * scaleFactor)}px "Segoe UI", sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText('BRADAVKA', rootX, areolaY + areolaR + (24 * scaleFactor));
+        ctx.fillText('BRADAVKA', rootX, areolaY + areolaR + (18 * scaleFactor));
 
         // Větve stromu
         for (let branch of branches) {
@@ -1957,7 +2011,7 @@
             ctx.lineWidth = branch.thickness;
             ctx.lineCap = 'round';
             ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
-            ctx.shadowBlur = 8 * scaleFactor;
+            ctx.shadowBlur = 6 * scaleFactor;
             ctx.stroke();
             ctx.shadowBlur = 0;
         }
@@ -1978,31 +2032,31 @@
                     ctx.arc(node.x, node.y, currentR, 0, Math.PI * 2);
                     ctx.fillStyle = '#3b0764';
                     ctx.strokeStyle = '#6b21a8';
-                    ctx.lineWidth = 1.8 * scaleFactor;
+                    ctx.lineWidth = 1.5 * scaleFactor;
                     ctx.shadowColor = 'rgba(88, 28, 135, 0.6)';
-                    ctx.shadowBlur = 8 * scaleFactor;
+                    ctx.shadowBlur = 6 * scaleFactor;
                     ctx.fill();
                     ctx.stroke();
                     ctx.shadowBlur = 0;
 
                     for (let bleb of node.blebs) {
-                        const blebPulse = Math.sin(time * bleb.speed + bleb.offset) * (2 * scaleFactor);
-                        const blebDist = currentR + (3 * scaleFactor) + blebPulse;
+                        const blebPulse = Math.sin(time * bleb.speed + bleb.offset) * (1.6 * scaleFactor);
+                        const blebDist = currentR + (2.2 * scaleFactor) + blebPulse;
                         const bx = node.x + Math.cos(bleb.angle) * blebDist;
                         const by = node.y + Math.sin(bleb.angle) * blebDist;
-                        const blebR = Math.max(2 * scaleFactor, currentR * bleb.sizeRatio + blebPulse * 0.4);
+                        const blebR = Math.max(1.6 * scaleFactor, currentR * bleb.sizeRatio + blebPulse * 0.4);
 
                         ctx.beginPath();
                         ctx.arc(bx, by, blebR, 0, Math.PI * 2);
                         ctx.fillStyle = '#581c87';
                         ctx.strokeStyle = '#7e22ce';
-                        ctx.lineWidth = 1.2 * scaleFactor;
+                        ctx.lineWidth = 1 * scaleFactor;
                         ctx.fill();
                         ctx.stroke();
                     }
                 } else {
                     if (node.alveolusRadius < node.maxAlveolusRadius) {
-                        node.alveolusRadius += 0.4 * scaleFactor;
+                        node.alveolusRadius += 0.35 * scaleFactor;
                     }
 
                     const scale = node.alveolusRadius / node.maxAlveolusRadius;
@@ -2019,9 +2073,9 @@
                         ctx.arc(bx, by, br, 0, Math.PI * 2);
                         ctx.fillStyle = 'rgba(168, 85, 247, 0.65)';
                         ctx.strokeStyle = '#c084fc';
-                        ctx.lineWidth = 1.4 * scaleFactor;
+                        ctx.lineWidth = 1.2 * scaleFactor;
                         ctx.shadowColor = 'rgba(168, 85, 247, 0.4)';
-                        ctx.shadowBlur = 6 * scaleFactor;
+                        ctx.shadowBlur = 5 * scaleFactor;
                         ctx.fill();
                         ctx.stroke();
 
@@ -2032,7 +2086,7 @@
                     }
 
                     ctx.beginPath();
-                    ctx.arc(0, 0, (5 * scaleFactor) * scale, 0, Math.PI * 2);
+                    ctx.arc(0, 0, (4 * scaleFactor) * scale, 0, Math.PI * 2);
                     ctx.fillStyle = '#c084fc';
                     ctx.fill();
 
@@ -2041,18 +2095,18 @@
             }
 
             if (node.isTip && currentPhase === 1) {
-                const pulseRadius = (10 * scaleFactor) + Math.sin(time * 4 + node.pulse) * (3 * scaleFactor);
+                const pulseRadius = (8 * scaleFactor) + Math.sin(time * 4 + node.pulse) * (2.2 * scaleFactor);
                 
                 ctx.beginPath();
                 ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
                 ctx.fillStyle = '#f43f5e';
                 ctx.shadowColor = '#f43f5e';
-                ctx.shadowBlur = 12 * scaleFactor;
+                ctx.shadowBlur = 9 * scaleFactor;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 4 * scaleFactor, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, 2.8 * scaleFactor, 0, Math.PI * 2);
                 ctx.fillStyle = '#ffffff';
                 ctx.fill();
             }
