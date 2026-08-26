@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mammary Gland Architect - Researchers' Night</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Architect of the Mammary Gland - Researchers' Night</title>
     <style>
         * {
             box-sizing: border-box;
@@ -11,32 +11,40 @@
             padding: 0;
             user-select: none;
             -webkit-user-select: none;
-            touch-action: none;
         }
 
         html, body {
             width: 100%;
             height: 100%;
+            height: 100dvh;
+            min-height: -webkit-fill-available;
             overflow: hidden;
             background-color: #080b10;
             color: #ecf2f8;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         #game-container {
             position: relative;
             width: 100vw;
-            height: 100vh;
+            height: 100%;
+            height: 100dvh;
+            min-height: -webkit-fill-available;
             background: radial-gradient(circle at center, #111827 0%, #080b10 100%);
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            padding-top: env(safe-area-inset-top);
         }
 
         header {
-            padding: 6px 14px;
-            background: rgba(15, 23, 42, 0.9);
+            padding: clamp(6px, 1vh, 18px) clamp(10px, 2vw, 32px);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(56, 189, 248, 0.2);
             display: flex;
@@ -44,33 +52,40 @@
             align-items: center;
             z-index: 10;
             flex-shrink: 0;
-            height: clamp(42px, 5vh, 52px);
+        }
+
+        .title-box {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
 
         .title-box h1 {
-            font-size: clamp(14px, 1.4vw, 19px);
+            font-size: clamp(14px, 2vw, 30px);
             font-weight: 800;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .title-box p {
-            font-size: clamp(10px, 1vw, 13px);
+            font-size: clamp(9px, 1vw, 15px);
             color: #94a3b8;
+            line-height: 1.2;
         }
 
         .phase-indicator {
             display: flex;
-            gap: 6px;
+            gap: clamp(4px, 0.8vw, 14px);
             align-items: center;
         }
 
         .phase-step {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: clamp(10px, 0.9vw, 13px);
+            padding: clamp(4px, 0.8vh, 10px) clamp(8px, 1.1vw, 18px);
+            border-radius: 999px;
+            font-size: clamp(9.5px, 0.95vw, 15px);
             font-weight: 600;
             background: #1e293b;
             color: #64748b;
@@ -80,23 +95,23 @@
         }
 
         .phase-step.active {
-            background: #2563eb;
-            color: #ffffff;
+            background: rgba(56, 189, 248, 0.2);
             border-color: #38bdf8;
-            box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
         }
 
         .phase-step.completed {
-            background: #166534;
-            color: #ffffff;
+            background: rgba(34, 197, 94, 0.15);
             border-color: #22c55e;
+            color: #4ade80;
         }
 
         #canvas-wrapper {
             position: relative;
             flex: 1;
             width: 100%;
-            height: calc(100% - 42px);
+            height: auto;
             overflow: hidden;
         }
 
@@ -112,7 +127,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 8px;
+            width: clamp(5px, 0.7vw, 12px);
             height: 100%;
             background: rgba(15, 23, 42, 0.6);
             border-right: 1px solid rgba(56, 189, 248, 0.2);
@@ -132,15 +147,15 @@
 
         #stats-overlay {
             position: absolute;
-            top: 8px;
-            left: 10px;
-            background: rgba(15, 23, 42, 0.85);
+            top: clamp(6px, 1.2vh, 18px);
+            left: clamp(6px, 1.2vw, 18px);
+            background: rgba(15, 23, 42, 0.88);
             border: 1px solid #334155;
-            border-radius: 8px;
-            padding: 4px 8px;
-            font-size: clamp(10px, 1vw, 13px);
+            border-radius: clamp(6px, 0.8vw, 12px);
+            padding: clamp(4px, 0.8vh, 10px) clamp(8px, 1.1vw, 18px);
+            font-size: clamp(10px, 1vw, 16px);
             display: flex;
-            gap: 10px;
+            gap: clamp(8px, 1.3vw, 20px);
             z-index: 10;
             backdrop-filter: blur(8px);
             pointer-events: none;
@@ -153,56 +168,54 @@
 
         .stat-label {
             color: #94a3b8;
-            font-size: clamp(8.5px, 0.8vw, 11px);
+            font-size: clamp(8px, 0.75vw, 12px);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: clamp(12px, 1.2vw, 16px);
+            font-size: clamp(12px, 1.3vw, 22px);
             font-weight: 800;
             color: #38bdf8;
         }
 
         #single-bottle-container {
             position: absolute;
-            bottom: 12px;
-            left: 10px;
+            bottom: calc(clamp(14px, 2vh, 32px) + env(safe-area-inset-bottom, 12px));
+            left: clamp(10px, 1.8vw, 26px);
             display: none;
             flex-direction: column;
             align-items: center;
             z-index: 20;
             pointer-events: none;
-            width: 70px;
-            transform: scale(0.85);
             transform-origin: bottom left;
         }
 
         .bottle-graphic {
             position: relative;
-            width: 65px;
-            height: 130px;
+            width: clamp(42px, 5.2vw, 80px);
+            height: clamp(84px, 10.4vw, 160px);
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .bottle-nipple {
-            width: 26px;
-            height: 26px;
+            width: 40%;
+            height: 20%;
             background: rgba(255, 255, 255, 0.7);
             border: 2px solid rgba(255, 255, 255, 0.9);
             border-radius: 50% 50% 20% 20% / 70% 70% 30% 30%;
             box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.8);
-            margin-bottom: -4px;
+            margin-bottom: -4%;
             z-index: 3;
         }
 
         .bottle-ring {
-            width: 56px;
-            height: 15px;
+            width: 85%;
+            height: 12%;
             background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
-            border-radius: 6px 6px 4px 4px;
+            border-radius: 5px 5px 3px 3px;
             border: 1px solid #94a3b8;
             box-shadow: 0 4px 8px rgba(0,0,0,0.4);
             z-index: 4;
@@ -210,15 +223,15 @@
 
         .bottle-body {
             position: relative;
-            width: 52px;
-            height: 85px;
+            width: 80%;
+            height: 68%;
             background: rgba(255, 255, 255, 0.08);
             border: 2px solid rgba(255, 255, 255, 0.4);
             border-top: none;
-            border-radius: 5px 5px 14px 14px;
+            border-radius: 4px 4px 12px 12px;
             backdrop-filter: blur(6px);
             overflow: hidden;
-            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.15), 0 6px 16px rgba(0,0,0,0.5);
             margin-top: -2px;
         }
 
@@ -227,11 +240,11 @@
             top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 12px;
-            height: 22px;
+            width: 25%;
+            height: 25%;
             background: rgba(45, 212, 191, 0.45);
             border: 1px solid rgba(45, 212, 191, 0.8);
-            border-radius: 0 0 6px 6px;
+            border-radius: 0 0 5px 5px;
             z-index: 2;
         }
 
@@ -249,10 +262,10 @@
 
         .bottle-ticks {
             position: absolute;
-            right: 4px;
-            top: 10px;
-            bottom: 10px;
-            width: 8px;
+            right: 3px;
+            top: 8px;
+            bottom: 8px;
+            width: 6px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -261,50 +274,49 @@
             opacity: 0.6;
         }
 
-        .tick { width: 5px; height: 1.5px; background: #cbd5e1; }
-        .tick.sub { width: 3px; opacity: 0.6; }
+        .tick { width: 4px; height: 1.5px; background: #cbd5e1; }
+        .tick.sub { width: 2.5px; opacity: 0.6; }
 
         .bottle-label {
             margin-top: 4px;
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid #38bdf8;
             padding: 2px 6px;
-            border-radius: 6px;
+            border-radius: 5px;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.5);
             width: 100%;
         }
 
         .bottle-label-title {
-            font-size: 8.5px;
+            font-size: clamp(8px, 0.75vw, 11px);
             font-weight: 700;
             color: #38bdf8;
             text-transform: uppercase;
         }
 
         .bottle-label-value {
-            font-size: 10px;
+            font-size: clamp(9px, 0.85vw, 13px);
             font-weight: 800;
             color: #ffffff;
-            margin-top: 1px;
         }
 
         #instruction-bar {
             position: absolute;
-            top: 10px;
+            top: clamp(6px, 1.5vh, 18px);
             left: 50%;
             transform: translateX(-50%) translateY(0);
             background: rgba(15, 23, 42, 0.92);
             border: 1px solid #38bdf8;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: clamp(11px, 1.1vw, 14px);
+            padding: clamp(5px, 0.8vh, 10px) clamp(10px, 1.5vw, 22px);
+            border-radius: 999px;
+            font-size: clamp(10px, 1vw, 15px);
             color: #f8fafc;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
             pointer-events: none;
             z-index: 20;
             text-align: center;
-            max-width: 85%;
+            max-width: 90%;
             backdrop-filter: blur(8px);
             opacity: 1;
             transition: opacity 0.8s ease, transform 0.8s ease;
@@ -317,10 +329,10 @@
 
         #control-panel {
             position: absolute;
-            bottom: 12px;
-            right: 12px;
+            bottom: calc(clamp(14px, 2vh, 32px) + env(safe-area-inset-bottom, 12px));
+            right: clamp(10px, 1.8vw, 26px);
             display: flex;
-            gap: 8px;
+            gap: clamp(6px, 0.8vw, 12px);
             z-index: 10;
         }
 
@@ -328,12 +340,12 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: none;
-            padding: clamp(8px, 1.2vw, 12px) clamp(12px, 2vw, 20px);
-            font-size: clamp(12px, 1.1vw, 15px);
+            padding: clamp(8px, 1.1vh, 13px) clamp(12px, 1.4vw, 22px);
+            font-size: clamp(11.5px, 1.1vw, 15px);
             font-weight: 700;
-            border-radius: 8px;
+            border-radius: clamp(6px, 0.7vw, 10px);
             cursor: pointer;
-            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+            box-shadow: 0 4px 16px rgba(34, 197, 94, 0.4);
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
@@ -358,6 +370,35 @@
             color: #ffffff;
         }
 
+        #legend {
+            position: absolute;
+            top: clamp(6px, 1.2vh, 16px);
+            right: clamp(6px, 1.2vw, 16px);
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid #334155;
+            padding: clamp(5px, 0.8vh, 10px) clamp(8px, 1vw, 14px);
+            border-radius: clamp(5px, 0.6vw, 8px);
+            font-size: clamp(9.5px, 0.9vw, 13px);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(3px, 0.5vh, 5px);
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-dot {
+            width: clamp(7px, 0.7vw, 11px);
+            height: clamp(7px, 0.7vw, 11px);
+            border-radius: 50%;
+        }
+
         #modal {
             position: absolute;
             top: 0;
@@ -370,11 +411,12 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: clamp(10px, 2vw, 20px);
+            padding: clamp(8px, 2vw, 24px);
             z-index: 100;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s ease;
+            touch-action: pan-y;
         }
 
         #modal.active {
@@ -385,20 +427,23 @@
         .modal-card {
             background: #0f172a;
             border: 1px solid #38bdf8;
-            border-radius: 16px;
-            padding: clamp(14px, 2.5vw, 26px);
-            max-width: min(820px, 94vw);
+            border-radius: clamp(12px, 1.5vw, 18px);
+            padding: clamp(14px, 2vw, 26px);
+            max-width: min(850px, 94vw);
             width: 96%;
-            max-height: 90vh;
+            max-height: 85vh;
+            max-height: 85dvh;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.2);
             display: flex;
             flex-direction: column;
-            gap: clamp(8px, 1.4vh, 14px);
+            gap: clamp(8px, 1.3vh, 14px);
         }
 
         .modal-card h2 {
-            font-size: clamp(18px, 2vw, 24px);
+            font-size: clamp(17px, 2vw, 26px);
             color: #38bdf8;
         }
 
@@ -406,16 +451,16 @@
             align-self: flex-start;
             background: linear-gradient(90deg, #2563eb, #38bdf8);
             color: white;
-            padding: clamp(3px, 0.6vw, 6px) clamp(8px, 1.2vw, 12px);
-            border-radius: 12px;
+            padding: clamp(3px, 0.5vh, 5px) clamp(8px, 1vw, 12px);
+            border-radius: 999px;
             font-weight: 700;
-            font-size: clamp(10px, 0.9vw, 12px);
+            font-size: clamp(9.5px, 0.85vw, 12px);
         }
 
         .summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: clamp(6px, 1vw, 12px);
+            gap: clamp(6px, 1vw, 10px);
             margin-top: 2px;
         }
 
@@ -423,21 +468,21 @@
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 8px;
-            padding: clamp(6px, 1vw, 12px) clamp(10px, 1.5vw, 16px);
+            padding: clamp(6px, 1vh, 10px) clamp(10px, 1.2vw, 16px);
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
 
         .summary-card-title {
-            font-size: clamp(8.5px, 0.8vw, 11px);
+            font-size: clamp(8px, 0.75vw, 10.5px);
             color: #94a3b8;
             text-transform: uppercase;
             font-weight: 700;
         }
 
         .summary-card-val {
-            font-size: clamp(15px, 1.8vw, 22px);
+            font-size: clamp(15px, 1.7vw, 24px);
             font-weight: 800;
             color: #38bdf8;
         }
@@ -446,8 +491,12 @@
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 8px;
-            padding: clamp(8px, 1.2vw, 14px);
+            padding: clamp(8px, 1vh, 12px);
             margin-top: 2px;
+            max-height: 200px;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .leaderboard-header {
@@ -458,7 +507,7 @@
         }
 
         .leaderboard-title {
-            font-size: clamp(11px, 1.1vw, 14px);
+            font-size: clamp(10.5px, 1vw, 14px);
             font-weight: 700;
             color: #facc15;
             text-transform: uppercase;
@@ -468,19 +517,19 @@
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: clamp(10.5px, 1vw, 13px);
+            font-size: clamp(9.5px, 0.95vw, 13px);
         }
 
         .leaderboard-table th {
             text-align: left;
-            padding: clamp(3px, 0.6vw, 6px) clamp(4px, 0.8vw, 8px);
+            padding: clamp(3px, 0.5vh, 5px) clamp(4px, 0.6vw, 6px);
             color: #94a3b8;
             border-bottom: 1px solid #334155;
             font-weight: 600;
         }
 
         .leaderboard-table td {
-            padding: clamp(3px, 0.6vw, 6px) clamp(4px, 0.8vw, 8px);
+            padding: clamp(3px, 0.5vh, 5px) clamp(4px, 0.6vw, 6px);
             border-bottom: 1px solid rgba(51, 65, 85, 0.4);
             color: #f8fafc;
         }
@@ -496,11 +545,11 @@
 
         .info-box, .task-box, .time-box {
             background: #1e293b;
-            padding: clamp(8px, 1.4vw, 14px) clamp(10px, 1.8vw, 18px);
+            padding: clamp(8px, 1.2vh, 12px) clamp(10px, 1.3vw, 16px);
             border-radius: 8px;
-            font-size: clamp(12px, 1.2vw, 15px);
+            font-size: clamp(11px, 1.05vw, 14.5px);
             color: #cbd5e1;
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
         .info-box { border-left: 4px solid #a855f7; }
@@ -509,38 +558,9 @@
 
         .info-box b, .task-box b, .time-box b { 
             color: #f8fafc; 
-            font-size: clamp(13px, 1.3vw, 16px); 
+            font-size: clamp(12px, 1.15vw, 16px); 
             display: block; 
-            margin-bottom: 4px; 
-        }
-
-        #legend {
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            background: rgba(15, 23, 42, 0.85);
-            border: 1px solid #334155;
-            padding: 6px 10px;
-            border-radius: 6px;
-            font-size: clamp(10px, 0.9vw, 12px);
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-            backdrop-filter: blur(8px);
-            pointer-events: none;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .legend-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
+            margin-bottom: 3px; 
         }
 
         #intro-screen {
@@ -549,7 +569,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(8, 11, 16, 0.95);
+            background: rgba(8, 11, 16, 0.96);
             backdrop-filter: blur(14px);
             display: flex;
             align-items: center;
@@ -557,6 +577,8 @@
             z-index: 150;
             opacity: 1;
             transition: opacity 0.5s ease;
+            touch-action: pan-y;
+            padding: clamp(6px, 1.5vh, 16px);
         }
 
         #intro-screen.hidden {
@@ -566,25 +588,27 @@
 
         .intro-card {
             position: relative;
-            width: 1050px;
-            max-width: 94vw;
-            height: 620px;
-            max-height: 92vh;
+            width: min(980px, 96vw);
+            max-height: 90vh;
+            max-height: 90dvh;
             background: radial-gradient(circle at 60% 50%, #111827 0%, #080b10 100%);
             border: 2px solid rgba(56, 189, 248, 0.3);
             border-radius: 16px;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
             display: flex;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            touch-action: pan-y;
         }
 
         .intro-left-content {
-            width: 48%;
-            padding: clamp(16px, 2.5vw, 28px);
+            width: 52%;
+            padding: clamp(12px, 2vw, 26px);
             display: flex;
             flex-direction: column;
             justify-content: center;
             z-index: 5;
+            flex-shrink: 0;
         }
 
         .intro-badge-tag {
@@ -594,7 +618,7 @@
             color: #38bdf8;
             padding: 3px 8px;
             border-radius: 12px;
-            font-size: clamp(9.5px, 0.9vw, 11px);
+            font-size: clamp(8.5px, 0.8vw, 11px);
             font-weight: 700;
             letter-spacing: 0.5px;
             margin-bottom: 6px;
@@ -602,7 +626,7 @@
         }
 
         .intro-left-content h1 {
-            font-size: clamp(24px, 2.8vw, 34px);
+            font-size: clamp(19px, 2.4vw, 34px);
             font-weight: 900;
             line-height: 1.1;
             text-transform: uppercase;
@@ -613,15 +637,15 @@
         }
 
         .intro-subtitle {
-            font-size: clamp(15px, 1.6vw, 19px);
+            font-size: clamp(12.5px, 1.4vw, 17px);
             color: #cbd5e1;
             font-weight: 600;
             margin-bottom: 6px;
         }
 
         .intro-description {
-            font-size: clamp(12px, 1.2vw, 15px);
-            line-height: 1.45;
+            font-size: clamp(10.5px, 1.05vw, 13.5px);
+            line-height: 1.4;
             color: #94a3b8;
             margin-bottom: 12px;
         }
@@ -634,7 +658,7 @@
         }
 
         .nickname-box label {
-            font-size: clamp(9.5px, 0.9vw, 12px);
+            font-size: clamp(8.5px, 0.8vw, 11.5px);
             color: #cbd5e1;
             font-weight: 700;
             text-transform: uppercase;
@@ -644,8 +668,8 @@
             background: #1e293b;
             border: 2px solid #334155;
             border-radius: 6px;
-            padding: clamp(7px, 1vw, 10px) clamp(10px, 1.2vw, 14px);
-            font-size: clamp(13px, 1.2vw, 15px);
+            padding: clamp(6px, 0.9vh, 9px) clamp(8px, 1vw, 12px);
+            font-size: clamp(11.5px, 1.1vw, 14.5px);
             color: #ffffff;
             font-weight: 600;
             outline: none;
@@ -662,8 +686,8 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: clamp(10px, 1.4vw, 14px) clamp(18px, 2.5vw, 26px);
-            font-size: clamp(13px, 1.2vw, 16px);
+            padding: clamp(8px, 1.1vh, 12px) clamp(16px, 1.8vw, 24px);
+            font-size: clamp(11.5px, 1.1vw, 15px);
             font-weight: 800;
             border-radius: 8px;
             cursor: pointer;
@@ -677,22 +701,28 @@
         .intro-right-graphic {
             position: relative;
             flex: 1;
-            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            min-height: 240px;
         }
 
         .intro-right-graphic svg {
             width: 100%;
-            height: 100%;
+            height: auto;
+            max-height: 75vh;
+            display: block;
         }
 
         .anatomy-label {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 700;
             fill: #cbd5e1;
         }
 
         .anatomy-sublabel {
-            font-size: 10px;
+            font-size: 11px;
             fill: #94a3b8;
         }
 
@@ -702,40 +732,59 @@
             opacity: 0.8;
         }
 
-        /* --- MOBILNÍ SPECIFICKÁ OPTIMALIZACE --- */
+        /* Responsive layout */
         @media (max-width: 768px) {
             header { 
-                padding: 2px 8px; 
-                height: 36px;
+                padding: 6px 10px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 2px;
             }
-            .title-box h1 { font-size: 12.5px; }
-            .title-box p { display: none; }
             .phase-indicator { display: none; }
+            .title-box h1 { font-size: 13.5px; }
+            .title-box p { font-size: 9.5px; }
 
-            .intro-card { flex-direction: column; height: auto; max-height: 94vh; }
-            .intro-left-content { width: 100%; padding: 14px; }
-            .intro-right-graphic { display: none; }
+            .intro-card { 
+                flex-direction: column; 
+                height: auto; 
+                max-height: 88dvh;
+            }
+            .intro-left-content { 
+                width: 100%; 
+                padding: 12px 14px; 
+            }
+            .intro-right-graphic { 
+                display: flex !important;
+                width: 100%;
+                min-height: 190px;
+                max-height: 240px;
+                padding: 4px 10px 16px;
+            }
+            .intro-right-graphic svg {
+                max-height: 220px;
+            }
 
-            #legend { display: none; }
-            #instruction-bar { display: none; }
+            #legend {
+                top: 6px;
+                right: 6px;
+                padding: 4px 8px;
+                font-size: 8.5px;
+                gap: 3px;
+            }
+            .legend-dot { width: 6.5px; height: 6.5px; }
+
+            #instruction-bar {
+                font-size: 10px;
+                padding: 4px 8px;
+                top: 6px;
+            }
 
             #stats-overlay {
-                top: 4px;
+                top: 6px;
                 left: 6px;
-                padding: 3px 6px;
-                font-size: 9px;
-                gap: 6px;
+                padding: 4px 8px;
+                gap: 8px;
             }
-            .stat-value { font-size: 11px; }
-
-            #single-bottle-container { 
-                transform: scale(0.75); 
-                transform-origin: bottom left;
-                bottom: 6px; 
-                left: 6px; 
-            }
-            #control-panel { bottom: 8px; right: 8px; }
-            .btn { padding: 6px 10px; font-size: 11px; }
         }
     </style>
 </head>
@@ -744,14 +793,14 @@
 <div id="game-container">
     <header>
         <div class="title-box">
-            <h1>Mammary Gland Architect</h1>
+            <h1>Architect of the Mammary Gland</h1>
             <p>Interactive simulation for Researchers' Night - Institute of Molecular Genetics of the Czech Academy of Sciences, Laboratory of Tissue Morphogenesis and Cancer</p>
         </div>
         <div class="phase-indicator">
             <div id="phase-1" class="phase-step">1. Puberty</div>
-            <div id="phase-2" class="phase-step">2. Pregnancy</div>
-            <div id="phase-3" class="phase-step">3. Lactation</div>
-            <div id="phase-4" class="phase-step">4. Involution</div>
+            <div id="phase-2" class="phase-step">2. Pregnancy (Gravidity)</div>
+            <div id="phase-3" class="phase-step">3. Breastfeeding (Lactation)</div>
+            <div id="phase-4" class="phase-step">4. Return to Resting State (Involution)</div>
         </div>
     </header>
 
@@ -800,13 +849,13 @@
             </div>
         </div>
 
-        <div id="instruction-bar">💡 Welcome! Click the button below to start.</div>
+        <div id="instruction-bar">💡 Welcome to the simulation! Click the button below to start.</div>
         
         <div id="legend">
-            <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Ducts</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Buds (TEBs)</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Alveoli</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #eab308;"></div> Macrophages</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Milk Ducts (Ductal Network)</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Terminal End Buds (TEBs)</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Milk Sacs (Alveoli)</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #ffffff; border: 1px solid #cbd5e1; box-shadow: 0 0 4px rgba(255,255,255,0.8);"></div> Immune System Cells (Macrophages)</div>
         </div>
 
         <canvas id="gameCanvas"></canvas>
@@ -820,10 +869,10 @@
             <div class="intro-card">
                 <div class="intro-left-content">
                     <div class="intro-badge-tag">🔬 Researchers' Night • Interactive Biology</div>
-                    <h1>Mammary Gland<br>Architect</h1>
+                    <h1>Architect<br>of the Mammary Gland</h1>
                     <div class="intro-subtitle">Welcome to the game!</div>
                     <p class="intro-description">
-                        Explore the fascinating architecture and life cycle of the mammary gland. Experience ductal branching in puberty, alveoli formation during pregnancy, milk production during lactation, and tissue remodeling in involution.
+                        Explore the architecture of the mammary gland life cycle. Experience branching in puberty, alveoli formation during pregnancy, milk production in lactation, and tissue clearance during involution.
                     </p>
                     
                     <div class="nickname-box">
@@ -840,31 +889,29 @@
                     <svg viewBox="0 0 650 675" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <defs>
                             <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feGaussianBlur stdDeviation="3" result="blur" />
                                 <feComposite in="SourceGraphic" in2="blur" operator="over" />
                             </filter>
                             <filter id="glow-pink" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="8" result="blur" />
-                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                                <feGaussianBlur stdDeviation="6" result="blur" />
                             </filter>
-                            <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="5" result="blur" />
-                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            <filter id="blur-stroma-orig" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="11" />
                             </filter>
-                            <filter id="blur-stroma" x="-20%" y="-20%" width="140%" height="140%">
-                                <feGaussianBlur stdDeviation="12" />
-                            </filter>
-                            <linearGradient id="fatLinearGrad" x1="100%" y1="50%" x2="0%" y2="50%">
+                            <linearGradient id="fatPadOrigGrad" x1="100%" y1="50%" x2="0%" y2="50%">
                                 <stop offset="0%" stop-color="rgba(15, 23, 42, 0.2)"/>
                                 <stop offset="25%" stop-color="rgba(245, 158, 11, 0.12)"/>
                                 <stop offset="65%" stop-color="rgba(234, 179, 8, 0.28)"/>
                                 <stop offset="100%" stop-color="rgba(15, 23, 42, 0.85)"/>
                             </linearGradient>
-                            <linearGradient id="stromaLobularGrad" x1="100%" y1="50%" x2="0%" y2="50%">
-                                <stop offset="0%" stop-color="rgba(249, 115, 22, 0.45)"/>
-                                <stop offset="70%" stop-color="rgba(234, 88, 12, 0.25)"/>
+                            <linearGradient id="stromaOrigGrad" x1="100%" y1="50%" x2="0%" y2="50%">
+                                <stop offset="0%" stop-color="rgba(249, 115, 22, 0.5)"/>
+                                <stop offset="70%" stop-color="rgba(234, 88, 12, 0.3)"/>
                                 <stop offset="100%" stop-color="rgba(234, 88, 12, 0.05)"/>
                             </linearGradient>
+                            <filter id="labelShadowClean" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.95"/>
+                            </filter>
                         </defs>
 
                         <path d="M 60 40 L 60 635" stroke="#334155" stroke-width="28" stroke-linecap="round"/>
@@ -877,9 +924,9 @@
                         <ellipse cx="60" cy="550" rx="9" ry="24" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
 
                         <path d="M 90 80 C 260 90, 460 220, 520 337.5 C 460 455, 260 585, 90 595 Z" 
-                              fill="url(#fatLinearGrad)" stroke="rgba(234, 179, 8, 0.3)" stroke-width="2"/>
+                              fill="url(#fatPadOrigGrad)" stroke="rgba(234, 179, 8, 0.35)" stroke-width="2"/>
 
-                        <g fill="url(#stromaLobularGrad)" filter="url(#blur-stroma)">
+                        <g fill="url(#stromaOrigGrad)" filter="url(#blur-stroma-orig)">
                             <path d="M 520 337.5 C 480 300, 410 240, 360 200 C 330 170, 270 160, 220 170 C 170 180, 160 220, 190 250 C 220 280, 260 280, 290 260 C 340 270, 420 310, 490 335 Z" />
                             <path d="M 520 337.5 C 460 325, 380 320, 310 315 C 250 310, 210 310, 150 325 C 130 345, 140 385, 180 400 C 230 410, 270 380, 310 370 C 380 365, 450 350, 520 337.5 Z" />
                             <path d="M 520 337.5 C 490 365, 430 400, 360 450 C 320 480, 260 500, 190 490 C 160 470, 170 425, 210 395 C 250 385, 280 405, 320 415 C 380 390, 460 360, 520 337.5 Z" />
@@ -903,66 +950,46 @@
                             <path d="M 310 440 Q 265 415, 215 410" stroke-width="3"/>
                         </g>
 
-                        <g filter="url(#glow-purple)" fill="rgba(168, 85, 247, 0.7)" stroke="#c084fc" stroke-width="1.5">
-                            <g transform="translate(215, 190)">
-                                <circle cx="-10" cy="-6" r="10"/><circle cx="8" cy="-8" r="9"/>
-                                <circle cx="-8" cy="10" r="8"/><circle cx="10" cy="8" r="11"/>
-                                <circle cx="0" cy="0" r="7" fill="#e9d5ff" stroke="#d8b4fe"/>
-                            </g>
-                            <g transform="translate(235, 265)">
-                                <circle cx="-9" cy="-7" r="9"/><circle cx="7" cy="-9" r="8"/>
-                                <circle cx="-6" cy="9" r="10"/><circle cx="9" cy="7" r="9"/>
-                                <circle cx="0" cy="0" r="6" fill="#e9d5ff" stroke="#d8b4fe"/>
-                            </g>
-                            <g transform="translate(180, 335)">
-                                <circle cx="-10" cy="-6" r="10"/><circle cx="8" cy="-8" r="9"/>
-                                <circle cx="-8" cy="10" r="9"/><circle cx="10" cy="8" r="10"/>
-                                <circle cx="0" cy="0" r="7" fill="#e9d5ff" stroke="#d8b4fe"/>
-                            </g>
-                            <g transform="translate(170, 395)">
-                                <circle cx="-8" cy="-7" r="8"/><circle cx="8" cy="-6" r="10"/>
-                                <circle cx="-7" cy="8" r="9"/><circle cx="9" cy="8" r="8"/>
-                                <circle cx="0" cy="0" r="6" fill="#e9d5ff" stroke="#d8b4fe"/>
-                            </g>
-                            <g transform="translate(205, 475)">
-                                <circle cx="-11" cy="-7" r="10"/><circle cx="9" cy="-7" r="9"/>
-                                <circle cx="-7" cy="11" r="9"/><circle cx="11" cy="9" r="11"/>
-                                <circle cx="0" cy="0" r="7" fill="#e9d5ff" stroke="#d8b4fe"/>
-                            </g>
-                            <g transform="translate(215, 410)">
-                                <circle cx="-9" cy="-7" r="9"/><circle cx="7" cy="-8" r="8"/>
-                                <circle cx="-6" cy="8" r="9"/><circle cx="9" cy="7" r="10"/>
-                                <circle cx="0" cy="0" r="6" fill="#e9d5ff" stroke="#d8b4fe"/>
-                            </g>
+                        <g fill="rgba(168, 85, 247, 0.85)" stroke="#d8b4fe" stroke-width="1.8">
+                            <g transform="translate(215, 190)"><circle cx="-10" cy="-6" r="10"/><circle cx="8" cy="-8" r="9"/><circle cx="-8" cy="10" r="8"/><circle cx="10" cy="8" r="11"/><circle cx="0" cy="0" r="7" fill="#f3e8ff" stroke="#c084fc"/></g>
+                            <g transform="translate(235, 265)"><circle cx="-9" cy="-7" r="9"/><circle cx="7" cy="-9" r="8"/><circle cx="-6" cy="9" r="10"/><circle cx="9" cy="7" r="9"/><circle cx="0" cy="0" r="6" fill="#f3e8ff" stroke="#c084fc"/></g>
+                            <g transform="translate(180, 335)"><circle cx="-10" cy="-6" r="10"/><circle cx="8" cy="-8" r="9"/><circle cx="-8" cy="10" r="9"/><circle cx="10" cy="8" r="10"/><circle cx="0" cy="0" r="7" fill="#f3e8ff" stroke="#c084fc"/></g>
+                            <g transform="translate(170, 395)"><circle cx="-8" cy="-7" r="8"/><circle cx="8" cy="-6" r="10"/><circle cx="-7" cy="8" r="9"/><circle cx="9" cy="8" r="8"/><circle cx="0" cy="0" r="6" fill="#f3e8ff" stroke="#c084fc"/></g>
+                            <g transform="translate(205, 475)"><circle cx="-11" cy="-7" r="10"/><circle cx="9" cy="-7" r="9"/><circle cx="-7" cy="11" r="9"/><circle cx="11" cy="9" r="11"/><circle cx="0" cy="0" r="7" fill="#f3e8ff" stroke="#c084fc"/></g>
+                            <g transform="translate(215, 410)"><circle cx="-9" cy="-7" r="9"/><circle cx="7" cy="-8" r="8"/><circle cx="-6" cy="8" r="9"/><circle cx="9" cy="7" r="10"/><circle cx="0" cy="0" r="6" fill="#f3e8ff" stroke="#c084fc"/></g>
                         </g>
 
-                        <text x="50" y="20" class="anatomy-label">Ribs & Muscle</text>
-                        <path d="M 60 20 L 80 110" class="pointer-line" stroke="#64748b"/>
-                        <circle cx="85" cy="110" r="3.5" fill="#64748b"/>
+                        <g filter="url(#labelShadowClean)">
+                            <text x="35" y="28" class="anatomy-label" fill="#f8fafc">Ribs and Muscles</text>
+                            <path d="M 60 36 L 80 110" class="pointer-line" stroke="#94a3b8"/>
+                            <circle cx="85" cy="110" r="4.5" fill="#cbd5e1"/>
 
-                        <text x="230" y="65" class="anatomy-label" fill="#facc15">Adipose Tissue</text>
-                        <text x="230" y="81" class="anatomy-sublabel">(Fat pad)</text>
-                        <path d="M 280 90 L 280 140 L 250 155" stroke="#facc15" stroke-width="1" stroke-dasharray="4, 3" fill="none" opacity="0.95"/>
-                        <circle cx="250" cy="155" r="5" fill="#facc15" stroke="#080b10" stroke-width="1.5"/>
+                            <text x="210" y="55" class="anatomy-label" fill="#facc15">Adipose Tissue</text>
+                            <text x="210" y="74" class="anatomy-sublabel" fill="#fef08a">(Adipocytes)</text>
+                            <path d="M 260 82 L 260 135 L 245 155" stroke="#facc15" stroke-width="2.2" stroke-dasharray="4, 3" fill="none"/>
+                            <circle cx="245" cy="155" r="5" fill="#facc15" stroke="#080b10" stroke-width="1.5"/>
 
-                        <text x="100" y="140" class="anatomy-label" fill="#c084fc">Milk Lobules</text>
-                        <text x="100" y="156" class="anatomy-sublabel">(Alveoli)</text>
-                        <path d="M 135 165 L 160 230 L 235 265" class="pointer-line" stroke="#c084fc"/>
-                        <circle cx="235" cy="265" r="3.5" fill="#c084fc"/>
+                            <text x="75" y="145" class="anatomy-label" fill="#e9d5ff">Milk Sacs</text>
+                            <text x="75" y="164" class="anatomy-sublabel" fill="#d8b4fe">(Alveoli)</text>
+                            <path d="M 130 172 L 155 230 L 235 265" class="pointer-line" stroke="#c084fc"/>
+                            <circle cx="235" cy="265" r="4.5" fill="#c084fc"/>
 
-                        <text x="375" y="150" class="anatomy-label" fill="#f97316">Supporting Tissue</text>
-                        <text x="375" y="166" class="anatomy-sublabel">(Stroma)</text>
-                        <path d="M 390 175 L 345 205" class="pointer-line" stroke="#f97316"/>
-                        <circle cx="345" cy="205" r="3.5" fill="#f97316"/>
+                            <text x="365" y="145" class="anatomy-label" fill="#fdba74">Supporting Tissue</text>
+                            <text x="365" y="164" class="anatomy-sublabel" fill="#fb923c">(Stroma)</text>
+                            <path d="M 380 172 L 345 205" class="pointer-line" stroke="#f97316"/>
+                            <circle cx="345" cy="205" r="4.5" fill="#f97316"/>
 
-                        <text x="300" y="280" class="anatomy-label" fill="#38bdf8">Mammary Ducts</text>
-                        <text x="300" y="296" class="anatomy-sublabel">(Ductal Network)</text>
-                        <path d="M 330 300 L 340 345" class="pointer-line" stroke="#38bdf8"/>
-                        <circle cx="340" cy="345" r="3.5" fill="#38bdf8"/>
+                            <text x="290" y="275" class="anatomy-label" fill="#7dd3fc">Milk Ducts</text>
+                            <text x="290" y="294" class="anatomy-sublabel" fill="#38bdf8">(Ductal Network)</text>
+                            <path d="M 320 300 L 340 345" class="pointer-line" stroke="#38bdf8"/>
+                            <circle cx="340" cy="345" r="4.5" fill="#38bdf8"/>
 
-                        <text x="470" y="440" class="anatomy-label" fill="#f472b6">Areola & Nipple</text>
-                        <path d="M 515 425 L 495 380" class="pointer-line" stroke="#f472b6"/>
-                        <circle cx="495" cy="380" r="3.5" fill="#f472b6"/>
+                            <text x="440" y="445" class="anatomy-label" fill="#f472b6">Areola & Nipple</text>
+                            <path d="M 480 428 L 500 380" class="pointer-line" stroke="#f472b6"/>
+                            <path d="M 520 428 L 525 350" class="pointer-line" stroke="#f472b6"/>
+                            <circle cx="500" cy="380" r="4.5" fill="#f472b6"/>
+                            <circle cx="525" cy="350" r="4.5" fill="#f472b6"/>
+                        </g>
                     </svg>
                 </div>
             </div>
@@ -971,32 +998,32 @@
         <div id="modal">
             <div class="modal-card">
                 <div id="modal-badge" class="badge">PHASE</div>
-                <h2 id="modal-title">1. Phase: Puberty</h2>
+                <h2 id="modal-title">Phase 1: Puberty</h2>
 
                 <div id="modal-summary-box" style="display: none;">
-                    <p style="color: #cbd5e1; font-size: clamp(12px, 1.2vw, 15px); margin-bottom: 6px;">You have successfully completed the full cycle! Here is your summary:</p>
+                    <p style="color: #cbd5e1; font-size: clamp(11.5px, 1.1vw, 15px); margin-bottom: 6px;">You have successfully completed the entire cycle! Here is a summary of your results:</p>
                     <div class="summary-grid">
                         <div class="summary-card">
                             <span class="summary-card-title">Player</span>
                             <span id="summary-player" class="summary-card-val" style="color: #facc15;">Guest</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Milk Produced</span>
+                            <span class="summary-card-title">Total Milk Produced</span>
                             <span id="summary-milk" class="summary-card-val" style="color: #22c55e;">0 ml</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Branches Grown</span>
+                            <span class="summary-card-title">Number of Branches</span>
                             <span id="summary-branches" class="summary-card-val">0</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Alveoli Formed</span>
+                            <span class="summary-card-title">Number of Alveoli</span>
                             <span id="summary-alveoli" class="summary-card-val">0</span>
                         </div>
                     </div>
 
                     <div class="leaderboard-box">
                         <div class="leaderboard-header">
-                            <span class="leaderboard-title">🏆 GLOBAL TOP 10 LEADERBOARD (ONLINE)</span>
+                            <span class="leaderboard-title">🏆 SHARED TOP 10 LEADERBOARD (ONLINE)</span>
                         </div>
                         <table class="leaderboard-table">
                             <thead>
@@ -1015,21 +1042,21 @@
                 </div>
 
                 <div id="modal-bio-box" class="info-box" style="display: none;">
-                    <b>🔬 Biological Background:</b>
+                    <b>🔬 What happens in the body:</b>
                     <p id="modal-bio"></p>
                 </div>
 
                 <div id="modal-task-box" class="task-box" style="display: none;">
-                    <b>🎮 Your Mission:</b>
+                    <b>🎮 Your task in the game:</b>
                     <p id="modal-task"></p>
                 </div>
 
                 <div id="modal-time-box" class="time-box" style="display: none;">
-                    <b>⏱️ Time Limit:</b>
+                    <b>⏱️ Time limit:</b>
                     <p id="modal-time"></p>
                 </div>
 
-                <button id="modal-btn" class="btn" style="margin-top: 6px; align-self: flex-end;">Continue ➔</button>
+                <button id="modal-btn" class="btn" style="margin-top: 6px; align-self: flex-end;">Proceed to task ➔</button>
             </div>
         </div>
     </div>
@@ -1055,7 +1082,7 @@
 
     window.saveAndLoadCloudLeaderboard = async function(entry) {
         const leaderboardBody = document.getElementById('leaderboard-body');
-        leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#38bdf8; padding:6px;">Syncing with cloud...</td></tr>';
+        leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#38bdf8; padding:6px;">Saving and fetching from cloud...</td></tr>';
 
         try {
             if (entry) {
@@ -1101,14 +1128,14 @@
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="color: #475569;">${medal}</td>
-                    <td style="color: #475569; font-style: italic;">— open slot —</td>
+                    <td style="color: #475569; font-style: italic;">— open —</td>
                     <td style="color: #475569;">—</td>
                     <td style="color: #475569;">—</td>
                 `;
                 leaderboardBody.appendChild(tr);
             }
         } catch (error) {
-            console.error("Firebase error:", error);
+            console.error("Firebase Error:", error);
             leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#f87171; padding:6px;">Unable to load online leaderboard.</td></tr>';
         }
     };
@@ -1183,46 +1210,48 @@
     let particles = [];
     let milkDroplets = [];
     let macrophages = [];
-
     let nodes = [];
     let branches = [];
+
+    let scaleFactor = 1;
+    let bottomNippleOffset = 80;
 
     const phaseData = {
         1: {
             badge: "PHASE 1 of 4",
-            title: "1. Phase: Puberty",
+            title: "Phase 1: Puberty",
             bio: "During adolescence (puberty), the previously dormant and very simple foundation of the milk ducts (ductal network) becomes active. These begin to grow actively, and their main characteristic is gradual branching (branching morphogenesis). This growth is controlled by so-called terminal buds (or TEBs) – specialised bulbous structures at the ends of the ducts. As the ducts lengthen, these buds divide into two further buds (primary branching or bifurcation) and, gradually, lateral branches also grow from them (secondary lateral branching). The originally simple ducts thus grow into the surrounding supporting tissue (stroma / mesenchyme), lengthen and divide into ever smaller branches, thereby forming a dense network. Girls usually reach sexual maturity between the ages of 11 and 14, but the network of milk ducts continues to develop within the breast until the ages of 18 to 24.",
-            task: "Click on the red glowing Terminal End Buds (TEBs) to branch and grow the epithelial tree!",
+            task: "Click on the red glowing circles (TEBs) to branch and expand the epithelial ductal tree!",
             timeLimit: "15 seconds",
             duration: 15
         },
         2: {
             badge: "PHASE 2 of 4",
-            title: "2. Phase: Pregnancy",
+            title: "Phase 2: Pregnancy (Gravidity)",
             bio: "While the basic network of milk ducts is formed during adolescence (puberty), pregnancy triggers the final architectural remodelling of the mammary gland. Under the influence of pregnancy hormones (oestrogen, progesterone and prolactin), the network of milk ducts (epithelial network) branches out extensively, and specialised milk sacs resembling bunches of grapes (alveoli) mature, enabling future milk production. This process of sac development is called alveologenesis. These newly formed sacs gradually displace the fatty tissue (adipocytes) and differentiate into two key cell types: the inner cells that produce milk (secretory luminal cells) and the outer contractile cells that expel milk (contractile myoepithelial cells). Although the gland is fully prepared for production, high levels of the hormone progesterone currently suppress milk production and secretion (lactation) and keep the system in a standby mode.",
-            task: "Click on the branches to sprout purple alveolar clusters (alveoli)!",
+            task: "Click along the branches to grow purple milk sacs (alveoli)!",
             timeLimit: "30 seconds",
             duration: 30
         },
         3: {
             badge: "PHASE 3 of 4",
-            title: "3. Phase: Lactation",
+            title: "Phase 3: Breastfeeding (Lactation)",
             bio: "After childbirth, levels of pregnancy hormones (progesterone and oestrogen) drop sharply, which unblocks and fully initiates the breastfeeding period (lactation). This phase is divided into two closely interlinked processes: milk production and milk secretion. Milk production (synthesis) is regulated by the hormone prolactin, which stimulates the inner cells of the lining (secretory luminal cells), where proteins, fats and sugar (lactose) are produced in large quantities and released directly into the inner cavity of the alveoli (alveolar lumen). Milk ejection (the ejection reflex) is triggered by mechanical suckling of the nipple, which sends a signal to release the hormone oxytocin. This causes contractions of the outer contractile cells (myoepithelium) surrounding the alveoli, squeezing them and forcing the milk out through the milk ducts via the nipple.",
-            task: "Click on the mature alveoli to eject milk and fill the baby bottles!",
+            task: "Click on the mature alveoli to produce milk and fill the baby feeding bottle!",
             timeLimit: "30 seconds",
             duration: 30
         },
         4: {
             badge: "PHASE 4 of 4",
-            title: "4. Phase: Involution",
-            bio: "As soon as breastfeeding stops (when the baby is taken off the mother's breast), milk accumulates in the alveoli, causing mechanical pressure and a sharp drop in the levels of the stimulating hormones (prolactin and oxytocin). For the mammary gland, this signals the start of a controlled breakdown of the unnecessary secretory apparatus. A widespread, controlled cell death (programmed cell death, or apoptosis) is triggered amongst the internal cells that produce milk (secretory luminal cells). The milk alveoli collapse and their remnants are engulfed by scavenger cells (macrophages) and the surrounding tissue, thereby removing most of the alveoli and excess branching. The emptied space is refilled with fatty tissue (adipocytes) and the supporting tissue (stroma) returns to its original, resting state, only the basic network of milk ducts remains in the breast.",
-            task: "Click on the alveoli to trigger apoptosis and call macrophages to clear the tissue!",
+            title: "Phase 4: Return to Resting State (Involution)",
+            bio: "As soon as breastfeeding stops (when the baby is taken off the mother's breast), milk accumulates in the alveoli, causing mechanical pressure and a sharp drop in the levels of the stimulating hormones (prolactin and oxytocin). For the mammary gland, this signals the start of a controlled breakdown of the unnecessary secretory apparatus. A widespread, controlled cell death (programmed cell death, or apoptosis) is triggered amongst the internal cells that produce milk (secretory luminal cells). The milk alveoli collapse and their remnants are engulfed by scavenger cells (macrophages) and the surrounding tissue, thereby removing most of the alveoli and excess branching. The emptied space is refilled with fatty tissue (adipocytes) and the supporting tissue (stroma) returns to its original, resting state – only the basic network of milk ducts remains in the breast.",
+            task: "Click on the alveoli to trigger apoptosis and call macrophages for tissue clearance!",
             timeLimit: "No limit (clear all alveoli)",
             duration: 0
         },
         5: {
             badge: "CYCLE COMPLETE",
-            title: "Simulation Finished! 🎉"
+            title: "Simulation Completed! 🎉"
         }
     };
 
@@ -1230,6 +1259,17 @@
         const wrapper = document.getElementById('canvas-wrapper');
         canvas.width = wrapper.clientWidth;
         canvas.height = wrapper.clientHeight;
+        
+        const isPortrait = canvas.height > canvas.width;
+        if (isPortrait) {
+            scaleFactor = Math.min(canvas.width / 400, canvas.height / 700);
+            scaleFactor = Math.max(0.65, Math.min(scaleFactor, 1.1));
+            bottomNippleOffset = Math.max(90, canvas.height * 0.16);
+        } else {
+            scaleFactor = Math.min(canvas.width, canvas.height) / 780;
+            scaleFactor = Math.max(0.8, Math.min(scaleFactor, 2.0));
+            bottomNippleOffset = Math.max(85, 110 * scaleFactor);
+        }
     }
 
     window.addEventListener('resize', resizeCanvas);
@@ -1243,7 +1283,7 @@
             this.isTip = true;
             this.hasAlveolus = false;
             this.alveolusRadius = 0;
-            this.maxAlveolusRadius = (canvas.width < 500 ? 10 : 14) + Math.random() * 3.5;
+            this.maxAlveolusRadius = (13 + Math.random() * 3.5) * scaleFactor;
             this.pulse = Math.random() * Math.PI;
             this.isEaten = false;
             this.isApoptotic = false;
@@ -1254,8 +1294,8 @@
             this.budOffsets = [];
             for (let i = 0; i < this.budCount; i++) {
                 const angle = (i / this.budCount) * Math.PI * 2 + (Math.random() * 0.4 - 0.2);
-                const dist = (canvas.width < 500 ? 3.5 : 5) + Math.random() * 3.5;
-                const r = (canvas.width < 500 ? 3.5 : 5) + Math.random() * 2.5;
+                const dist = (5 + Math.random() * 3) * scaleFactor;
+                const r = (4.5 + Math.random() * 2) * scaleFactor;
                 this.budOffsets.push({ angle, dist, r });
             }
         }
@@ -1279,8 +1319,8 @@
         constructor(startNode, endNode) {
             this.startNode = startNode;
             this.endNode = endNode;
-            const baseThick = canvas.width < 500 ? 9 : 15;
-            this.thickness = Math.max(2.5, baseThick - endNode.level * 1.6);
+            const baseThick = 13 * scaleFactor;
+            this.thickness = Math.max(2.5 * scaleFactor, baseThick - endNode.level * (1.6 * scaleFactor));
             this.isEaten = false;
             this.isTargetedByMacrophage = false;
         }
@@ -1292,8 +1332,8 @@
             this.y = y;
             this.target = target;
             this.targetType = target instanceof Node ? 'node' : 'branch';
-            this.speed = canvas.width < 500 ? 4.5 : 5.5;
-            this.size = canvas.width < 500 ? 13 : 18;
+            this.speed = 5 * scaleFactor;
+            this.size = 15 * scaleFactor;
             this.state = 'hunting';
             this.exitX = Math.random() < 0.5 ? -40 : canvas.width + 40;
             this.exitY = Math.random() * canvas.height;
@@ -1324,7 +1364,7 @@
                 const dy = targetY - this.y;
                 const dist = Math.hypot(dx, dy);
 
-                if (dist < 12) {
+                if (dist < 14 * scaleFactor) {
                     if (this.targetType === 'node') {
                         this.target.hasAlveolus = false;
                         this.target.isEaten = true;
@@ -1359,26 +1399,32 @@
 
             ctx.save();
             ctx.translate(this.x, this.y);
-            ctx.fillStyle = '#eab308';
-            ctx.shadowColor = '#eab308';
-            ctx.shadowBlur = 8;
+            
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.85)';
+            ctx.shadowBlur = 8 * scaleFactor;
             
             ctx.beginPath();
             const time = Date.now() * 0.005;
             for (let i = 0; i < 8; i++) {
                 const a = (i / 8) * Math.PI * 2;
-                const r = this.size + Math.sin(time + i * 2) * 2.5;
+                const r = this.size + Math.sin(time + i * 2) * (2.2 * scaleFactor);
                 const px = Math.cos(a) * r;
                 const py = Math.sin(a) * r;
                 if (i === 0) ctx.moveTo(px, py);
                 else ctx.lineTo(px, py);
             }
             ctx.closePath();
+            
+            const grad = ctx.createRadialGradient(0, 0, 2, 0, 0, this.size);
+            grad.addColorStop(0, '#ffffff');
+            grad.addColorStop(0.65, '#f1f5f9');
+            grad.addColorStop(1, '#cbd5e1');
+            ctx.fillStyle = grad;
             ctx.fill();
 
-            ctx.fillStyle = '#854d0e';
+            ctx.fillStyle = '#475569';
             ctx.beginPath();
-            ctx.arc(0, 0, 3.5, 0, Math.PI * 2);
+            ctx.arc(0, 0, 3.8 * scaleFactor, 0, Math.PI * 2);
             ctx.fill();
 
             ctx.restore();
@@ -1402,24 +1448,23 @@
             }
 
             const rootX = canvas.width / 2;
-            const isMobile = canvas.width < 500;
-            const areolaY = isMobile ? canvas.height - 65 : canvas.height - 110;
-            const nippleTipY = areolaY + (isMobile ? 25 : 50);
+            const areolaY = canvas.height - bottomNippleOffset;
+            const nippleTipY = areolaY + Math.max(22, 38 * scaleFactor);
 
             this.path.push({x: rootX, y: nippleTipY});
 
             const bRect = singleBottleContainer.getBoundingClientRect();
             const cRect = canvas.getBoundingClientRect();
             const bottleTargetX = (bRect.left + bRect.width / 2) - cRect.left;
-            const bottleTargetY = (bRect.top + 25) - cRect.top;
+            const bottleTargetY = (bRect.top + 18 * scaleFactor) - cRect.top;
 
             this.pathIndex = 0;
             this.path.push({x: bottleTargetX, y: bottleTargetY});
 
             this.x = this.path[0].x;
             this.y = this.path[0].y;
-            this.speed = 10;
-            this.radius = isMobile ? 3.5 : 5;
+            this.speed = Math.max(8, 12 * scaleFactor);
+            this.radius = Math.max(3.5, 5.5 * scaleFactor);
             this.isDone = false;
         }
 
@@ -1454,7 +1499,7 @@
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
             ctx.shadowColor = '#ffffff';
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 8 * scaleFactor;
             ctx.fill();
             ctx.shadowBlur = 0;
         }
@@ -1472,8 +1517,8 @@
             const bRect = singleBottleContainer.getBoundingClientRect();
             const cRect = canvas.getBoundingClientRect();
             const bx = (bRect.left + bRect.width / 2) - cRect.left;
-            const by = (bRect.top + 25) - cRect.top;
-            createParticles(bx, by, '#38bdf8', 18);
+            const by = (bRect.top + 18 * scaleFactor) - cRect.top;
+            createParticles(bx, by, '#38bdf8', 16);
         }
 
         updateBottleUI();
@@ -1482,7 +1527,6 @@
     function updateBottleUI() {
         const percentage = Math.min(100, (currentBottleMilkMl / maxBottleCapacityMl) * 100);
         singleBottleFill.style.height = `${percentage}%`;
-        
         bottleNumberTitle.innerText = `Bottle #${completedBottlesCount + 1}`;
         bottleCurrentVal.innerText = `${currentBottleMilkMl} / ${maxBottleCapacityMl} ml`;
     }
@@ -1498,7 +1542,7 @@
             modalBioBox.style.display = 'none';
             modalTaskBox.style.display = 'none';
             modalTimeBox.style.display = 'none';
-            modalBtn.innerText = "Play Again 🔄";
+            modalBtn.innerText = "Play Next Player 🔄";
 
             summaryPlayer.innerText = playerName;
             summaryBranches.innerText = maxBranchesCreated;
@@ -1509,7 +1553,7 @@
                 scoreAlreadySaved = true;
                 if (window.saveAndLoadCloudLeaderboard) {
                     window.saveAndLoadCloudLeaderboard({
-                        name: playerName || "Guest",
+                        name: playerName || "Visitor",
                         milk: milkProducedMl,
                         branches: maxBranchesCreated,
                         alveoli: maxAlveoliCreated,
@@ -1525,7 +1569,7 @@
                 modalTaskBox.style.display = 'none';
                 modalTimeBox.style.display = 'none';
                 modalBio.innerText = data.bio;
-                modalBtn.innerText = "Next: Mission ➔";
+                modalBtn.innerText = "Proceed to task ➔";
             } else if (step === 2) {
                 modalBioBox.style.display = 'none';
                 modalTaskBox.style.display = 'block';
@@ -1555,7 +1599,6 @@
         particles = [];
         milkDroplets = [];
         macrophages = [];
-
         nodes = [];
         branches = [];
 
@@ -1563,13 +1606,12 @@
 
         resizeCanvas();
 
-        const isMobile = canvas.width < 500;
         const rootX = canvas.width / 2;
-        const rootY = isMobile ? canvas.height - 65 : canvas.height - 110; 
-        const rootNode = new Node(rootX, rootY, 0, -Math.PI / 2);
+        const areolaY = canvas.height - bottomNippleOffset;
+        const rootNode = new Node(rootX, areolaY, 0, -Math.PI / 2);
         
         const firstTipX = rootX;
-        const firstTipY = rootY - (isMobile ? 22 : 32); 
+        const firstTipY = areolaY - Math.max(26, 36 * scaleFactor); 
         const firstTipNode = new Node(firstTipX, firstTipY, 1, -Math.PI / 2);
         rootNode.isTip = false;
 
@@ -1589,7 +1631,7 @@
 
     introStartBtn.addEventListener('click', () => {
         const val = playerNicknameInput.value.trim();
-        playerName = val ? val : "Guest";
+        playerName = val ? val : "Visitor";
         playerDisplayEl.innerText = playerName;
 
         introScreen.classList.add('hidden');
@@ -1651,12 +1693,11 @@
     function branchFromNode(node) {
         if (!node.isTip || currentPhase !== 1) return;
 
-        const isMobile = canvas.width < 500;
+        const isPortrait = canvas.height > canvas.width;
+        const baseLen = isPortrait ? Math.min(canvas.height * 0.085, 52 * scaleFactor) : Math.min(canvas.height * 0.15, 115 * scaleFactor);
+        const branchLength = Math.max(26 * scaleFactor, baseLen - node.level * (3.8 * scaleFactor));
         
-        const baseLen = isMobile ? Math.min(55, canvas.height * 0.075) : Math.max(50, 110 - node.level * 8);
-        const branchLength = Math.max(isMobile ? 32 : 45, baseLen - node.level * (isMobile ? 4 : 8));
-        
-        const spreadAngle = isMobile ? (0.38 + Math.random() * 0.1) : (0.55 + Math.random() * 0.18);
+        const spreadAngle = isPortrait ? (0.34 + Math.random() * 0.08) : (0.52 + Math.random() * 0.16);
 
         const angle1 = node.angle - spreadAngle;
         const angle2 = node.angle + spreadAngle;
@@ -1667,11 +1708,11 @@
         const x2 = node.x + Math.cos(angle2) * branchLength;
         const y2 = node.y + Math.sin(angle2) * branchLength;
 
-        const marginX = isMobile ? 10 : 20;
-        const marginY = isMobile ? 36 : 20; 
+        const marginX = 14 * scaleFactor;
+        const marginY = 20 * scaleFactor; 
 
-        if (x1 < marginX || x1 > canvas.width - marginX || y1 < marginY || y1 > canvas.height - (isMobile ? 70 : 120) ||
-            x2 < marginX || x2 > canvas.width - marginX || y2 < marginY || y2 > canvas.height - (isMobile ? 70 : 120)) {
+        if (x1 < marginX || x1 > canvas.width - marginX || y1 < marginY || y1 > canvas.height - (bottomNippleOffset - 10) ||
+            x2 < marginX || x2 > canvas.width - marginX || y2 < marginY || y2 > canvas.height - (bottomNippleOffset - 10)) {
             return;
         }
 
@@ -1712,7 +1753,7 @@
         if (!node.isTargetedByMacrophage) {
             node.isTargetedByMacrophage = true;
             const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
-            const startY = Math.random() * (canvas.height - 110) + 30;
+            const startY = Math.random() * (canvas.height - bottomNippleOffset) + 30;
             macrophages.push(new Macrophage(startX, startY, node));
         }
 
@@ -1731,7 +1772,7 @@
         for (let branch of outerBranches) {
             branch.isTargetedByMacrophage = true;
             const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
-            const startY = Math.random() * (canvas.height - 110) + 30;
+            const startY = Math.random() * (canvas.height - bottomNippleOffset) + 30;
             macrophages.push(new Macrophage(startX, startY, branch));
         }
     }
@@ -1741,9 +1782,9 @@
             particles.push({
                 x: x,
                 y: y,
-                vx: (Math.random() - 0.5) * 4,
-                vy: (Math.random() - 0.5) * 4,
-                radius: Math.random() * 3 + 1.5,
+                vx: (Math.random() - 0.5) * (4 * scaleFactor),
+                vy: (Math.random() - 0.5) * (4 * scaleFactor),
+                radius: (Math.random() * 2.2 + 1) * scaleFactor,
                 color: color,
                 life: 1
             });
@@ -1751,7 +1792,6 @@
     }
 
     function showInstructionBar(htmlContent) {
-        if (canvas.width < 768) return; 
         if (instructionTimer) clearTimeout(instructionTimer);
         
         instructionBar.innerHTML = htmlContent;
@@ -1759,14 +1799,13 @@
 
         instructionTimer = setTimeout(() => {
             instructionBar.classList.add('hidden');
-        }, 5000);
+        }, 4500);
     }
 
     function handleInteraction(clickX, clickY) {
         if (modal.classList.contains('active') || !introScreen.classList.contains('hidden')) return;
 
-        const isMobile = canvas.width < 500;
-        const hitRadius = isMobile ? 44 : 36;
+        const hitRadius = Math.max(38, 44 * scaleFactor);
 
         if (currentPhase === 1 && isTimerRunning) {
             for (let node of nodes) {
@@ -1835,25 +1874,25 @@
             phase2El.className = 'phase-step';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('💡 <b>Puberty:</b> Tap glowing red buds (TEBs) to branch!');
+            if (showNewInstruction) showInstructionBar('💡 <b>Puberty:</b> Click on the red circles (TEBs) to grow the ductal tree!');
         } else if (currentPhase === 2) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step active';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('💡 <b>Pregnancy:</b> Tap branches to form alveoli!');
+            if (showNewInstruction) showInstructionBar('💡 <b>Pregnancy:</b> Click along branches to form purple milk sacs (alveoli)!');
         } else if (currentPhase === 3) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step active';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('🍼 <b>Lactation:</b> Tap alveoli to pump milk into the bottle!');
+            if (showNewInstruction) showInstructionBar('🍼 <b>Lactation:</b> Click on alveoli to produce milk and fill the bottle!');
         } else if (currentPhase === 4) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step completed';
             phase4El.className = 'phase-step active';
-            if (showNewInstruction) showInstructionBar('🧹 <b>Involution:</b> Tap alveoli to start apoptosis and tissue cleanup!');
+            if (showNewInstruction) showInstructionBar('🧹 <b>Involution:</b> Click on alveoli to trigger apoptosis and macrophage clearance!');
         }
     }
 
@@ -1903,19 +1942,18 @@
     function render() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        const isMobile = canvas.width < 500;
         const rootX = canvas.width / 2;
-        const areolaY = isMobile ? canvas.height - 65 : canvas.height - 110; 
-        const areolaR = isMobile ? 32 : 52;
+        const areolaY = canvas.height - bottomNippleOffset; 
+        const areolaR = Math.max(28, 48 * scaleFactor);
 
         // Areola
         ctx.beginPath();
         ctx.arc(rootX, areolaY, areolaR, 0, Math.PI, false);
         ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
         ctx.strokeStyle = 'rgba(236, 72, 153, 0.65)';
-        ctx.lineWidth = isMobile ? 2 : 3;
+        ctx.lineWidth = Math.max(2, 3 * scaleFactor);
         ctx.shadowColor = '#ec4899';
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = 8 * scaleFactor;
         ctx.fill();
         ctx.stroke();
         ctx.shadowBlur = 0;
@@ -1924,40 +1962,40 @@
         ctx.moveTo(rootX - areolaR, areolaY);
         ctx.lineTo(rootX + areolaR, areolaY);
         ctx.strokeStyle = 'rgba(251, 207, 232, 0.45)';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.5 * scaleFactor;
         ctx.stroke();
 
         // Nipple
-        const nipW = isMobile ? 12 : 18;
-        const nipH = isMobile ? 18 : 28;
+        const nipW = Math.max(12, 18 * scaleFactor);
+        const nipH = Math.max(16, 26 * scaleFactor);
         ctx.beginPath();
         ctx.moveTo(rootX - nipW, areolaY + areolaR);
         ctx.bezierCurveTo(rootX - nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR);
         ctx.fillStyle = '#ec4899';
         ctx.shadowColor = '#ec4899';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = 7 * scaleFactor;
         ctx.fill();
         ctx.strokeStyle = '#f472b6';
-        ctx.lineWidth = 1.5;
+        ctx.lineWidth = 1.6 * scaleFactor;
         ctx.stroke();
         ctx.shadowBlur = 0;
 
         ctx.beginPath();
-        ctx.arc(rootX, areolaY, isMobile ? 5 : 8, 0, Math.PI * 2);
+        ctx.arc(rootX, areolaY, Math.max(5, 7.5 * scaleFactor), 0, Math.PI * 2);
         ctx.fillStyle = '#0284c7';
         ctx.fill();
 
         ctx.fillStyle = '#fbcfe8';
-        ctx.font = isMobile ? 'bold 8.5px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
+        ctx.font = `bold ${Math.max(9, 11 * scaleFactor)}px "Segoe UI", sans-serif`;
         ctx.textAlign = 'right';
-        ctx.fillText('AREOLA', rootX - (areolaR + 4), areolaY + (isMobile ? 12 : 24));
+        ctx.fillText('AREOLA', rootX - (areolaR + 5 * scaleFactor), areolaY + (12 * scaleFactor));
 
         ctx.fillStyle = '#ffffff';
-        ctx.font = isMobile ? 'bold 8.5px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
+        ctx.font = `bold ${Math.max(9, 11 * scaleFactor)}px "Segoe UI", sans-serif`;
         ctx.textAlign = 'center';
-        ctx.fillText('NIPPLE', rootX, areolaY + areolaR + (isMobile ? 18 : 32));
+        ctx.fillText('NIPPLE', rootX, areolaY + areolaR + (18 * scaleFactor));
 
-        // Branches
+        // Ductal Tree Branches
         for (let branch of branches) {
             if (branch.isEaten) continue;
 
@@ -1973,7 +2011,7 @@
             ctx.lineWidth = branch.thickness;
             ctx.lineCap = 'round';
             ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
-            ctx.shadowBlur = isMobile ? 4 : 8;
+            ctx.shadowBlur = 6 * scaleFactor;
             ctx.stroke();
             ctx.shadowBlur = 0;
         }
@@ -1985,7 +2023,7 @@
             if (node.hasAlveolus) {
                 if (node.isApoptotic) {
                     if (node.alveolusRadius > node.maxAlveolusRadius * 0.7) {
-                        node.alveolusRadius -= 0.15;
+                        node.alveolusRadius -= 0.15 * scaleFactor;
                     }
 
                     const currentR = node.alveolusRadius;
@@ -1994,31 +2032,31 @@
                     ctx.arc(node.x, node.y, currentR, 0, Math.PI * 2);
                     ctx.fillStyle = '#3b0764';
                     ctx.strokeStyle = '#6b21a8';
-                    ctx.lineWidth = 1.5;
+                    ctx.lineWidth = 1.5 * scaleFactor;
                     ctx.shadowColor = 'rgba(88, 28, 135, 0.6)';
-                    ctx.shadowBlur = 6;
+                    ctx.shadowBlur = 6 * scaleFactor;
                     ctx.fill();
                     ctx.stroke();
                     ctx.shadowBlur = 0;
 
                     for (let bleb of node.blebs) {
-                        const blebPulse = Math.sin(time * bleb.speed + bleb.offset) * 1.5;
-                        const blebDist = currentR + 2 + blebPulse;
+                        const blebPulse = Math.sin(time * bleb.speed + bleb.offset) * (1.6 * scaleFactor);
+                        const blebDist = currentR + (2.2 * scaleFactor) + blebPulse;
                         const bx = node.x + Math.cos(bleb.angle) * blebDist;
                         const by = node.y + Math.sin(bleb.angle) * blebDist;
-                        const blebR = Math.max(1.5, currentR * bleb.sizeRatio + blebPulse * 0.4);
+                        const blebR = Math.max(1.6 * scaleFactor, currentR * bleb.sizeRatio + blebPulse * 0.4);
 
                         ctx.beginPath();
                         ctx.arc(bx, by, blebR, 0, Math.PI * 2);
                         ctx.fillStyle = '#581c87';
                         ctx.strokeStyle = '#7e22ce';
-                        ctx.lineWidth = 1;
+                        ctx.lineWidth = 1 * scaleFactor;
                         ctx.fill();
                         ctx.stroke();
                     }
                 } else {
                     if (node.alveolusRadius < node.maxAlveolusRadius) {
-                        node.alveolusRadius += 0.35;
+                        node.alveolusRadius += 0.35 * scaleFactor;
                     }
 
                     const scale = node.alveolusRadius / node.maxAlveolusRadius;
@@ -2035,9 +2073,9 @@
                         ctx.arc(bx, by, br, 0, Math.PI * 2);
                         ctx.fillStyle = 'rgba(168, 85, 247, 0.65)';
                         ctx.strokeStyle = '#c084fc';
-                        ctx.lineWidth = 1.2;
+                        ctx.lineWidth = 1.2 * scaleFactor;
                         ctx.shadowColor = 'rgba(168, 85, 247, 0.4)';
-                        ctx.shadowBlur = 5;
+                        ctx.shadowBlur = 5 * scaleFactor;
                         ctx.fill();
                         ctx.stroke();
 
@@ -2048,7 +2086,7 @@
                     }
 
                     ctx.beginPath();
-                    ctx.arc(0, 0, (isMobile ? 3 : 4.5) * scale, 0, Math.PI * 2);
+                    ctx.arc(0, 0, (4 * scaleFactor) * scale, 0, Math.PI * 2);
                     ctx.fillStyle = '#c084fc';
                     ctx.fill();
 
@@ -2057,18 +2095,18 @@
             }
 
             if (node.isTip && currentPhase === 1) {
-                const pulseRadius = (isMobile ? 7.5 : 9) + Math.sin(time * 4 + node.pulse) * 2.2;
+                const pulseRadius = (8 * scaleFactor) + Math.sin(time * 4 + node.pulse) * (2.2 * scaleFactor);
                 
                 ctx.beginPath();
                 ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
                 ctx.fillStyle = '#f43f5e';
                 ctx.shadowColor = '#f43f5e';
-                ctx.shadowBlur = 10;
+                ctx.shadowBlur = 9 * scaleFactor;
                 ctx.fill();
                 ctx.shadowBlur = 0;
 
                 ctx.beginPath();
-                ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+                ctx.arc(node.x, node.y, 2.8 * scaleFactor, 0, Math.PI * 2);
                 ctx.fillStyle = '#ffffff';
                 ctx.fill();
             }
