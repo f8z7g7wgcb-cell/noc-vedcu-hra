@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mammary Gland Architect - Researchers' Night</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #080b10;
+            color: #ecf2f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: fixed;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, #111827 0%, #080b10 100%);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            padding: 6px 14px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(56, 189, 248, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            flex-shrink: 0;
+            height: 42px;
+        }
+
+        .title-box h1 {
+            font-size: 15px;
+            font-weight: 800;
+            background: linear-gradient(90deg, #38bdf8, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        .title-box p {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .phase-indicator {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        .phase-step {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 600;
+            background: #1e293b;
+            color: #64748b;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .phase-step.active {
+            background: #2563eb;
+            color: #ffffff;
+            border-color: #38bdf8;
+            box-shadow: 0 0 16px rgba(56, 189, 248, 0.4);
+        }
+
+        .phase-step.completed {
+            background: #166534;
+            color: #ffffff;
+            border-color: #22c55e;
+        }
+
+        #canvas-wrapper {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            height: calc(100% - 42px);
+            overflow: hidden;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            touch-action: none;
+        }
+
+        #left-timer-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 8px;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border-right: 1px solid rgba(56, 189, 248, 0.2);
+            z-index: 15;
+            display: none;
+            overflow: hidden;
+        }
+
+        #left-timer-bar {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #38bdf8, #2563eb, #0284c7);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+            transform-origin: bottom center;
+            transition: transform 0.1s linear;
+        }
+
+        #stats-overlay {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 4px 8px;
+            font-size: 10px;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 8.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 12px;
+            font-weight: 800;
+            color: #38bdf8;
+        }
+
+        #single-bottle-container {
+            position: absolute;
+            bottom: 12px;
+            left: 10px;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+            pointer-events: none;
+            width: 70px;
+            transform: scale(0.85);
+            transform-origin: bottom left;
+        }
+
+        .bottle-graphic {
+            position: relative;
+            width: 65px;
+            height: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bottle-nipple {
+            width: 26px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            border-radius: 50% 50% 20% 20% / 70% 70% 30% 30%;
+            box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.8);
+            margin-bottom: -4px;
+            z-index: 3;
+        }
+
+        .bottle-ring {
+            width: 56px;
+            height: 15px;
+            background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
+            border-radius: 6px 6px 4px 4px;
+            border: 1px solid #94a3b8;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            z-index: 4;
+        }
+
+        .bottle-body {
+            position: relative;
+            width: 52px;
+            height: 85px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-top: none;
+            border-radius: 5px 5px 14px 14px;
+            backdrop-filter: blur(6px);
+            overflow: hidden;
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.15), 0 8px 20px rgba(0,0,0,0.5);
+            margin-top: -2px;
+        }
+
+        .bottle-valve {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 22px;
+            background: rgba(45, 212, 191, 0.45);
+            border: 1px solid rgba(45, 212, 191, 0.8);
+            border-radius: 0 0 6px 6px;
+            z-index: 2;
+        }
+
+        .bottle-milk-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: linear-gradient(to top, #f1f5f9, #ffffff);
+            box-shadow: 0 -3px 10px rgba(255, 255, 255, 0.8);
+            transition: height 0.15s ease-out;
+            z-index: 1;
+        }
+
+        .bottle-ticks {
+            position: absolute;
+            right: 4px;
+            top: 10px;
+            bottom: 10px;
+            width: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            z-index: 3;
+            opacity: 0.6;
+        }
+
+        .tick { width: 5px; height: 1.5px; background: #cbd5e1; }
+        .tick.sub { width: 3px; opacity: 0.6; }
+
+        .bottle-label {
+            margin-top: 4px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #38bdf8;
+            padding: 2px 6px;
+            border-radius: 6px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            width: 100%;
+        }
+
+        .bottle-label-title {
+            font-size: 8.5px;
+            font-weight: 700;
+            color: #38bdf8;
+            text-transform: uppercase;
+        }
+
+        .bottle-label-value {
+            font-size: 10px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-top: 1px;
+        }
+
+        #instruction-bar {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%) translateY(0);
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid #38bdf8;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #f8fafc;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+            z-index: 20;
+            text-align: center;
+            max-width: 85%;
+            backdrop-filter: blur(8px);
+            opacity: 1;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #instruction-bar.hidden {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+        }
+
+        #control-panel {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            display: flex;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #166534, #22c55e);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.4);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            touch-action: manipulation;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #15803d, #4ade80);
+        }
+
+        .btn-secondary {
+            background: #1e293b;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            box-shadow: none;
+        }
+
+        .btn-secondary:hover {
+            background: #334155;
+            color: #ffffff;
+        }
+
+        #modal {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 11, 16, 0.94);
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        #modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: #0f172a;
+            border: 1px solid #38bdf8;
+            border-radius: 14px;
+            padding: 16px;
+            max-width: 650px;
+            width: 96%;
+            max-height: 92vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.2);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .modal-card h2 {
+            font-size: 18px;
+            color: #38bdf8;
+        }
+
+        .badge {
+            align-self: flex-start;
+            background: linear-gradient(90deg, #2563eb, #38bdf8);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 10px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .summary-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 6px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+
+        .summary-card-title {
+            font-size: 8.5px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .summary-card-val {
+            font-size: 15px;
+            font-weight: 800;
+            color: #38bdf8;
+        }
+
+        .leaderboard-box {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            padding: 8px;
+            margin-top: 2px;
+        }
+
+        .leaderboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .leaderboard-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #facc15;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10.5px;
+        }
+
+        .leaderboard-table th {
+            text-align: left;
+            padding: 3px 4px;
+            color: #94a3b8;
+            border-bottom: 1px solid #334155;
+            font-weight: 600;
+        }
+
+        .leaderboard-table td {
+            padding: 3px 4px;
+            border-bottom: 1px solid rgba(51, 65, 85, 0.4);
+            color: #f8fafc;
+        }
+
+        .leaderboard-table tr.highlight {
+            background: rgba(56, 189, 248, 0.15);
+            font-weight: 700;
+        }
+
+        .leaderboard-table tr.highlight td {
+            color: #38bdf8;
+        }
+
+        .info-box, .task-box, .time-box {
+            background: #1e293b;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .info-box { border-left: 3px solid #a855f7; }
+        .task-box { border-left: 3px solid #22c55e; }
+        .time-box { border-left: 3px solid #38bdf8; }
+
+        .info-box b, .task-box b, .time-box b { color: #f8fafc; font-size: 13px; display: block; margin-bottom: 2px; }
+
+        #legend {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid #334155;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            backdrop-filter: blur(8px);
+            pointer-events: none;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        #intro-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(8, 11, 16, 0.95);
+            backdrop-filter: blur(14px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 150;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+
+        #intro-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .intro-card {
+            position: relative;
+            width: 1050px;
+            max-width: 94vw;
+            height: 620px;
+            max-height: 92vh;
+            background: radial-gradient(circle at 60% 50%, #111827 0%, #080b10 100%);
+            border: 2px solid rgba(56, 189, 248, 0.3);
+            border-radius: 16px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            display: flex;
+            overflow-y: auto;
+        }
+
+        .intro-left-content {
+            width: 48%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .intro-badge-tag {
+            align-self: flex-start;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            color: #38bdf8;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 9.5px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .intro-left-content h1 {
+            font-size: 24px;
+            font-weight: 900;
+            line-height: 1.1;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #38bdf8, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px;
+        }
+
+        .intro-subtitle {
+            font-size: 15px;
+            color: #cbd5e1;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .intro-description {
+            font-size: 12px;
+            line-height: 1.4;
+            color: #94a3b8;
+            margin-bottom: 12px;
+        }
+
+        .nickname-box {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            margin-bottom: 12px;
+        }
+
+        .nickname-box label {
+            font-size: 9.5px;
+            color: #cbd5e1;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .nickname-input {
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 6px;
+            padding: 7px 10px;
+            font-size: 13px;
+            color: #ffffff;
+            font-weight: 600;
+            outline: none;
+            touch-action: manipulation;
+        }
+
+        .nickname-input:focus {
+            border-color: #38bdf8;
+            background: #0f172a;
+        }
+
+        .btn-intro-start {
+            align-self: flex-start;
+            background: linear-gradient(135deg, #166534, #22c55e);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-transform: uppercase;
+            touch-action: manipulation;
+        }
+
+        .intro-right-graphic {
+            position: relative;
+            flex: 1;
+            height: 100%;
+        }
+
+        .intro-right-graphic svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .anatomy-label {
+            font-size: 12px;
+            font-weight: 700;
+            fill: #cbd5e1;
+        }
+
+        .anatomy-sublabel {
+            font-size: 10px;
+            fill: #94a3b8;
+        }
+
+        .pointer-line {
+            stroke-width: 1.5;
+            stroke-dasharray: 3, 3;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            header { 
+                padding: 2px 8px; 
+                height: 36px;
+            }
+            .title-box h1 { font-size: 12.5px; }
+            .title-box p { display: none; }
+            .phase-indicator { display: none; }
+
+            .intro-card { flex-direction: column; height: auto; max-height: 94vh; }
+            .intro-left-content { width: 100%; padding: 14px; }
+            .intro-right-graphic { display: none; }
+
+            #legend { display: none; }
+            #instruction-bar { display: none; }
+
+            #stats-overlay {
+                top: 4px;
+                left: 6px;
+                padding: 3px 6px;
+                font-size: 9px;
+                gap: 6px;
+            }
+            .stat-value { font-size: 11px; }
+
+            #single-bottle-container { 
+                transform: scale(0.75); 
+                transform-origin: bottom left;
+                bottom: 6px; 
+                left: 6px; 
+            }
+            #control-panel { bottom: 8px; right: 8px; }
+            .btn { padding: 6px 10px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <header>
+        <div class="title-box">
+            <h1>Mammary Gland Architect</h1>
+            <p>Interactive simulation for Researchers' Night - IMG CAS</p>
+        </div>
+        <div class="phase-indicator">
+            <div id="phase-1" class="phase-step">1. Puberty</div>
+            <div id="phase-2" class="phase-step">2. Pregnancy</div>
+            <div id="phase-3" class="phase-step">3. Lactation</div>
+            <div id="phase-4" class="phase-step">4. Involution</div>
+        </div>
+    </header>
+
+    <div id="canvas-wrapper">
+        <div id="left-timer-container">
+            <div id="left-timer-bar"></div>
+        </div>
+
+        <div id="stats-overlay">
+            <div class="stat-item">
+                <span class="stat-label">Player</span>
+                <span id="player-display" class="stat-value" style="color: #facc15;">Guest</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Branches</span>
+                <span id="branch-count" class="stat-value">1</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Alveoli</span>
+                <span id="alveoli-count" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Milk</span>
+                <span id="milk-count" class="stat-value">0 ml</span>
+            </div>
+        </div>
+
+        <div id="single-bottle-container">
+            <div class="bottle-graphic">
+                <div class="bottle-nipple"></div>
+                <div class="bottle-ring"></div>
+                <div class="bottle-body">
+                    <div class="bottle-valve"></div>
+                    <div id="single-bottle-fill" class="bottle-milk-fill"></div>
+                    <div class="bottle-ticks">
+                        <div class="tick"></div><div class="tick sub"></div>
+                        <div class="tick"></div><div class="tick sub"></div>
+                        <div class="tick"></div><div class="tick sub"></div>
+                        <div class="tick"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottle-label">
+                <div id="bottle-number-title" class="bottle-label-title">Bottle #1</div>
+                <div id="bottle-current-val" class="bottle-label-value">0 / 250 ml</div>
+            </div>
+        </div>
+
+        <div id="instruction-bar">💡 Welcome! Click the button below to start.</div>
+        
+        <div id="legend">
+            <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Ducts</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Buds (TEBs)</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Alveoli</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #eab308;"></div> Macrophages</div>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div id="control-panel">
+            <button id="reset-btn" class="btn btn-secondary">🔄 Restart</button>
+            <button id="next-btn" class="btn">Skip ➔</button>
+        </div>
+
+        <div id="intro-screen">
+            <div class="intro-card">
+                <div class="intro-left-content">
+                    <div class="intro-badge-tag">🔬 Researchers' Night • Interactive Biology</div>
+                    <h1>Mammary Gland<br>Architect</h1>
+                    <div class="intro-subtitle">Welcome to the game!</div>
+                    <p class="intro-description">
+                        Explore the fascinating architecture and life cycle of the mammary gland. Experience ductal branching in puberty, alveoli formation during pregnancy, milk production during lactation, and tissue remodeling in involution.
+                    </p>
+                    
+                    <div class="nickname-box">
+                        <label for="player-nickname">Enter your nickname for the leaderboard:</label>
+                        <input type="text" id="player-nickname" class="nickname-input" placeholder="e.g. Cellular Architect" maxlength="18">
+                    </div>
+
+                    <button id="intro-start-btn" class="btn-intro-start">
+                        <span>▶</span> Enter Game
+                    </button>
+                </div>
+
+                <div class="intro-right-graphic">
+                    <svg viewBox="0 0 650 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                            <filter id="glow-pink" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="8" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                            <filter id="glow-purple" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="5" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                            <filter id="blur-stroma" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="12" />
+                            </filter>
+                            <linearGradient id="fatLinearGrad" x1="100%" y1="50%" x2="0%" y2="50%">
+                                <stop offset="0%" stop-color="rgba(15, 23, 42, 0.2)"/>
+                                <stop offset="25%" stop-color="rgba(245, 158, 11, 0.12)"/>
+                                <stop offset="65%" stop-color="rgba(234, 179, 8, 0.28)"/>
+                                <stop offset="100%" stop-color="rgba(15, 23, 42, 0.85)"/>
+                            </linearGradient>
+                            <linearGradient id="stromaLobularGrad" x1="100%" y1="50%" x2="0%" y2="50%">
+                                <stop offset="0%" stop-color="rgba(249, 115, 22, 0.45)"/>
+                                <stop offset="70%" stop-color="rgba(234, 88, 12, 0.25)"/>
+                                <stop offset="100%" stop-color="rgba(234, 88, 12, 0.05)"/>
+                            </linearGradient>
+                        </defs>
+
+                        <path d="M 60 40 L 60 635" stroke="#334155" stroke-width="28" stroke-linecap="round"/>
+                        <path d="M 85 40 L 85 635" stroke="#475569" stroke-width="10" stroke-linecap="round"/>
+
+                        <ellipse cx="60" cy="110" rx="9" ry="24" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+                        <ellipse cx="60" cy="220" rx="9" ry="24" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+                        <ellipse cx="60" cy="330" rx="9" ry="24" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+                        <ellipse cx="60" cy="440" rx="9" ry="24" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+                        <ellipse cx="60" cy="550" rx="9" ry="24" fill="#0f172a" stroke="#64748b" stroke-width="2"/>
+
+                        <path d="M 90 80 C 260 90, 460 220, 520 337.5 C 460 455, 260 585, 90 595 Z" 
+                              fill="url(#fatLinearGrad)" stroke="rgba(234, 179, 8, 0.3)" stroke-width="2"/>
+
+                        <g fill="url(#stromaLobularGrad)" filter="url(#blur-stroma)">
+                            <path d="M 520 337.5 C 480 300, 410 240, 360 200 C 330 170, 270 160, 220 170 C 170 180, 160 220, 190 250 C 220 280, 260 280, 290 260 C 340 270, 420 310, 490 335 Z" />
+                            <path d="M 520 337.5 C 460 325, 380 320, 310 315 C 250 310, 210 310, 150 325 C 130 345, 140 385, 180 400 C 230 410, 270 380, 310 370 C 380 365, 450 350, 520 337.5 Z" />
+                            <path d="M 520 337.5 C 490 365, 430 400, 360 450 C 320 480, 260 500, 190 490 C 160 470, 170 425, 210 395 C 250 385, 280 405, 320 415 C 380 390, 460 360, 520 337.5 Z" />
+                        </g>
+
+                        <g filter="url(#glow-pink)">
+                            <path d="M 495 280 C 522 315, 522 360, 495 395" stroke="#ec4899" stroke-width="12" stroke-linecap="round" fill="none"/>
+                            <path d="M 515 320 C 545 326, 545 349, 515 355 Z" fill="#f472b6" stroke="#ec4899" stroke-width="2"/>
+                        </g>
+
+                        <g filter="url(#glow-cyan)" stroke="#38bdf8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M 535 337.5 L 465 337.5" stroke-width="6"/>
+                            <path d="M 465 337.5 Q 400 280, 320 230" stroke-width="4.5"/>
+                            <path d="M 320 230 Q 270 205, 215 190" stroke-width="3"/>
+                            <path d="M 320 230 Q 280 255, 235 265" stroke-width="3"/>
+                            <path d="M 465 337.5 Q 360 340, 270 345" stroke-width="4.5"/>
+                            <path d="M 270 345 Q 225 330, 180 335" stroke-width="3"/>
+                            <path d="M 270 345 Q 220 375, 170 395" stroke-width="3"/>
+                            <path d="M 465 337.5 Q 400 395, 310 440" stroke-width="4.5"/>
+                            <path d="M 310 440 Q 260 465, 205 475" stroke-width="3"/>
+                            <path d="M 310 440 Q 265 415, 215 410" stroke-width="3"/>
+                        </g>
+
+                        <g filter="url(#glow-purple)" fill="rgba(168, 85, 247, 0.7)" stroke="#c084fc" stroke-width="1.5">
+                            <g transform="translate(215, 190)">
+                                <circle cx="-10" cy="-6" r="10"/><circle cx="8" cy="-8" r="9"/>
+                                <circle cx="-8" cy="10" r="8"/><circle cx="10" cy="8" r="11"/>
+                                <circle cx="0" cy="0" r="7" fill="#e9d5ff" stroke="#d8b4fe"/>
+                            </g>
+                            <g transform="translate(235, 265)">
+                                <circle cx="-9" cy="-7" r="9"/><circle cx="7" cy="-9" r="8"/>
+                                <circle cx="-6" cy="9" r="10"/><circle cx="9" cy="7" r="9"/>
+                                <circle cx="0" cy="0" r="6" fill="#e9d5ff" stroke="#d8b4fe"/>
+                            </g>
+                            <g transform="translate(180, 335)">
+                                <circle cx="-10" cy="-6" r="10"/><circle cx="8" cy="-8" r="9"/>
+                                <circle cx="-8" cy="10" r="9"/><circle cx="10" cy="8" r="10"/>
+                                <circle cx="0" cy="0" r="7" fill="#e9d5ff" stroke="#d8b4fe"/>
+                            </g>
+                            <g transform="translate(170, 395)">
+                                <circle cx="-8" cy="-7" r="8"/><circle cx="8" cy="-6" r="10"/>
+                                <circle cx="-7" cy="8" r="9"/><circle cx="9" cy="8" r="8"/>
+                                <circle cx="0" cy="0" r="6" fill="#e9d5ff" stroke="#d8b4fe"/>
+                            </g>
+                            <g transform="translate(205, 475)">
+                                <circle cx="-11" cy="-7" r="10"/><circle cx="9" cy="-7" r="9"/>
+                                <circle cx="-7" cy="11" r="9"/><circle cx="11" cy="9" r="11"/>
+                                <circle cx="0" cy="0" r="7" fill="#e9d5ff" stroke="#d8b4fe"/>
+                            </g>
+                            <g transform="translate(215, 410)">
+                                <circle cx="-9" cy="-7" r="9"/><circle cx="7" cy="-8" r="8"/>
+                                <circle cx="-6" cy="8" r="9"/><circle cx="9" cy="7" r="10"/>
+                                <circle cx="0" cy="0" r="6" fill="#e9d5ff" stroke="#d8b4fe"/>
+                            </g>
+                        </g>
+
+                        <text x="50" y="20" class="anatomy-label">Ribs & Muscle</text>
+                        <path d="M 60 20 L 80 110" class="pointer-line" stroke="#64748b"/>
+                        <circle cx="85" cy="110" r="3.5" fill="#64748b"/>
+
+                        <text x="230" y="65" class="anatomy-label" fill="#facc15">Adipose Tissue</text>
+                        <text x="230" y="81" class="anatomy-sublabel">(Fat pad)</text>
+                        <path d="M 280 90 L 280 140 L 250 155" stroke="#facc15" stroke-width="1" stroke-dasharray="4, 3" fill="none" opacity="0.95"/>
+                        <circle cx="250" cy="155" r="5" fill="#facc15" stroke="#080b10" stroke-width="1.5"/>
+
+                        <text x="100" y="140" class="anatomy-label" fill="#c084fc">Milk Lobules</text>
+                        <text x="100" y="156" class="anatomy-sublabel">(Alveoli)</text>
+                        <path d="M 135 165 L 160 230 L 235 265" class="pointer-line" stroke="#c084fc"/>
+                        <circle cx="235" cy="265" r="3.5" fill="#c084fc"/>
+
+                        <text x="375" y="150" class="anatomy-label" fill="#f97316">Supporting Tissue</text>
+                        <text x="375" y="166" class="anatomy-sublabel">(Stroma)</text>
+                        <path d="M 390 175 L 345 205" class="pointer-line" stroke="#f97316"/>
+                        <circle cx="345" cy="205" r="3.5" fill="#f97316"/>
+
+                        <text x="300" y="280" class="anatomy-label" fill="#38bdf8">Mammary Ducts</text>
+                        <text x="300" y="296" class="anatomy-sublabel">(Ductal Network)</text>
+                        <path d="M 330 300 L 340 345" class="pointer-line" stroke="#38bdf8"/>
+                        <circle cx="340" cy="345" r="3.5" fill="#38bdf8"/>
+
+                        <text x="470" y="440" class="anatomy-label" fill="#f472b6">Areola & Nipple</text>
+                        <path d="M 515 425 L 495 380" class="pointer-line" stroke="#f472b6"/>
+                        <circle cx="495" cy="380" r="3.5" fill="#f472b6"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal">
+            <div class="modal-card">
+                <div id="modal-badge" class="badge">PHASE</div>
+                <h2 id="modal-title">1. Phase: Puberty</h2>
+
+                <div id="modal-summary-box" style="display: none;">
+                    <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 3px;">You have successfully completed the full cycle! Here is your summary:</p>
+                    <div class="summary-grid">
+                        <div class="summary-card">
+                            <span class="summary-card-title">Player</span>
+                            <span id="summary-player" class="summary-card-val" style="color: #facc15;">Guest</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="summary-card-title">Milk Produced</span>
+                            <span id="summary-milk" class="summary-card-val" style="color: #22c55e;">0 ml</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="summary-card-title">Branches Grown</span>
+                            <span id="summary-branches" class="summary-card-val">0</span>
+                        </div>
+                        <div class="summary-card">
+                            <span class="summary-card-title">Alveoli Formed</span>
+                            <span id="summary-alveoli" class="summary-card-val">0</span>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard-box">
+                        <div class="leaderboard-header">
+                            <span class="leaderboard-title">🏆 GLOBAL TOP 10 LEADERBOARD (ONLINE)</span>
+                        </div>
+                        <table class="leaderboard-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Player</th>
+                                    <th>Milk</th>
+                                    <th>Branches / Alveoli</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaderboard-body">
+                                <tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:6px;">Loading online leaderboard...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="modal-bio-box" class="info-box" style="display: none;">
+                    <b>🔬 Biological Background:</b>
+                    <p id="modal-bio"></p>
+                </div>
+
+                <div id="modal-task-box" class="task-box" style="display: none;">
+                    <b>🎮 Your Mission:</b>
+                    <p id="modal-task"></p>
+                </div>
+
+                <div id="modal-time-box" class="time-box" style="display: none;">
+                    <b>⏱️ Time Limit:</b>
+                    <p id="modal-time"></p>
+                </div>
+
+                <button id="modal-btn" class="btn" style="margin-top: 6px; align-self: flex-end;">Continue ➔</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDnWJNGtLOV0rGCOHa0wbVepxCo5EAfZwY",
+        authDomain: "noc-vedcu---morfologicka-hra.firebaseapp.com",
+        projectId: "noc-vedcu---morfologicka-hra",
+        storageBucket: "noc-vedcu---morfologicka-hra.firebasestorage.app",
+        messagingSenderId: "710102711791",
+        appId: "1:710102711791:web:29ab5a508dd883eb048a1a",
+        measurementId: "G-KN5G3B6ZVE"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.saveAndLoadCloudLeaderboard = async function(entry) {
+        const leaderboardBody = document.getElementById('leaderboard-body');
+        leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#38bdf8; padding:6px;">Syncing with cloud...</td></tr>';
+
+        try {
+            if (entry) {
+                await addDoc(collection(db, "leaderboard"), {
+                    name: entry.name,
+                    milk: entry.milk,
+                    branches: entry.branches,
+                    alveoli: entry.alveoli,
+                    createdAt: Date.now()
+                });
+            }
+
+            const q = query(collection(db, "leaderboard"), orderBy("milk", "desc"), limit(10));
+            const querySnapshot = await getDocs(q);
+
+            leaderboardBody.innerHTML = '';
+            let index = 0;
+
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                const tr = document.createElement('tr');
+                if (entry && data.createdAt === entry.createdAt) {
+                    tr.classList.add('highlight');
+                }
+
+                let medal = `#${index + 1}`;
+                if (index === 0) medal = '🥇 1st';
+                else if (index === 1) medal = '🥈 2nd';
+                else if (index === 2) medal = '🥉 3rd';
+
+                tr.innerHTML = `
+                    <td>${medal}</td>
+                    <td><b>${data.name}</b></td>
+                    <td style="color: #22c55e; font-weight: 700;">${data.milk} ml</td>
+                    <td>${data.branches}b / ${data.alveoli}a</td>
+                `;
+                leaderboardBody.appendChild(tr);
+                index++;
+            });
+
+            for (let i = index; i < 10; i++) {
+                let medal = i === 0 ? '🥇 1st' : (i === 1 ? '🥈 2nd' : (i === 2 ? '🥉 3rd' : `#${i + 1}`));
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="color: #475569;">${medal}</td>
+                    <td style="color: #475569; font-style: italic;">— open slot —</td>
+                    <td style="color: #475569;">—</td>
+                    <td style="color: #475569;">—</td>
+                `;
+                leaderboardBody.appendChild(tr);
+            }
+        } catch (error) {
+            console.error("Firebase error:", error);
+            leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#f87171; padding:6px;">Unable to load online leaderboard.</td></tr>';
+        }
+    };
+</script>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const instructionBar = document.getElementById('instruction-bar');
+    const nextBtn = document.getElementById('next-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const branchCountEl = document.getElementById('branch-count');
+    const alveoliCountEl = document.getElementById('alveoli-count');
+    const milkCountEl = document.getElementById('milk-count');
+    const playerDisplayEl = document.getElementById('player-display');
+    const playerNicknameInput = document.getElementById('player-nickname');
+
+    const leftTimerContainer = document.getElementById('left-timer-container');
+    const leftTimerBar = document.getElementById('left-timer-bar');
+
+    const singleBottleContainer = document.getElementById('single-bottle-container');
+    const singleBottleFill = document.getElementById('single-bottle-fill');
+    const bottleNumberTitle = document.getElementById('bottle-number-title');
+    const bottleCurrentVal = document.getElementById('bottle-current-val');
+
+    const phase1El = document.getElementById('phase-1');
+    const phase2El = document.getElementById('phase-2');
+    const phase3El = document.getElementById('phase-3');
+    const phase4El = document.getElementById('phase-4');
+
+    const introScreen = document.getElementById('intro-screen');
+    const introStartBtn = document.getElementById('intro-start-btn');
+
+    const modal = document.getElementById('modal');
+    const modalBadge = document.getElementById('modal-badge');
+    const modalTitle = document.getElementById('modal-title');
+    const modalSummaryBox = document.getElementById('modal-summary-box');
+    const modalBioBox = document.getElementById('modal-bio-box');
+    const modalTaskBox = document.getElementById('modal-task-box');
+    const modalTimeBox = document.getElementById('modal-time-box');
+    const modalBio = document.getElementById('modal-bio');
+    const modalTask = document.getElementById('modal-task');
+    const modalTime = document.getElementById('modal-time');
+    const modalBtn = document.getElementById('modal-btn');
+
+    const summaryPlayer = document.getElementById('summary-player');
+    const summaryBranches = document.getElementById('summary-branches');
+    const summaryAlveoli = document.getElementById('summary-alveoli');
+    const summaryMilk = document.getElementById('summary-milk');
+
+    let currentPhase = 0; 
+    let modalStep = 1;
+    let playerName = "Guest";
+    let milkProducedMl = 0;
+    let maxBranchesCreated = 0;
+    let maxAlveoliCreated = 0;
+    let scoreAlreadySaved = false;
+
+    let currentBottleMilkMl = 0;
+    let completedBottlesCount = 0;
+    const maxBottleCapacityMl = 250;
+
+    let timerTotalDuration = 15;
+    let timerRemainingTime = 15;
+    let timerAnimationId = null;
+    let lastTimestamp = null;
+    let isTimerRunning = false;
+    let onTimerCompleteCallback = null;
+    let instructionTimer = null;
+
+    let particles = [];
+    let milkDroplets = [];
+    let macrophages = [];
+
+    let nodes = [];
+    let branches = [];
+
+    const phaseData = {
+        1: {
+            badge: "PHASE 1 of 4",
+            title: "1. Phase: Puberty",
+            bio: "During puberty, the rudimentary ductal tree wakes up and starts expanding into the fat pad (branching morphogenesis). Growth is driven by Terminal End Buds (TEBs) located at the tips of elongating ducts, which bifurcate and invade the surrounding stroma.",
+            task: "Click on the red glowing Terminal End Buds (TEBs) to branch and grow the epithelial tree!",
+            timeLimit: "15 seconds",
+            duration: 15
+        },
+        2: {
+            badge: "PHASE 2 of 4",
+            title: "2. Phase: Pregnancy",
+            bio: "Pregnancy hormones (estrogen, progesterone, prolactin) trigger a massive architectural remodeling. Milk-secreting lobules (alveoli) mature like clusters of grapes, preparing the gland for future lactation.",
+            task: "Click on the branches to sprout purple alveolar clusters (alveoli)!",
+            timeLimit: "30 seconds",
+            duration: 30
+        },
+        3: {
+            badge: "PHASE 3 of 4",
+            title: "3. Phase: Lactation",
+            bio: "After birth, prolactin stimulates milk synthesis inside alveolar lumens, while suckling triggers oxytocin release, contracting myoepithelial cells and ejecting milk through the ducts.",
+            task: "Click on the mature alveoli to eject milk and fill the baby bottles!",
+            timeLimit: "30 seconds",
+            duration: 30
+        },
+        4: {
+            badge: "PHASE 4 of 4",
+            title: "4. Phase: Involution",
+            bio: "Upon weaning, milk accumulation and hormone drop trigger programmed cell death (apoptosis). Specialized scavenger cells (macrophages) engulf dying alveolar cells and clear excess branches, returning the gland to a resting state.",
+            task: "Click on the alveoli to trigger apoptosis and call macrophages to clear the tissue!",
+            timeLimit: "No limit (clear all alveoli)",
+            duration: 0
+        },
+        5: {
+            badge: "CYCLE COMPLETE",
+            title: "Simulation Finished! 🎉"
+        }
+    };
+
+    function resizeCanvas() {
+        const wrapper = document.getElementById('canvas-wrapper');
+        canvas.width = wrapper.clientWidth;
+        canvas.height = wrapper.clientHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    class Node {
+        constructor(x, y, level = 0, angle = -Math.PI / 2) {
+            this.x = x;
+            this.y = y;
+            this.level = level;
+            this.angle = angle;
+            this.isTip = true;
+            this.hasAlveolus = false;
+            this.alveolusRadius = 0;
+            this.maxAlveolusRadius = (canvas.width < 500 ? 10 : 14) + Math.random() * 3.5;
+            this.pulse = Math.random() * Math.PI;
+            this.isEaten = false;
+            this.isApoptotic = false;
+            this.isTargetedByMacrophage = false;
+            this.blebs = [];
+
+            this.budCount = 4 + Math.floor(Math.random() * 3); 
+            this.budOffsets = [];
+            for (let i = 0; i < this.budCount; i++) {
+                const angle = (i / this.budCount) * Math.PI * 2 + (Math.random() * 0.4 - 0.2);
+                const dist = (canvas.width < 500 ? 3.5 : 5) + Math.random() * 3.5;
+                const r = (canvas.width < 500 ? 3.5 : 5) + Math.random() * 2.5;
+                this.budOffsets.push({ angle, dist, r });
+            }
+        }
+
+        startApoptosis() {
+            this.isApoptotic = true;
+            this.blebs = [];
+            const numBlebs = 5 + Math.floor(Math.random() * 4);
+            for (let i = 0; i < numBlebs; i++) {
+                this.blebs.push({
+                    angle: (i / numBlebs) * Math.PI * 2 + Math.random() * 0.4,
+                    offset: Math.random() * Math.PI * 2,
+                    speed: 2 + Math.random() * 3,
+                    sizeRatio: 0.25 + Math.random() * 0.2
+                });
+            }
+        }
+    }
+
+    class Branch {
+        constructor(startNode, endNode) {
+            this.startNode = startNode;
+            this.endNode = endNode;
+            const baseThick = canvas.width < 500 ? 9 : 15;
+            this.thickness = Math.max(2.5, baseThick - endNode.level * 1.6);
+            this.isEaten = false;
+            this.isTargetedByMacrophage = false;
+        }
+    }
+
+    class Macrophage {
+        constructor(x, y, target) {
+            this.x = x;
+            this.y = y;
+            this.target = target;
+            this.targetType = target instanceof Node ? 'node' : 'branch';
+            this.speed = canvas.width < 500 ? 4.5 : 5.5;
+            this.size = canvas.width < 500 ? 13 : 18;
+            this.state = 'hunting';
+            this.exitX = Math.random() < 0.5 ? -40 : canvas.width + 40;
+            this.exitY = Math.random() * canvas.height;
+            this.isDone = false;
+        }
+
+        update() {
+            if (this.isDone) return;
+
+            if (this.state === 'hunting') {
+                if (!this.target) {
+                    this.state = 'leaving';
+                    return;
+                }
+
+                let targetX, targetY;
+                if (this.targetType === 'node') {
+                    if (this.target.isEaten) { this.state = 'leaving'; return; }
+                    targetX = this.target.x;
+                    targetY = this.target.y;
+                } else {
+                    if (this.target.isEaten) { this.state = 'leaving'; return; }
+                    targetX = (this.target.startNode.x + this.target.endNode.x) / 2;
+                    targetY = (this.target.startNode.y + this.target.endNode.y) / 2;
+                }
+
+                const dx = targetX - this.x;
+                const dy = targetY - this.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 12) {
+                    if (this.targetType === 'node') {
+                        this.target.hasAlveolus = false;
+                        this.target.isEaten = true;
+                        createParticles(targetX, targetY, '#581c87', 15);
+                    } else {
+                        this.target.isEaten = true;
+                        createParticles(targetX, targetY, '#38bdf8', 12);
+                    }
+                    this.target = null;
+                    this.state = 'leaving';
+                    updateUI(false);
+                } else {
+                    this.x += (dx / dist) * this.speed;
+                    this.y += (dy / dist) * this.speed;
+                }
+            } else if (this.state === 'leaving') {
+                const dx = this.exitX - this.x;
+                const dy = this.exitY - this.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 20) {
+                    this.isDone = true;
+                } else {
+                    this.x += (dx / dist) * (this.speed * 1.3);
+                    this.y += (dy / dist) * (this.speed * 1.3);
+                }
+            }
+        }
+
+        draw() {
+            if (this.isDone) return;
+
+            ctx.save();
+            ctx.translate(this.x, this.y);
+            ctx.fillStyle = '#eab308';
+            ctx.shadowColor = '#eab308';
+            ctx.shadowBlur = 8;
+            
+            ctx.beginPath();
+            const time = Date.now() * 0.005;
+            for (let i = 0; i < 8; i++) {
+                const a = (i / 8) * Math.PI * 2;
+                const r = this.size + Math.sin(time + i * 2) * 2.5;
+                const px = Math.cos(a) * r;
+                const py = Math.sin(a) * r;
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.fillStyle = '#854d0e';
+            ctx.beginPath();
+            ctx.arc(0, 0, 3.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+    }
+
+    class MilkDroplet {
+        constructor(startNode) {
+            this.path = [];
+            let curr = startNode;
+            this.path.push({x: curr.x, y: curr.y});
+
+            while (curr) {
+                let parentBranch = branches.find(b => b.endNode === curr);
+                if (parentBranch) {
+                    curr = parentBranch.startNode;
+                    this.path.push({x: curr.x, y: curr.y});
+                } else {
+                    curr = null;
+                }
+            }
+
+            const rootX = canvas.width / 2;
+            const isMobile = canvas.width < 500;
+            const areolaY = isMobile ? canvas.height - 65 : canvas.height - 110;
+            const nippleTipY = areolaY + (isMobile ? 25 : 50);
+
+            this.path.push({x: rootX, y: nippleTipY});
+
+            const bRect = singleBottleContainer.getBoundingClientRect();
+            const cRect = canvas.getBoundingClientRect();
+            const bottleTargetX = (bRect.left + bRect.width / 2) - cRect.left;
+            const bottleTargetY = (bRect.top + 25) - cRect.top;
+
+            this.pathIndex = 0;
+            this.path.push({x: bottleTargetX, y: bottleTargetY});
+
+            this.x = this.path[0].x;
+            this.y = this.path[0].y;
+            this.speed = 10;
+            this.radius = isMobile ? 3.5 : 5;
+            this.isDone = false;
+        }
+
+        update() {
+            if (this.isDone || this.pathIndex >= this.path.length - 1) {
+                this.isDone = true;
+                return;
+            }
+
+            let target = this.path[this.pathIndex + 1];
+            let dx = target.x - this.x;
+            let dy = target.y - this.y;
+            let dist = Math.hypot(dx, dy);
+
+            if (dist < this.speed) {
+                this.x = target.x;
+                this.y = target.y;
+                this.pathIndex++;
+                if (this.pathIndex >= this.path.length - 1) {
+                    this.isDone = true;
+                    onMilkArrivedAtBottle();
+                }
+            } else {
+                this.x += (dx / dist) * this.speed;
+                this.y += (dy / dist) * this.speed;
+            }
+        }
+
+        draw() {
+            if (this.isDone) return;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.shadowColor = '#ffffff';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    function onMilkArrivedAtBottle() {
+        milkProducedMl += 10;
+        currentBottleMilkMl += 10;
+        milkCountEl.innerText = `${milkProducedMl} ml`;
+
+        if (currentBottleMilkMl >= maxBottleCapacityMl) {
+            completedBottlesCount++;
+            currentBottleMilkMl = 0; 
+            
+            const bRect = singleBottleContainer.getBoundingClientRect();
+            const cRect = canvas.getBoundingClientRect();
+            const bx = (bRect.left + bRect.width / 2) - cRect.left;
+            const by = (bRect.top + 25) - cRect.top;
+            createParticles(bx, by, '#38bdf8', 18);
+        }
+
+        updateBottleUI();
+    }
+
+    function updateBottleUI() {
+        const percentage = Math.min(100, (currentBottleMilkMl / maxBottleCapacityMl) * 100);
+        singleBottleFill.style.height = `${percentage}%`;
+        
+        bottleNumberTitle.innerText = `Bottle #${completedBottlesCount + 1}`;
+        bottleCurrentVal.innerText = `${currentBottleMilkMl} / ${maxBottleCapacityMl} ml`;
+    }
+
+    function showPhaseModal(phaseNum, step = 1) {
+        const data = phaseData[phaseNum];
+        modalBadge.innerText = data.badge;
+        modalTitle.innerText = data.title;
+        modalStep = step;
+
+        if (phaseNum === 5) {
+            modalSummaryBox.style.display = 'block';
+            modalBioBox.style.display = 'none';
+            modalTaskBox.style.display = 'none';
+            modalTimeBox.style.display = 'none';
+            modalBtn.innerText = "Play Again 🔄";
+
+            summaryPlayer.innerText = playerName;
+            summaryBranches.innerText = maxBranchesCreated;
+            summaryAlveoli.innerText = maxAlveoliCreated;
+            summaryMilk.innerText = `${milkProducedMl} ml`;
+
+            if (!scoreAlreadySaved) {
+                scoreAlreadySaved = true;
+                if (window.saveAndLoadCloudLeaderboard) {
+                    window.saveAndLoadCloudLeaderboard({
+                        name: playerName || "Guest",
+                        milk: milkProducedMl,
+                        branches: maxBranchesCreated,
+                        alveoli: maxAlveoliCreated,
+                        createdAt: Date.now()
+                    });
+                }
+            }
+        } else {
+            modalSummaryBox.style.display = 'none';
+
+            if (step === 1) {
+                modalBioBox.style.display = 'block';
+                modalTaskBox.style.display = 'none';
+                modalTimeBox.style.display = 'none';
+                modalBio.innerText = data.bio;
+                modalBtn.innerText = "Next: Mission ➔";
+            } else if (step === 2) {
+                modalBioBox.style.display = 'none';
+                modalTaskBox.style.display = 'block';
+                modalTimeBox.style.display = 'block';
+                modalTask.innerText = data.task;
+                modalTime.innerText = data.timeLimit;
+                modalBtn.innerText = "Start Phase ➔";
+            }
+        }
+
+        modal.classList.add('active');
+    }
+
+    function initGame() {
+        stopPhaseTimer();
+        scoreAlreadySaved = false;
+        currentPhase = 0;
+        modalStep = 1;
+        milkProducedMl = 0;
+        maxBranchesCreated = 0;
+        maxAlveoliCreated = 0;
+        
+        currentBottleMilkMl = 0;
+        completedBottlesCount = 0;
+        singleBottleContainer.style.display = 'none';
+
+        particles = [];
+        milkDroplets = [];
+        macrophages = [];
+
+        nodes = [];
+        branches = [];
+
+        playerNicknameInput.value = '';
+
+        resizeCanvas();
+
+        const isMobile = canvas.width < 500;
+        const rootX = canvas.width / 2;
+        const rootY = isMobile ? canvas.height - 65 : canvas.height - 110; 
+        const rootNode = new Node(rootX, rootY, 0, -Math.PI / 2);
+        
+        const firstTipX = rootX;
+        const firstTipY = rootY - (isMobile ? 22 : 32); 
+        const firstTipNode = new Node(firstTipX, firstTipY, 1, -Math.PI / 2);
+        rootNode.isTip = false;
+
+        nodes.push(rootNode, firstTipNode);
+        branches.push(new Branch(rootNode, firstTipNode));
+
+        phase1El.className = 'phase-step';
+        phase2El.className = 'phase-step';
+        phase3El.className = 'phase-step';
+        phase4El.className = 'phase-step';
+
+        updateUI(false);
+
+        modal.classList.remove('active');
+        introScreen.classList.remove('hidden');
+    }
+
+    introStartBtn.addEventListener('click', () => {
+        const val = playerNicknameInput.value.trim();
+        playerName = val ? val : "Guest";
+        playerDisplayEl.innerText = playerName;
+
+        introScreen.classList.add('hidden');
+        currentPhase = 1;
+        updateUI(false);
+        showPhaseModal(1, 1);
+    });
+
+    function startPhaseTimer(seconds, onComplete) {
+        stopPhaseTimer();
+        
+        if (seconds <= 0) {
+            leftTimerContainer.style.display = 'none';
+            return;
+        }
+
+        timerTotalDuration = seconds;
+        timerRemainingTime = seconds;
+        isTimerRunning = true;
+        onTimerCompleteCallback = onComplete;
+        lastTimestamp = performance.now();
+
+        leftTimerContainer.style.display = 'block';
+        leftTimerBar.style.transform = 'scaleY(1)';
+
+        function step(timestamp) {
+            if (!isTimerRunning) return;
+
+            const delta = (timestamp - lastTimestamp) / 1000;
+            lastTimestamp = timestamp;
+
+            timerRemainingTime -= delta;
+            
+            if (timerRemainingTime <= 0) {
+                timerRemainingTime = 0;
+                leftTimerBar.style.transform = 'scaleY(0)';
+                isTimerRunning = false;
+                leftTimerContainer.style.display = 'none';
+                if (onTimerCompleteCallback) onTimerCompleteCallback();
+            } else {
+                const progressRatio = timerRemainingTime / timerTotalDuration;
+                leftTimerBar.style.transform = `scaleY(${progressRatio})`;
+                timerAnimationId = requestAnimationFrame(step);
+            }
+        }
+
+        timerAnimationId = requestAnimationFrame(step);
+    }
+
+    function stopPhaseTimer() {
+        isTimerRunning = false;
+        if (timerAnimationId) {
+            cancelAnimationFrame(timerAnimationId);
+            timerAnimationId = null;
+        }
+        leftTimerContainer.style.display = 'none';
+    }
+
+    function branchFromNode(node) {
+        if (!node.isTip || currentPhase !== 1) return;
+
+        const isMobile = canvas.width < 500;
+        const baseLen = isMobile ? Math.min(55, canvas.height * 0.075) : Math.max(50, 110 - node.level * 8);
+        const branchLength = Math.max(isMobile ? 32 : 45, baseLen - node.level * (isMobile ? 4 : 8));
+        
+        const spreadAngle = isMobile ? (0.38 + Math.random() * 0.1) : (0.55 + Math.random() * 0.18);
+
+        const angle1 = node.angle - spreadAngle;
+        const angle2 = node.angle + spreadAngle;
+
+        const x1 = node.x + Math.cos(angle1) * branchLength;
+        const y1 = node.y + Math.sin(angle1) * branchLength;
+
+        const x2 = node.x + Math.cos(angle2) * branchLength;
+        const y2 = node.y + Math.sin(angle2) * branchLength;
+
+        const marginX = isMobile ? 10 : 20;
+        const marginY = isMobile ? 36 : 20; 
+
+        if (x1 < marginX || x1 > canvas.width - marginX || y1 < marginY || y1 > canvas.height - (isMobile ? 70 : 120) ||
+            x2 < marginX || x2 > canvas.width - marginX || y2 < marginY || y2 > canvas.height - (isMobile ? 70 : 120)) {
+            return;
+        }
+
+        node.isTip = false;
+
+        const child1 = new Node(x1, y1, node.level + 1, angle1);
+        const child2 = new Node(x2, y2, node.level + 1, angle2);
+
+        nodes.push(child1, child2);
+        branches.push(new Branch(node, child1));
+        branches.push(new Branch(node, child2));
+
+        createParticles(node.x, node.y, '#38bdf8', 10);
+        updateUI(false);
+    }
+
+    function addAlveolusToNode(node) {
+        if (currentPhase !== 2 || node.hasAlveolus) return;
+
+        node.hasAlveolus = true;
+        createParticles(node.x, node.y, '#a855f7', 12);
+        updateUI(false);
+    }
+
+    function triggerMilkEjection(node) {
+        if (currentPhase !== 3 || !node.hasAlveolus || !isTimerRunning) return;
+
+        createParticles(node.x, node.y, '#ffffff', 8);
+        milkDroplets.push(new MilkDroplet(node));
+    }
+
+    function triggerApoptosisAndTarget(node) {
+        if (currentPhase !== 4 || !node.hasAlveolus || node.isApoptotic || node.isEaten) return;
+
+        node.startApoptosis();
+        createParticles(node.x, node.y, '#7e22ce', 10);
+
+        if (!node.isTargetedByMacrophage) {
+            node.isTargetedByMacrophage = true;
+            const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
+            const startY = Math.random() * (canvas.height - 110) + 30;
+            macrophages.push(new Macrophage(startX, startY, node));
+        }
+
+        const remainingHealthyAlveoli = nodes.filter(n => n.hasAlveolus && !n.isApoptotic && !n.isEaten).length;
+        if (remainingHealthyAlveoli === 0) {
+            cleanOuterBranches();
+        }
+
+        updateUI(false);
+    }
+
+    function cleanOuterBranches() {
+        const maxLevel = Math.max(...branches.map(b => b.endNode.level));
+        const outerBranches = branches.filter(b => b.endNode.level >= Math.max(2, maxLevel - 1) && !b.isEaten && !b.isTargetedByMacrophage);
+        
+        for (let branch of outerBranches) {
+            branch.isTargetedByMacrophage = true;
+            const startX = Math.random() < 0.5 ? -30 : canvas.width + 30;
+            const startY = Math.random() * (canvas.height - 110) + 30;
+            macrophages.push(new Macrophage(startX, startY, branch));
+        }
+    }
+
+    function createParticles(x, y, color, count) {
+        for (let i = 0; i < count; i++) {
+            particles.push({
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * 4,
+                vy: (Math.random() - 0.5) * 4,
+                radius: Math.random() * 3 + 1.5,
+                color: color,
+                life: 1
+            });
+        }
+    }
+
+    function showInstructionBar(htmlContent) {
+        if (canvas.width < 768) return; 
+        if (instructionTimer) clearTimeout(instructionTimer);
+        
+        instructionBar.innerHTML = htmlContent;
+        instructionBar.classList.remove('hidden');
+
+        instructionTimer = setTimeout(() => {
+            instructionBar.classList.add('hidden');
+        }, 5000);
+    }
+
+    function handleInteraction(clickX, clickY) {
+        if (modal.classList.contains('active') || !introScreen.classList.contains('hidden')) return;
+
+        const isMobile = canvas.width < 500;
+        const hitRadius = isMobile ? 44 : 36;
+
+        if (currentPhase === 1 && isTimerRunning) {
+            for (let node of nodes) {
+                if (node.isTip) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
+                        branchFromNode(node);
+                        break;
+                    }
+                }
+            }
+        } else if (currentPhase === 2 && isTimerRunning) {
+            for (let node of nodes) {
+                if (!node.hasAlveolus) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
+                        addAlveolusToNode(node);
+                        break;
+                    }
+                }
+            }
+        } else if (currentPhase === 3 && isTimerRunning) {
+            for (let node of nodes) {
+                if (node.hasAlveolus) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
+                        triggerMilkEjection(node);
+                        break;
+                    }
+                }
+            }
+        } else if (currentPhase === 4) {
+            for (let node of nodes) {
+                if (node.hasAlveolus && !node.isApoptotic && !node.isEaten) {
+                    if (Math.hypot(node.x - clickX, node.y - clickY) < hitRadius) {
+                        triggerApoptosisAndTarget(node);
+                    }
+                }
+            }
+        }
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        const rect = canvas.getBoundingClientRect();
+        handleInteraction(e.clientX - rect.left, e.clientY - rect.top);
+    }, { passive: false });
+
+    function updateUI(showNewInstruction = true) {
+        const activeBranches = branches.filter(b => !b.isEaten).length;
+        const activeAlveoli = nodes.filter(n => n.hasAlveolus && !n.isEaten).length;
+
+        if (activeBranches > maxBranchesCreated) maxBranchesCreated = activeBranches;
+        if (activeAlveoli > maxAlveoliCreated) maxAlveoliCreated = activeAlveoli;
+
+        branchCountEl.innerText = activeBranches;
+        alveoliCountEl.innerText = activeAlveoli;
+        milkCountEl.innerText = `${milkProducedMl} ml`;
+
+        if (currentPhase === 3) {
+            singleBottleContainer.style.display = 'flex';
+            updateBottleUI();
+        } else {
+            singleBottleContainer.style.display = 'none';
+        }
+
+        if (currentPhase === 1) {
+            phase1El.className = 'phase-step active';
+            phase2El.className = 'phase-step';
+            phase3El.className = 'phase-step';
+            phase4El.className = 'phase-step';
+            if (showNewInstruction) showInstructionBar('💡 <b>Puberty:</b> Tap glowing red buds (TEBs) to branch!');
+        } else if (currentPhase === 2) {
+            phase1El.className = 'phase-step completed';
+            phase2El.className = 'phase-step active';
+            phase3El.className = 'phase-step';
+            phase4El.className = 'phase-step';
+            if (showNewInstruction) showInstructionBar('💡 <b>Pregnancy:</b> Tap branches to form alveoli!');
+        } else if (currentPhase === 3) {
+            phase1El.className = 'phase-step completed';
+            phase2El.className = 'phase-step completed';
+            phase3El.className = 'phase-step active';
+            phase4El.className = 'phase-step';
+            if (showNewInstruction) showInstructionBar('🍼 <b>Lactation:</b> Tap alveoli to pump milk into the bottle!');
+        } else if (currentPhase === 4) {
+            phase1El.className = 'phase-step completed';
+            phase2El.className = 'phase-step completed';
+            phase3El.className = 'phase-step completed';
+            phase4El.className = 'phase-step active';
+            if (showNewInstruction) showInstructionBar('🧹 <b>Involution:</b> Tap alveoli to start apoptosis and tissue cleanup!');
+        }
+    }
+
+    function advanceToNextPhase() {
+        stopPhaseTimer();
+
+        if (currentPhase < 4) {
+            currentPhase++;
+            updateUI(false);
+            showPhaseModal(currentPhase, 1);
+        } else {
+            currentPhase = 5;
+            updateUI(false);
+            showPhaseModal(5, 1);
+        }
+    }
+
+    nextBtn.addEventListener('click', advanceToNextPhase);
+
+    modalBtn.addEventListener('click', () => {
+        if (currentPhase === 5) {
+            initGame();
+            return;
+        }
+
+        if (modalStep === 1) {
+            showPhaseModal(currentPhase, 2);
+        } else if (modalStep === 2) {
+            modal.classList.remove('active');
+
+            if (currentPhase >= 1 && currentPhase <= 3) {
+                updateUI(true);
+                const duration = phaseData[currentPhase].duration;
+                startPhaseTimer(duration, () => advanceToNextPhase());
+            } else if (currentPhase === 4) {
+                updateUI(true);
+                const hasAnyAlveoli = nodes.some(n => n.hasAlveolus && !n.isEaten);
+                if (!hasAnyAlveoli) {
+                    cleanOuterBranches();
+                }
+            }
+        }
+    });
+
+    resetBtn.addEventListener('click', initGame);
+
+    function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const isMobile = canvas.width < 500;
+        const rootX = canvas.width / 2;
+        const areolaY = isMobile ? canvas.height - 65 : canvas.height - 110; 
+        const areolaR = isMobile ? 32 : 52;
+
+        // Areola
+        ctx.beginPath();
+        ctx.arc(rootX, areolaY, areolaR, 0, Math.PI, false);
+        ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
+        ctx.strokeStyle = 'rgba(236, 72, 153, 0.65)';
+        ctx.lineWidth = isMobile ? 2 : 3;
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        ctx.beginPath();
+        ctx.moveTo(rootX - areolaR, areolaY);
+        ctx.lineTo(rootX + areolaR, areolaY);
+        ctx.strokeStyle = 'rgba(251, 207, 232, 0.45)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Nipple
+        const nipW = isMobile ? 12 : 18;
+        const nipH = isMobile ? 18 : 28;
+        ctx.beginPath();
+        ctx.moveTo(rootX - nipW, areolaY + areolaR);
+        ctx.bezierCurveTo(rootX - nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR + nipH, rootX + nipW, areolaY + areolaR);
+        ctx.fillStyle = '#ec4899';
+        ctx.shadowColor = '#ec4899';
+        ctx.shadowBlur = 8;
+        ctx.fill();
+        ctx.strokeStyle = '#f472b6';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        ctx.beginPath();
+        ctx.arc(rootX, areolaY, isMobile ? 5 : 8, 0, Math.PI * 2);
+        ctx.fillStyle = '#0284c7';
+        ctx.fill();
+
+        ctx.fillStyle = '#fbcfe8';
+        ctx.font = isMobile ? 'bold 8.5px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('AREOLA', rootX - (areolaR + 4), areolaY + (isMobile ? 12 : 24));
+
+        ctx.fillStyle = '#ffffff';
+        ctx.font = isMobile ? 'bold 8.5px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('NIPPLE', rootX, areolaY + areolaR + (isMobile ? 18 : 32));
+
+        // Branches
+        for (let branch of branches) {
+            if (branch.isEaten) continue;
+
+            ctx.beginPath();
+            ctx.moveTo(branch.startNode.x, branch.startNode.y);
+            ctx.lineTo(branch.endNode.x, branch.endNode.y);
+            
+            const grad = ctx.createLinearGradient(branch.startNode.x, branch.startNode.y, branch.endNode.x, branch.endNode.y);
+            grad.addColorStop(0, '#0284c7');
+            grad.addColorStop(1, '#38bdf8');
+
+            ctx.strokeStyle = grad;
+            ctx.lineWidth = branch.thickness;
+            ctx.lineCap = 'round';
+            ctx.shadowColor = 'rgba(56, 189, 248, 0.4)';
+            ctx.shadowBlur = isMobile ? 4 : 8;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+
+        const time = Date.now() * 0.003;
+        for (let node of nodes) {
+            if (node.isEaten) continue;
+
+            if (node.hasAlveolus) {
+                if (node.isApoptotic) {
+                    if (node.alveolusRadius > node.maxAlveolusRadius * 0.7) {
+                        node.alveolusRadius -= 0.15;
+                    }
+
+                    const currentR = node.alveolusRadius;
+
+                    ctx.beginPath();
+                    ctx.arc(node.x, node.y, currentR, 0, Math.PI * 2);
+                    ctx.fillStyle = '#3b0764';
+                    ctx.strokeStyle = '#6b21a8';
+                    ctx.lineWidth = 1.5;
+                    ctx.shadowColor = 'rgba(88, 28, 135, 0.6)';
+                    ctx.shadowBlur = 6;
+                    ctx.fill();
+                    ctx.stroke();
+                    ctx.shadowBlur = 0;
+
+                    for (let bleb of node.blebs) {
+                        const blebPulse = Math.sin(time * bleb.speed + bleb.offset) * 1.5;
+                        const blebDist = currentR + 2 + blebPulse;
+                        const bx = node.x + Math.cos(bleb.angle) * blebDist;
+                        const by = node.y + Math.sin(bleb.angle) * blebDist;
+                        const blebR = Math.max(1.5, currentR * bleb.sizeRatio + blebPulse * 0.4);
+
+                        ctx.beginPath();
+                        ctx.arc(bx, by, blebR, 0, Math.PI * 2);
+                        ctx.fillStyle = '#581c87';
+                        ctx.strokeStyle = '#7e22ce';
+                        ctx.lineWidth = 1;
+                        ctx.fill();
+                        ctx.stroke();
+                    }
+                } else {
+                    if (node.alveolusRadius < node.maxAlveolusRadius) {
+                        node.alveolusRadius += 0.35;
+                    }
+
+                    const scale = node.alveolusRadius / node.maxAlveolusRadius;
+                    
+                    ctx.save();
+                    ctx.translate(node.x, node.y);
+
+                    for (let bud of node.budOffsets) {
+                        const bx = Math.cos(bud.angle) * (bud.dist * scale);
+                        const by = Math.sin(bud.angle) * (bud.dist * scale);
+                        const br = bud.r * scale;
+
+                        ctx.beginPath();
+                        ctx.arc(bx, by, br, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(168, 85, 247, 0.65)';
+                        ctx.strokeStyle = '#c084fc';
+                        ctx.lineWidth = 1.2;
+                        ctx.shadowColor = 'rgba(168, 85, 247, 0.4)';
+                        ctx.shadowBlur = 5;
+                        ctx.fill();
+                        ctx.stroke();
+
+                        ctx.beginPath();
+                        ctx.arc(bx, by, Math.max(1, br * 0.35), 0, Math.PI * 2);
+                        ctx.fillStyle = '#e9d5ff';
+                        ctx.fill();
+                    }
+
+                    ctx.beginPath();
+                    ctx.arc(0, 0, (isMobile ? 3 : 4.5) * scale, 0, Math.PI * 2);
+                    ctx.fillStyle = '#c084fc';
+                    ctx.fill();
+
+                    ctx.restore();
+                }
+            }
+
+            if (node.isTip && currentPhase === 1) {
+                const pulseRadius = (isMobile ? 7.5 : 9) + Math.sin(time * 4 + node.pulse) * 2.2;
+                
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, pulseRadius, 0, Math.PI * 2);
+                ctx.fillStyle = '#f43f5e';
+                ctx.shadowColor = '#f43f5e';
+                ctx.shadowBlur = 10;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
+                ctx.fill();
+            }
+        }
+
+        for (let i = milkDroplets.length - 1; i >= 0; i--) {
+            let drop = milkDroplets[i];
+            drop.update();
+            drop.draw();
+
+            if (drop.isDone) {
+                milkDroplets.splice(i, 1);
+            }
+        }
+
+        if (currentPhase === 4) {
+            let allDone = true;
+            for (let m of macrophages) {
+                m.update();
+                m.draw();
+                if (!m.isDone) allDone = false;
+            }
+
+            const remainingAlveoli = nodes.filter(n => n.hasAlveolus && !n.isEaten).length;
+
+            if (remainingAlveoli === 0 && macrophages.length > 0 && allDone && !modal.classList.contains('active')) {
+                setTimeout(() => {
+                    advanceToNextPhase();
+                }, 1000);
+            }
+        }
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+            let p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= 0.025;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = Math.max(0, p.life);
+            ctx.fill();
+            ctx.globalAlpha = 1.0;
+
+            if (p.life <= 0) {
+                particles.splice(i, 1);
+            }
+        }
+
+        requestAnimationFrame(render);
+    }
+
+    resizeCanvas();
+    initGame();
+    render();
+</script>
+</body>
+</html>
