@@ -43,25 +43,32 @@
         }
 
         header {
-            padding: clamp(6px, 1vh, 18px) clamp(10px, 2vw, 32px);
-            background: rgba(15, 23, 42, 0.95);
+            padding: clamp(6px, 1vh, 14px) clamp(10px, 2vw, 28px);
+            background: rgba(15, 23, 42, 0.96);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(56, 189, 248, 0.2);
             display: flex;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 30;
+            flex-shrink: 0;
+        }
+
+        .header-top {
+            display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 10;
-            flex-shrink: 0;
+            width: 100%;
         }
 
         .title-box {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px;
         }
 
         .title-box h1 {
-            font-size: clamp(14px, 2vw, 30px);
+            font-size: clamp(13.5px, 1.8vw, 26px);
             font-weight: 800;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
@@ -71,34 +78,43 @@
         }
 
         .title-box p {
-            font-size: clamp(9px, 1vw, 15px);
+            font-size: clamp(8.5px, 0.95vw, 13px);
             color: #94a3b8;
             line-height: 1.2;
         }
 
         .phase-indicator {
             display: flex;
-            gap: clamp(4px, 0.8vw, 14px);
+            gap: clamp(4px, 0.8vw, 10px);
             align-items: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 2px;
+            scrollbar-width: none;
+        }
+
+        .phase-indicator::-webkit-scrollbar {
+            display: none;
         }
 
         .phase-step {
-            padding: clamp(4px, 0.8vh, 10px) clamp(8px, 1.1vw, 18px);
+            padding: clamp(4px, 0.6vh, 8px) clamp(8px, 1vw, 14px);
             border-radius: 999px;
-            font-size: clamp(9.5px, 0.95vw, 15px);
+            font-size: clamp(9px, 0.9vw, 13px);
             font-weight: 600;
             background: #1e293b;
             color: #64748b;
             border: 1px solid #334155;
             transition: all 0.3s ease;
             white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .phase-step.active {
             background: rgba(56, 189, 248, 0.2);
             border-color: #38bdf8;
             color: #38bdf8;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
         }
 
         .phase-step.completed {
@@ -127,7 +143,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: clamp(5px, 0.7vw, 12px);
+            width: clamp(5px, 0.7vw, 10px);
             height: 100%;
             background: rgba(15, 23, 42, 0.6);
             border-right: 1px solid rgba(56, 189, 248, 0.2);
@@ -145,20 +161,30 @@
             transition: transform 0.1s linear;
         }
 
-        #stats-overlay {
+        /* Společný horní pruh zamezující překrývání */
+        #hud-top-bar {
             position: absolute;
-            top: clamp(6px, 1.2vh, 18px);
-            left: clamp(6px, 1.2vw, 18px);
+            top: clamp(6px, 1.2vh, 14px);
+            left: clamp(6px, 1.2vw, 16px);
+            right: clamp(6px, 1.2vw, 16px);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: none;
+            z-index: 20;
+            gap: 8px;
+        }
+
+        #stats-overlay {
             background: rgba(15, 23, 42, 0.88);
             border: 1px solid #334155;
-            border-radius: clamp(6px, 0.8vw, 12px);
-            padding: clamp(4px, 0.8vh, 10px) clamp(8px, 1.1vw, 18px);
-            font-size: clamp(10px, 1vw, 16px);
+            border-radius: clamp(6px, 0.8vw, 10px);
+            padding: clamp(4px, 0.7vh, 8px) clamp(8px, 1vw, 14px);
+            font-size: clamp(10px, 1vw, 14px);
             display: flex;
-            gap: clamp(8px, 1.3vw, 20px);
-            z-index: 10;
+            gap: clamp(6px, 1vw, 14px);
             backdrop-filter: blur(8px);
-            pointer-events: none;
+            flex-shrink: 0;
         }
 
         .stat-item {
@@ -168,21 +194,47 @@
 
         .stat-label {
             color: #94a3b8;
-            font-size: clamp(8px, 0.75vw, 12px);
+            font-size: clamp(8px, 0.75vw, 11px);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: clamp(12px, 1.3vw, 22px);
+            font-size: clamp(12px, 1.2vw, 18px);
             font-weight: 800;
             color: #38bdf8;
         }
 
+        #legend {
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid #334155;
+            padding: clamp(4px, 0.7vh, 8px) clamp(8px, 1vw, 12px);
+            border-radius: clamp(6px, 0.8vw, 10px);
+            font-size: clamp(9px, 0.85vw, 12px);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(2px, 0.4vh, 4px);
+            backdrop-filter: blur(8px);
+            flex-shrink: 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-dot {
+            width: clamp(7px, 0.7vw, 10px);
+            height: clamp(7px, 0.7vw, 10px);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
         #single-bottle-container {
             position: absolute;
-            bottom: calc(clamp(14px, 2vh, 32px) + env(safe-area-inset-bottom, 12px));
-            left: clamp(10px, 1.8vw, 26px);
+            bottom: calc(clamp(16px, 2.5vh, 32px) + env(safe-area-inset-bottom, 14px));
+            left: clamp(10px, 2vw, 26px);
             display: none;
             flex-direction: column;
             align-items: center;
@@ -193,8 +245,8 @@
 
         .bottle-graphic {
             position: relative;
-            width: clamp(42px, 5.2vw, 80px);
-            height: clamp(84px, 10.4vw, 160px);
+            width: clamp(40px, 5vw, 75px);
+            height: clamp(80px, 10vw, 150px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -303,18 +355,18 @@
 
         #instruction-bar {
             position: absolute;
-            top: clamp(6px, 1.5vh, 18px);
+            top: clamp(48px, 6.5vh, 60px);
             left: 50%;
             transform: translateX(-50%) translateY(0);
-            background: rgba(15, 23, 42, 0.92);
+            background: rgba(15, 23, 42, 0.94);
             border: 1px solid #38bdf8;
-            padding: clamp(5px, 0.8vh, 10px) clamp(10px, 1.5vw, 22px);
+            padding: clamp(5px, 0.8vh, 10px) clamp(12px, 1.5vw, 22px);
             border-radius: 999px;
-            font-size: clamp(10px, 1vw, 15px);
+            font-size: clamp(10px, 1vw, 14px);
             color: #f8fafc;
             box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
             pointer-events: none;
-            z-index: 20;
+            z-index: 25;
             text-align: center;
             max-width: 90%;
             backdrop-filter: blur(8px);
@@ -329,18 +381,18 @@
 
         #control-panel {
             position: absolute;
-            bottom: calc(clamp(14px, 2vh, 32px) + env(safe-area-inset-bottom, 12px));
-            right: clamp(10px, 1.8vw, 26px);
+            bottom: calc(clamp(16px, 2.5vh, 32px) + env(safe-area-inset-bottom, 14px));
+            right: clamp(10px, 2vw, 26px);
             display: flex;
             gap: clamp(6px, 0.8vw, 12px);
-            z-index: 10;
+            z-index: 20;
         }
 
         .btn {
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: none;
-            padding: clamp(8px, 1.1vh, 13px) clamp(12px, 1.4vw, 22px);
+            padding: clamp(8px, 1.1vh, 13px) clamp(12px, 1.4vw, 20px);
             font-size: clamp(11.5px, 1.1vw, 15px);
             font-weight: 700;
             border-radius: clamp(6px, 0.7vw, 10px);
@@ -368,35 +420,6 @@
         .btn-secondary:hover {
             background: #334155;
             color: #ffffff;
-        }
-
-        #legend {
-            position: absolute;
-            top: clamp(6px, 1.2vh, 16px);
-            right: clamp(6px, 1.2vw, 16px);
-            background: rgba(15, 23, 42, 0.88);
-            border: 1px solid #334155;
-            padding: clamp(5px, 0.8vh, 10px) clamp(8px, 1vw, 14px);
-            border-radius: clamp(5px, 0.6vw, 8px);
-            font-size: clamp(9.5px, 0.9vw, 13px);
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            gap: clamp(3px, 0.5vh, 5px);
-            backdrop-filter: blur(8px);
-            pointer-events: none;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .legend-dot {
-            width: clamp(7px, 0.7vw, 11px);
-            height: clamp(7px, 0.7vw, 11px);
-            border-radius: 50%;
         }
 
         #modal {
@@ -732,17 +755,14 @@
             opacity: 0.8;
         }
 
-        /* Mobilní layout bez skrývání podstatných prvků */
+        /* --- MOBILNÍ SPECIFIKACE --- */
         @media (max-width: 768px) {
             header { 
                 padding: 6px 10px;
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 2px;
+                gap: 4px;
             }
-            .phase-indicator { display: none; }
             .title-box h1 { font-size: 13.5px; }
-            .title-box p { font-size: 9.5px; }
+            .title-box p { font-size: 8.5px; }
 
             .intro-card { 
                 flex-direction: column; 
@@ -756,34 +776,39 @@
             .intro-right-graphic { 
                 display: flex !important;
                 width: 100%;
-                min-height: 190px;
-                max-height: 240px;
-                padding: 4px 10px 16px;
+                min-height: 180px;
+                max-height: 220px;
+                padding: 4px 10px 14px;
             }
             .intro-right-graphic svg {
-                max-height: 220px;
+                max-height: 200px;
             }
 
-            #legend {
-                top: 6px;
+            #hud-top-bar {
+                top: 4px;
+                left: 6px;
                 right: 6px;
-                padding: 4px 8px;
-                font-size: 8.5px;
-                gap: 3px;
-            }
-            .legend-dot { width: 6.5px; height: 6.5px; }
-
-            #instruction-bar {
-                font-size: 10px;
-                padding: 4px 8px;
-                top: 6px;
+                gap: 6px;
             }
 
             #stats-overlay {
-                top: 6px;
-                left: 6px;
-                padding: 4px 8px;
-                gap: 8px;
+                padding: 3px 6px;
+                gap: 6px;
+            }
+            .stat-value { font-size: 11px; }
+            .stat-label { font-size: 7.5px; }
+
+            #legend {
+                padding: 3px 6px;
+                font-size: 8px;
+                gap: 2px;
+            }
+            .legend-dot { width: 5.5px; height: 5.5px; }
+
+            #instruction-bar {
+                top: 40px;
+                font-size: 9.5px;
+                padding: 3px 8px;
             }
         }
     </style>
@@ -792,15 +817,17 @@
 
 <div id="game-container">
     <header>
-        <div class="title-box">
-            <h1>Architekt Mléčné Žlázy</h1>
-            <p>Interaktivní simulace pro Noc vědců - Ústav molekulární genetiky AV ČR, v. v. i., Laboratoř vývoje tkání a nádorů</p>
+        <div class="header-top">
+            <div class="title-box">
+                <h1>Architekt Mléčné Žlázy</h1>
+                <p>Interaktivní simulace pro Noc vědců - Ústav molekulární genetiky AV ČR, v. v. i., Laboratoř vývoje tkání a nádorů</p>
+            </div>
         </div>
         <div class="phase-indicator">
             <div id="phase-1" class="phase-step">1. Dospívání (Puberta)</div>
             <div id="phase-2" class="phase-step">2. Těhotenství (Gravidita)</div>
             <div id="phase-3" class="phase-step">3. Kojení (Laktace)</div>
-            <div id="phase-4" class="phase-step">4. Návrat do klidového stavu (Involuce)</div>
+            <div id="phase-4" class="phase-step">4. Návrat do klidu (Involuce)</div>
         </div>
     </header>
 
@@ -809,22 +836,31 @@
             <div id="left-timer-bar"></div>
         </div>
 
-        <div id="stats-overlay">
-            <div class="stat-item">
-                <span class="stat-label">Hráč</span>
-                <span id="player-display" class="stat-value" style="color: #facc15;">Host</span>
+        <div id="hud-top-bar">
+            <div id="stats-overlay">
+                <div class="stat-item">
+                    <span class="stat-label">Hráč</span>
+                    <span id="player-display" class="stat-value" style="color: #facc15;">Host</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Větve</span>
+                    <span id="branch-count" class="stat-value">1</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Alveoly</span>
+                    <span id="alveoli-count" class="stat-value">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Mléko</span>
+                    <span id="milk-count" class="stat-value">0 ml</span>
+                </div>
             </div>
-            <div class="stat-item">
-                <span class="stat-label">Větve</span>
-                <span id="branch-count" class="stat-value">1</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Alveoly</span>
-                <span id="alveoli-count" class="stat-value">0</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Mléko</span>
-                <span id="milk-count" class="stat-value">0 ml</span>
+
+            <div id="legend">
+                <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Mlékovody (Duktální síť)</div>
+                <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Pupeny (TEB)</div>
+                <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Alveoly (Váčky)</div>
+                <div class="legend-item"><div class="legend-dot" style="background: #ffffff; border: 1px solid #cbd5e1;"></div> Makrofágy</div>
             </div>
         </div>
 
@@ -850,13 +886,6 @@
         </div>
 
         <div id="instruction-bar">💡 Vítej v simulaci! Klikni na tlačítko níže pro start.</div>
-        
-        <div id="legend">
-            <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Mlékovody (Duktální síť)</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Terminální koncové pupeny (TEB)</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Mléčné váčky (Alveoly)</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #ffffff; border: 1px solid #cbd5e1; box-shadow: 0 0 4px rgba(255,255,255,0.8);"></div> Buňky imunitního systému (Makrofágy)</div>
-        </div>
 
         <canvas id="gameCanvas"></canvas>
 
@@ -1264,7 +1293,8 @@
         if (isPortrait) {
             scaleFactor = Math.min(canvas.width / 400, canvas.height / 700);
             scaleFactor = Math.max(0.65, Math.min(scaleFactor, 1.1));
-            bottomNippleOffset = Math.max(90, canvas.height * 0.16);
+            // Dostatečný odstup od spodní lišty a tlačítek pro mobil
+            bottomNippleOffset = Math.max(100, canvas.height * 0.17);
         } else {
             scaleFactor = Math.min(canvas.width, canvas.height) / 780;
             scaleFactor = Math.max(0.8, Math.min(scaleFactor, 2.0));
