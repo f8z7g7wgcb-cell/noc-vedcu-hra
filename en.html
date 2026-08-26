@@ -44,11 +44,11 @@
             align-items: center;
             z-index: 10;
             flex-shrink: 0;
-            height: 42px;
+            height: clamp(42px, 5vh, 52px);
         }
 
         .title-box h1 {
-            font-size: 15px;
+            font-size: clamp(14px, 1.4vw, 19px);
             font-weight: 800;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
@@ -57,7 +57,7 @@
         }
 
         .title-box p {
-            font-size: 11px;
+            font-size: clamp(10px, 1vw, 13px);
             color: #94a3b8;
         }
 
@@ -70,7 +70,7 @@
         .phase-step {
             padding: 4px 10px;
             border-radius: 20px;
-            font-size: 10px;
+            font-size: clamp(10px, 0.9vw, 13px);
             font-weight: 600;
             background: #1e293b;
             color: #64748b;
@@ -138,9 +138,9 @@
             border: 1px solid #334155;
             border-radius: 8px;
             padding: 4px 8px;
-            font-size: 10px;
+            font-size: clamp(10px, 1vw, 13px);
             display: flex;
-            gap: 8px;
+            gap: 10px;
             z-index: 10;
             backdrop-filter: blur(8px);
             pointer-events: none;
@@ -153,13 +153,13 @@
 
         .stat-label {
             color: #94a3b8;
-            font-size: 8.5px;
+            font-size: clamp(8.5px, 0.8vw, 11px);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .stat-value {
-            font-size: 12px;
+            font-size: clamp(12px, 1.2vw, 16px);
             font-weight: 800;
             color: #38bdf8;
         }
@@ -298,7 +298,7 @@
             border: 1px solid #38bdf8;
             padding: 6px 14px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: clamp(11px, 1.1vw, 14px);
             color: #f8fafc;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             pointer-events: none;
@@ -320,7 +320,7 @@
             bottom: 12px;
             right: 12px;
             display: flex;
-            gap: 6px;
+            gap: 8px;
             z-index: 10;
         }
 
@@ -328,8 +328,8 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: none;
-            padding: 8px 14px;
-            font-size: 12px;
+            padding: clamp(8px, 1.2vw, 12px) clamp(12px, 2vw, 20px);
+            font-size: clamp(12px, 1.1vw, 15px);
             font-weight: 700;
             border-radius: 8px;
             cursor: pointer;
@@ -337,7 +337,7 @@
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             touch-action: manipulation;
         }
 
@@ -370,7 +370,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px;
+            padding: clamp(10px, 2vw, 20px);
             z-index: 100;
             opacity: 0;
             pointer-events: none;
@@ -385,20 +385,20 @@
         .modal-card {
             background: #0f172a;
             border: 1px solid #38bdf8;
-            border-radius: 14px;
-            padding: 16px;
-            max-width: 650px;
+            border-radius: 16px;
+            padding: clamp(14px, 2.5vw, 26px);
+            max-width: min(820px, 94vw);
             width: 96%;
-            max-height: 92vh;
+            max-height: 90vh;
             overflow-y: auto;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 40px rgba(56, 189, 248, 0.2);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: clamp(8px, 1.4vh, 14px);
         }
 
         .modal-card h2 {
-            font-size: 18px;
+            font-size: clamp(18px, 2vw, 24px);
             color: #38bdf8;
         }
 
@@ -406,38 +406,38 @@
             align-self: flex-start;
             background: linear-gradient(90deg, #2563eb, #38bdf8);
             color: white;
-            padding: 3px 8px;
+            padding: clamp(3px, 0.6vw, 6px) clamp(8px, 1.2vw, 12px);
             border-radius: 12px;
             font-weight: 700;
-            font-size: 10px;
+            font-size: clamp(10px, 0.9vw, 12px);
         }
 
         .summary-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: clamp(6px, 1vw, 12px);
             margin-top: 2px;
         }
 
         .summary-card {
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 6px;
-            padding: 6px 10px;
+            border-radius: 8px;
+            padding: clamp(6px, 1vw, 12px) clamp(10px, 1.5vw, 16px);
             display: flex;
             flex-direction: column;
-            gap: 1px;
+            gap: 2px;
         }
 
         .summary-card-title {
-            font-size: 8.5px;
+            font-size: clamp(8.5px, 0.8vw, 11px);
             color: #94a3b8;
             text-transform: uppercase;
             font-weight: 700;
         }
 
         .summary-card-val {
-            font-size: 15px;
+            font-size: clamp(15px, 1.8vw, 22px);
             font-weight: 800;
             color: #38bdf8;
         }
@@ -445,8 +445,8 @@
         .leaderboard-box {
             background: #1e293b;
             border: 1px solid #334155;
-            border-radius: 6px;
-            padding: 8px;
+            border-radius: 8px;
+            padding: clamp(8px, 1.2vw, 14px);
             margin-top: 2px;
         }
 
@@ -454,11 +454,11 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
         .leaderboard-title {
-            font-size: 11px;
+            font-size: clamp(11px, 1.1vw, 14px);
             font-weight: 700;
             color: #facc15;
             text-transform: uppercase;
@@ -468,19 +468,19 @@
         .leaderboard-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 10.5px;
+            font-size: clamp(10.5px, 1vw, 13px);
         }
 
         .leaderboard-table th {
             text-align: left;
-            padding: 3px 4px;
+            padding: clamp(3px, 0.6vw, 6px) clamp(4px, 0.8vw, 8px);
             color: #94a3b8;
             border-bottom: 1px solid #334155;
             font-weight: 600;
         }
 
         .leaderboard-table td {
-            padding: 3px 4px;
+            padding: clamp(3px, 0.6vw, 6px) clamp(4px, 0.8vw, 8px);
             border-bottom: 1px solid rgba(51, 65, 85, 0.4);
             color: #f8fafc;
         }
@@ -496,18 +496,23 @@
 
         .info-box, .task-box, .time-box {
             background: #1e293b;
-            padding: 8px 12px;
-            border-radius: 6px;
-            font-size: 12px;
+            padding: clamp(8px, 1.4vw, 14px) clamp(10px, 1.8vw, 18px);
+            border-radius: 8px;
+            font-size: clamp(12px, 1.2vw, 15px);
             color: #cbd5e1;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
-        .info-box { border-left: 3px solid #a855f7; }
-        .task-box { border-left: 3px solid #22c55e; }
-        .time-box { border-left: 3px solid #38bdf8; }
+        .info-box { border-left: 4px solid #a855f7; }
+        .task-box { border-left: 4px solid #22c55e; }
+        .time-box { border-left: 4px solid #38bdf8; }
 
-        .info-box b, .task-box b, .time-box b { color: #f8fafc; font-size: 13px; display: block; margin-bottom: 2px; }
+        .info-box b, .task-box b, .time-box b { 
+            color: #f8fafc; 
+            font-size: clamp(13px, 1.3vw, 16px); 
+            display: block; 
+            margin-bottom: 4px; 
+        }
 
         #legend {
             position: absolute;
@@ -517,7 +522,7 @@
             border: 1px solid #334155;
             padding: 6px 10px;
             border-radius: 6px;
-            font-size: 10px;
+            font-size: clamp(10px, 0.9vw, 12px);
             z-index: 5;
             display: flex;
             flex-direction: column;
@@ -575,7 +580,7 @@
 
         .intro-left-content {
             width: 48%;
-            padding: 20px;
+            padding: clamp(16px, 2.5vw, 28px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -589,7 +594,7 @@
             color: #38bdf8;
             padding: 3px 8px;
             border-radius: 12px;
-            font-size: 9.5px;
+            font-size: clamp(9.5px, 0.9vw, 11px);
             font-weight: 700;
             letter-spacing: 0.5px;
             margin-bottom: 6px;
@@ -597,7 +602,7 @@
         }
 
         .intro-left-content h1 {
-            font-size: 24px;
+            font-size: clamp(24px, 2.8vw, 34px);
             font-weight: 900;
             line-height: 1.1;
             text-transform: uppercase;
@@ -608,15 +613,15 @@
         }
 
         .intro-subtitle {
-            font-size: 15px;
+            font-size: clamp(15px, 1.6vw, 19px);
             color: #cbd5e1;
             font-weight: 600;
             margin-bottom: 6px;
         }
 
         .intro-description {
-            font-size: 12px;
-            line-height: 1.4;
+            font-size: clamp(12px, 1.2vw, 15px);
+            line-height: 1.45;
             color: #94a3b8;
             margin-bottom: 12px;
         }
@@ -624,12 +629,12 @@
         .nickname-box {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 4px;
             margin-bottom: 12px;
         }
 
         .nickname-box label {
-            font-size: 9.5px;
+            font-size: clamp(9.5px, 0.9vw, 12px);
             color: #cbd5e1;
             font-weight: 700;
             text-transform: uppercase;
@@ -639,8 +644,8 @@
             background: #1e293b;
             border: 2px solid #334155;
             border-radius: 6px;
-            padding: 7px 10px;
-            font-size: 13px;
+            padding: clamp(7px, 1vw, 10px) clamp(10px, 1.2vw, 14px);
+            font-size: clamp(13px, 1.2vw, 15px);
             color: #ffffff;
             font-weight: 600;
             outline: none;
@@ -657,14 +662,14 @@
             background: linear-gradient(135deg, #166534, #22c55e);
             color: white;
             border: 1px solid rgba(255, 255, 255, 0.3);
-            padding: 10px 20px;
-            font-size: 13px;
+            padding: clamp(10px, 1.4vw, 14px) clamp(18px, 2.5vw, 26px);
+            font-size: clamp(13px, 1.2vw, 16px);
             font-weight: 800;
             border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             text-transform: uppercase;
             touch-action: manipulation;
         }
@@ -697,6 +702,7 @@
             opacity: 0.8;
         }
 
+        /* --- MOBILNÍ SPECIFICKÁ OPTIMALIZACE --- */
         @media (max-width: 768px) {
             header { 
                 padding: 2px 8px; 
@@ -739,7 +745,7 @@
     <header>
         <div class="title-box">
             <h1>Mammary Gland Architect</h1>
-            <p>Interactive simulation for Researchers' Night - IMG CAS</p>
+            <p>Interactive simulation for Researchers' Night - Institute of Molecular Genetics of the Czech Academy of Sciences, Laboratory of Tissue Morphogenesis and Cancer</p>
         </div>
         <div class="phase-indicator">
             <div id="phase-1" class="phase-step">1. Puberty</div>
@@ -968,7 +974,7 @@
                 <h2 id="modal-title">1. Phase: Puberty</h2>
 
                 <div id="modal-summary-box" style="display: none;">
-                    <p style="color: #cbd5e1; font-size: 12px; margin-bottom: 3px;">You have successfully completed the full cycle! Here is your summary:</p>
+                    <p style="color: #cbd5e1; font-size: clamp(12px, 1.2vw, 15px); margin-bottom: 6px;">You have successfully completed the full cycle! Here is your summary:</p>
                     <div class="summary-grid">
                         <div class="summary-card">
                             <span class="summary-card-title">Player</span>
@@ -1002,7 +1008,7 @@
                                 </tr>
                             </thead>
                             <tbody id="leaderboard-body">
-                                <tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:6px;">Loading online leaderboard...</td></tr>
+                                <tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:8px;">Loading online leaderboard...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1646,6 +1652,7 @@
         if (!node.isTip || currentPhase !== 1) return;
 
         const isMobile = canvas.width < 500;
+        
         const baseLen = isMobile ? Math.min(55, canvas.height * 0.075) : Math.max(50, 110 - node.level * 8);
         const branchLength = Math.max(isMobile ? 32 : 45, baseLen - node.level * (isMobile ? 4 : 8));
         
