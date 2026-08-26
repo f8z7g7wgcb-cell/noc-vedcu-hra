@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mammary Gland Architect - Researchers' Night</title>
+    <title>Architekt Mléčné Žlázy - Noc vědců</title>
     <style>
         * {
             box-sizing: border-box;
@@ -744,14 +744,14 @@
 <div id="game-container">
     <header>
         <div class="title-box">
-            <h1>Mammary Gland Architect</h1>
-            <p>Interactive simulation for Researchers' Night - Institute of Molecular Genetics of the Czech Academy of Sciences, Laboratory of Tissue Morphogenesis and Cancer</p>
+            <h1>Architekt Mléčné Žlázy</h1>
+            <p>Interaktivní simulace pro Noc vědců - Ústav molekulární genetiky AV ČR, v. v. i., Laboratoř vývoje tkání a nádorů</p>
         </div>
         <div class="phase-indicator">
-            <div id="phase-1" class="phase-step">1. Puberty</div>
-            <div id="phase-2" class="phase-step">2. Pregnancy</div>
-            <div id="phase-3" class="phase-step">3. Lactation</div>
-            <div id="phase-4" class="phase-step">4. Involution</div>
+            <div id="phase-1" class="phase-step">1. Puberta</div>
+            <div id="phase-2" class="phase-step">2. Těhotenství</div>
+            <div id="phase-3" class="phase-step">3. Kojení</div>
+            <div id="phase-4" class="phase-step">4. Návrat do klidového stavu</div>
         </div>
     </header>
 
@@ -762,19 +762,19 @@
 
         <div id="stats-overlay">
             <div class="stat-item">
-                <span class="stat-label">Player</span>
-                <span id="player-display" class="stat-value" style="color: #facc15;">Guest</span>
+                <span class="stat-label">Hráč</span>
+                <span id="player-display" class="stat-value" style="color: #facc15;">Host</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Branches</span>
+                <span class="stat-label">Větve</span>
                 <span id="branch-count" class="stat-value">1</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Alveoli</span>
+                <span class="stat-label">Alveoly</span>
                 <span id="alveoli-count" class="stat-value">0</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Milk</span>
+                <span class="stat-label">Mléko</span>
                 <span id="milk-count" class="stat-value">0 ml</span>
             </div>
         </div>
@@ -795,44 +795,44 @@
                 </div>
             </div>
             <div class="bottle-label">
-                <div id="bottle-number-title" class="bottle-label-title">Bottle #1</div>
+                <div id="bottle-number-title" class="bottle-label-title">Láhev #1</div>
                 <div id="bottle-current-val" class="bottle-label-value">0 / 250 ml</div>
             </div>
         </div>
 
-        <div id="instruction-bar">💡 Welcome! Click the button below to start.</div>
+        <div id="instruction-bar">💡 Vítej v simulaci! Klikni na tlačítko níže pro start.</div>
         
         <div id="legend">
-            <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Ducts</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Buds (TEBs)</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Alveoli</div>
-            <div class="legend-item"><div class="legend-dot" style="background: #eab308;"></div> Macrophages</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #38bdf8;"></div> Mlékovody</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #f43f5e;"></div> Pupeny (TEB)</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #a855f7;"></div> Alveoly</div>
+            <div class="legend-item"><div class="legend-dot" style="background: #eab308;"></div> Makrofágy</div>
         </div>
 
         <canvas id="gameCanvas"></canvas>
 
         <div id="control-panel">
             <button id="reset-btn" class="btn btn-secondary">🔄 Restart</button>
-            <button id="next-btn" class="btn">Skip ➔</button>
+            <button id="next-btn" class="btn">Přeskočit ➔</button>
         </div>
 
         <div id="intro-screen">
             <div class="intro-card">
                 <div class="intro-left-content">
-                    <div class="intro-badge-tag">🔬 Researchers' Night • Interactive Biology</div>
-                    <h1>Mammary Gland<br>Architect</h1>
-                    <div class="intro-subtitle">Welcome to the game!</div>
+                    <div class="intro-badge-tag">🔬 Noc vědců • Interaktivní biologie</div>
+                    <h1>Architekt<br>mléčné žlázy</h1>
+                    <div class="intro-subtitle">Vítejte ve hře!</div>
                     <p class="intro-description">
-                        Explore the fascinating architecture and life cycle of the mammary gland. Experience ductal branching in puberty, alveoli formation during pregnancy, milk production during lactation, and tissue remodeling in involution.
+                        Prozkoumejte architekturu a životní cyklus mléčné žlázy. Vyzkoušejte si větvení v pubertě, tvorbu alveol v graviditě, produkci mléka i zmenšení tkáně při involuci.
                     </p>
                     
                     <div class="nickname-box">
-                        <label for="player-nickname">Enter your nickname for the leaderboard:</label>
-                        <input type="text" id="player-nickname" class="nickname-input" placeholder="e.g. Cellular Architect" maxlength="18">
+                        <label for="player-nickname">Zadej svou přezdívku do žebříčku:</label>
+                        <input type="text" id="player-nickname" class="nickname-input" placeholder="např. Buněčný Architekt" maxlength="18">
                     </div>
 
                     <button id="intro-start-btn" class="btn-intro-start">
-                        <span>▶</span> Enter Game
+                        <span>▶</span> Vstoupit do hry
                     </button>
                 </div>
 
@@ -936,31 +936,31 @@
                             </g>
                         </g>
 
-                        <text x="50" y="20" class="anatomy-label">Ribs & Muscle</text>
+                        <text x="50" y="20" class="anatomy-label">Žebra a svaly</text>
                         <path d="M 60 20 L 80 110" class="pointer-line" stroke="#64748b"/>
                         <circle cx="85" cy="110" r="3.5" fill="#64748b"/>
 
-                        <text x="230" y="65" class="anatomy-label" fill="#facc15">Adipose Tissue</text>
-                        <text x="230" y="81" class="anatomy-sublabel">(Fat pad)</text>
+                        <text x="230" y="65" class="anatomy-label" fill="#facc15">Tuková tkáň</text>
+                        <text x="230" y="81" class="anatomy-sublabel">(Adipocyty)</text>
                         <path d="M 280 90 L 280 140 L 250 155" stroke="#facc15" stroke-width="1" stroke-dasharray="4, 3" fill="none" opacity="0.95"/>
                         <circle cx="250" cy="155" r="5" fill="#facc15" stroke="#080b10" stroke-width="1.5"/>
 
-                        <text x="100" y="140" class="anatomy-label" fill="#c084fc">Milk Lobules</text>
-                        <text x="100" y="156" class="anatomy-sublabel">(Alveoli)</text>
+                        <text x="100" y="140" class="anatomy-label" fill="#c084fc">Mléčné váčky</text>
+                        <text x="100" y="156" class="anatomy-sublabel">(Alveoly)</text>
                         <path d="M 135 165 L 160 230 L 235 265" class="pointer-line" stroke="#c084fc"/>
                         <circle cx="235" cy="265" r="3.5" fill="#c084fc"/>
 
-                        <text x="375" y="150" class="anatomy-label" fill="#f97316">Supporting Tissue</text>
+                        <text x="375" y="150" class="anatomy-label" fill="#f97316">Podpůrná tkáň</text>
                         <text x="375" y="166" class="anatomy-sublabel">(Stroma)</text>
                         <path d="M 390 175 L 345 205" class="pointer-line" stroke="#f97316"/>
                         <circle cx="345" cy="205" r="3.5" fill="#f97316"/>
 
-                        <text x="300" y="280" class="anatomy-label" fill="#38bdf8">Mammary Ducts</text>
-                        <text x="300" y="296" class="anatomy-sublabel">(Ductal Network)</text>
+                        <text x="300" y="280" class="anatomy-label" fill="#38bdf8">Mlékovody</text>
+                        <text x="300" y="296" class="anatomy-sublabel">(Duktální síť)</text>
                         <path d="M 330 300 L 340 345" class="pointer-line" stroke="#38bdf8"/>
                         <circle cx="340" cy="345" r="3.5" fill="#38bdf8"/>
 
-                        <text x="470" y="440" class="anatomy-label" fill="#f472b6">Areola & Nipple</text>
+                        <text x="470" y="440" class="anatomy-label" fill="#f472b6">Dvorec a Bradavka</text>
                         <path d="M 515 425 L 495 380" class="pointer-line" stroke="#f472b6"/>
                         <circle cx="495" cy="380" r="3.5" fill="#f472b6"/>
                     </svg>
@@ -970,66 +970,66 @@
 
         <div id="modal">
             <div class="modal-card">
-                <div id="modal-badge" class="badge">PHASE</div>
-                <h2 id="modal-title">1. Phase: Puberty</h2>
+                <div id="modal-badge" class="badge">FÁZE</div>
+                <h2 id="modal-title">1. Fáze: Puberta</h2>
 
                 <div id="modal-summary-box" style="display: none;">
-                    <p style="color: #cbd5e1; font-size: clamp(12px, 1.2vw, 15px); margin-bottom: 6px;">You have successfully completed the full cycle! Here is your summary:</p>
+                    <p style="color: #cbd5e1; font-size: clamp(12px, 1.2vw, 15px); margin-bottom: 6px;">Úspěšně jste dokončili celý cyklus. Zde je přehled vašich výsledků:</p>
                     <div class="summary-grid">
                         <div class="summary-card">
-                            <span class="summary-card-title">Player</span>
-                            <span id="summary-player" class="summary-card-val" style="color: #facc15;">Guest</span>
+                            <span class="summary-card-title">Hráč</span>
+                            <span id="summary-player" class="summary-card-val" style="color: #facc15;">Host</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Milk Produced</span>
+                            <span class="summary-card-title">Množství mléka</span>
                             <span id="summary-milk" class="summary-card-val" style="color: #22c55e;">0 ml</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Branches Grown</span>
+                            <span class="summary-card-title">Počet větví</span>
                             <span id="summary-branches" class="summary-card-val">0</span>
                         </div>
                         <div class="summary-card">
-                            <span class="summary-card-title">Alveoli Formed</span>
+                            <span class="summary-card-title">Počet alveolů</span>
                             <span id="summary-alveoli" class="summary-card-val">0</span>
                         </div>
                     </div>
 
                     <div class="leaderboard-box">
                         <div class="leaderboard-header">
-                            <span class="leaderboard-title">🏆 GLOBAL TOP 10 LEADERBOARD (ONLINE)</span>
+                            <span class="leaderboard-title">🏆 SDÍLENÝ TOP 10 ŽEBŘÍČEK (ONLINE)</span>
                         </div>
                         <table class="leaderboard-table">
                             <thead>
                                 <tr>
-                                    <th>Rank</th>
-                                    <th>Player</th>
-                                    <th>Milk</th>
-                                    <th>Branches / Alveoli</th>
+                                    <th>Pořadí</th>
+                                    <th>Hráč</th>
+                                    <th>Mléko</th>
+                                    <th>Větve / Alveoly</th>
                                 </tr>
                             </thead>
                             <tbody id="leaderboard-body">
-                                <tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:8px;">Loading online leaderboard...</td></tr>
+                                <tr><td colspan="4" style="text-align:center; color:#94a3b8; padding:8px;">Načítám online žebříček...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
                 <div id="modal-bio-box" class="info-box" style="display: none;">
-                    <b>🔬 Biological Background:</b>
+                    <b>🔬 Co se děje v těle:</b>
                     <p id="modal-bio"></p>
                 </div>
 
                 <div id="modal-task-box" class="task-box" style="display: none;">
-                    <b>🎮 Your Mission:</b>
+                    <b>🎮 Tvoje úloha ve hře:</b>
                     <p id="modal-task"></p>
                 </div>
 
                 <div id="modal-time-box" class="time-box" style="display: none;">
-                    <b>⏱️ Time Limit:</b>
+                    <b>⏱️ Časový limit:</b>
                     <p id="modal-time"></p>
                 </div>
 
-                <button id="modal-btn" class="btn" style="margin-top: 6px; align-self: flex-end;">Continue ➔</button>
+                <button id="modal-btn" class="btn" style="margin-top: 6px; align-self: flex-end;">Dále k úkolu ➔</button>
             </div>
         </div>
     </div>
@@ -1055,7 +1055,7 @@
 
     window.saveAndLoadCloudLeaderboard = async function(entry) {
         const leaderboardBody = document.getElementById('leaderboard-body');
-        leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#38bdf8; padding:6px;">Syncing with cloud...</td></tr>';
+        leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#38bdf8; padding:6px;">Ukládám a stahuji z cloudu...</td></tr>';
 
         try {
             if (entry) {
@@ -1082,34 +1082,34 @@
                 }
 
                 let medal = `#${index + 1}`;
-                if (index === 0) medal = '🥇 1st';
-                else if (index === 1) medal = '🥈 2nd';
-                else if (index === 2) medal = '🥉 3rd';
+                if (index === 0) medal = '🥇 1.';
+                else if (index === 1) medal = '🥈 2.';
+                else if (index === 2) medal = '🥉 3.';
 
                 tr.innerHTML = `
                     <td>${medal}</td>
                     <td><b>${data.name}</b></td>
                     <td style="color: #22c55e; font-weight: 700;">${data.milk} ml</td>
-                    <td>${data.branches}b / ${data.alveoli}a</td>
+                    <td>${data.branches}v / ${data.alveoli}a</td>
                 `;
                 leaderboardBody.appendChild(tr);
                 index++;
             });
 
             for (let i = index; i < 10; i++) {
-                let medal = i === 0 ? '🥇 1st' : (i === 1 ? '🥈 2nd' : (i === 2 ? '🥉 3rd' : `#${i + 1}`));
+                let medal = i === 0 ? '🥇 1.' : (i === 1 ? '🥈 2.' : (i === 2 ? '🥉 3.' : `#${i + 1}`));
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td style="color: #475569;">${medal}</td>
-                    <td style="color: #475569; font-style: italic;">— open slot —</td>
+                    <td style="color: #475569; font-style: italic;">— volné —</td>
                     <td style="color: #475569;">—</td>
                     <td style="color: #475569;">—</td>
                 `;
                 leaderboardBody.appendChild(tr);
             }
         } catch (error) {
-            console.error("Firebase error:", error);
-            leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#f87171; padding:6px;">Unable to load online leaderboard.</td></tr>';
+            console.error("Chyba Firebase:", error);
+            leaderboardBody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#f87171; padding:6px;">Nelze načíst online žebříček.</td></tr>';
         }
     };
 </script>
@@ -1162,7 +1162,7 @@
 
     let currentPhase = 0; 
     let modalStep = 1;
-    let playerName = "Guest";
+    let playerName = "Host";
     let milkProducedMl = 0;
     let maxBranchesCreated = 0;
     let maxAlveoliCreated = 0;
@@ -1189,40 +1189,40 @@
 
     const phaseData = {
         1: {
-            badge: "PHASE 1 of 4",
-            title: "1. Phase: Puberty",
-            bio: "During adolescence (puberty), the previously dormant and very simple foundation of the milk ducts (ductal network) becomes active. These begin to grow actively, and their main characteristic is gradual branching (branching morphogenesis). This growth is controlled by so-called terminal buds (or TEBs) – specialised bulbous structures at the ends of the ducts. As the ducts lengthen, these buds divide into two further buds (primary branching or bifurcation) and, gradually, lateral branches also grow from them (secondary lateral branching). The originally simple ducts thus grow into the surrounding supporting tissue (stroma / mesenchyme), lengthen and divide into ever smaller branches, thereby forming a dense network. Girls usually reach sexual maturity between the ages of 11 and 14, but the network of milk ducts continues to develop within the breast until the ages of 18 to 24.",
-            task: "Click on the red glowing Terminal End Buds (TEBs) to branch and grow the epithelial tree!",
-            timeLimit: "15 seconds",
+            badge: "FÁZE 1 z 4",
+            title: "1. Fáze: Puberta",
+            bio: "V období dospívání (pubertě) se probouzí do té doby spící a velmi jednoduchý základ mlékovodů (duktální síť). Ty se začínají aktivně zvětšovat a jejich hlavním znakem je postupné větvení (větvící morfogeneze). Tento růst řídí takzvané koncové pupeny (terminální koncové pupeny neboli TEB) – speciální baňaté struktury na koncích kanálků. Jak se kanálky prodlužují, tyto pupeny se rozdělují na dva další (hlavní větvení neboli bifurkace) a postupně z nich vyrůstají i boční větvičky (druhotné postranní větvení). Původně jednoduché kanálky tak prorůstají do okolní podpůrné tkáně (stromatu / mezenchymu), prodlužují se a dělí na stále menší větvičky, čímž vytvářejí hustou síť. Pohlavní dospělosti dívky obvykle dosahují mezi 11. a 14. rokem, síť mlékovodů se však uvnitř prsu vyvíjí dál až do 18. až 24. roku.",
+            task: "Klikejte na červená kolečka (TEB) pro větvení a růst epitelového stromu!",
+            timeLimit: "15 sekund",
             duration: 15
         },
         2: {
-            badge: "PHASE 2 of 4",
-            title: "2. Phase: Pregnancy",
-            bio: "While the basic network of milk ducts is formed during adolescence (puberty), pregnancy triggers the final architectural remodelling of the mammary gland. Under the influence of pregnancy hormones (oestrogen, progesterone and prolactin), the network of milk ducts (epithelial network) branches out extensively, and specialised milk sacs resembling bunches of grapes (alveoli) mature, enabling future milk production. This process of sac development is called alveologenesis. These newly formed sacs gradually displace the fatty tissue (adipocytes) and differentiate into two key cell types: the inner cells that produce milk (secretory luminal cells) and the outer contractile cells that expel milk (contractile myoepithelial cells). Although the gland is fully prepared for production, high levels of the hormone progesterone currently suppress milk production and secretion (lactation) and keep the system in a standby mode.",
-            task: "Click on the branches to sprout purple alveolar clusters (alveoli)!",
-            timeLimit: "30 seconds",
+            badge: "FÁZE 2 z 4",
+            title: "2. Fáze: Těhotenství (Gravidita)",
+            bio: "Zatímco během dospívání (v pubertě) se vytvořila základní síť mlékovodů, těhotenství spouští finální architektonickou přestavbu mléčné žlázy. Vlivem těhotenských hormonů (estrogenu, progesteronu a prolaktinu) dochází k masivnímu větvení sítě mlékovodů (epitelové sítě) a dozrávají specializované mléčné váčky připomínající hrozny vína (alveoly), které umožňují budoucí tvorbu mléka. Tomuto procesu vývoje váčků se říká tvorba alveolů (alveologeneze). Tyto nově vzniklé váčky postupně vytlačují tukovou tkáň (adipocyty) a rozdělují se (diferencují) na dva klíčové buněčné typy: vnitřní buňky tvořící mléko (sekreční luminální buňky) a vnější stahovací buňky vytlačující mléko (kontraktilní myoepitelové buňky). Ačkoliv je žláza plně připravena k produkci, vysoké hladiny hormonu progesteronu zatím tvorbu a vylučování mléka (laktaci) tlumí a udržují systém v pohotovostním režimu.",
+            task: "Klikáním na větve nechte vyrůst fialové váčky (alveoly)!",
+            timeLimit: "30 sekund",
             duration: 30
         },
         3: {
-            badge: "PHASE 3 of 4",
-            title: "3. Phase: Lactation",
-            bio: "After childbirth, levels of pregnancy hormones (progesterone and oestrogen) drop sharply, which unblocks and fully initiates the breastfeeding period (lactation). This phase is divided into two closely interlinked processes: milk production and milk secretion. Milk production (synthesis) is regulated by the hormone prolactin, which stimulates the inner cells of the lining (secretory luminal cells), where proteins, fats and sugar (lactose) are produced in large quantities and released directly into the inner cavity of the alveoli (alveolar lumen). Milk ejection (the ejection reflex) is triggered by mechanical suckling of the nipple, which sends a signal to release the hormone oxytocin. This causes contractions of the outer contractile cells (myoepithelium) surrounding the alveoli, squeezing them and forcing the milk out through the milk ducts via the nipple.",
-            task: "Click on the mature alveoli to eject milk and fill the baby bottles!",
-            timeLimit: "30 seconds",
+            badge: "FÁZE 3 z 4",
+            title: "3. Fáze: Kojení (Laktace)",
+            bio: "Po porodu prudce klesá hladina těhotenských hormonů (progesteronu a estrogenu), což odblokuje a naplno spustí období kojení (laktaci). Tato fáze se dělí na dva úzce propojené děje: tvorbu mléka a jeho vylučování. Tvorbu mléka (syntézu) zajišťuje hormon prolaktin, který stimuluje vnitřní buňky výstelky (sekreční luminální buňky), v nichž dochází k masivní produkci bílkovin, tuků a cukru (laktózy) přímo do vnitřní dutiny váčků (lumina alveolů). Vylučování mléka (ejekční reflex) se spouští mechanickým sáním bradavky, které vyšle signál k uvolnění hormonu oxytocinu. Ten vyvolá stahy vnějších stahovacích buněk (myoepitelu) obepínajících váčky, stlačí je a vytlačí mléko systémem mlékovodů ven přes bradavku.",
+            task: "Klikáním na váčky (alveoly) produkujte mléko a naplňte kojeneckou láhev!",
+            timeLimit: "30 sekund",
             duration: 30
         },
         4: {
-            badge: "PHASE 4 of 4",
-            title: "4. Phase: Involution",
-            bio: "As soon as breastfeeding stops (when the baby is taken off the mother's breast), milk accumulates in the alveoli, causing mechanical pressure and a sharp drop in the levels of the stimulating hormones (prolactin and oxytocin). For the mammary gland, this signals the start of a controlled breakdown of the unnecessary secretory apparatus. A widespread, controlled cell death (programmed cell death, or apoptosis) is triggered amongst the internal cells that produce milk (secretory luminal cells). The milk alveoli collapse and their remnants are engulfed by scavenger cells (macrophages) and the surrounding tissue, thereby removing most of the alveoli and excess branching. The emptied space is refilled with fatty tissue (adipocytes) and the supporting tissue (stroma) returns to its original, resting state, only the basic network of milk ducts remains in the breast.",
-            task: "Click on the alveoli to trigger apoptosis and call macrophages to clear the tissue!",
-            timeLimit: "No limit (clear all alveoli)",
+            badge: "FÁZE 4 z 4",
+            title: "4. Fáze: Návrat k klidovému stavu (Involuce)",
+            bio: "Jakmile kojení ustane (odstavením dítěte), dochází k nahromadění mléka ve váčcích, což vyvolá mechanický tlak a prudký pokles stimulačních hormonů (prolaktinu a oxytocinu). Pro mléčnou žlázu to znamená povel k řízenému odbourání nepotřebného sekrečního aparátu. Spouští se rozsáhlý řízený zánik buněk (programovaná buněčná smrt neboli apoptóza) vnitřních buněk tvořících mléko (sekrečních luminálních buněk). Mléčné váčky (alveoly) se hroutí a jejich zbytky jsou pohlceny úklidovými buňkami (požírači neboli makrofágy) i okolní tkání, čímž se odstraní většina váčků i nadbytečné větvení. Vyprázdněný prostor je opětovně vyplněn tukovou tkání (adipocyty) a podpůrná tkáň (stroma) se vrací do původního, klidového stavu, v prsu zůstává pouze základní síť mlékovodů.",
+            task: "Klikejte na alveoly pro spuštění apoptózy a úklid makrofágy!",
+            timeLimit: "Bez limitu (odstraňte všechny alveoly)",
             duration: 0
         },
         5: {
-            badge: "CYCLE COMPLETE",
-            title: "Simulation Finished! 🎉"
+            badge: "KOMPLETNÍ CYKLUS",
+            title: "Simulace Dokončena! 🎉"
         }
     };
 
@@ -1483,7 +1483,7 @@
         const percentage = Math.min(100, (currentBottleMilkMl / maxBottleCapacityMl) * 100);
         singleBottleFill.style.height = `${percentage}%`;
         
-        bottleNumberTitle.innerText = `Bottle #${completedBottlesCount + 1}`;
+        bottleNumberTitle.innerText = `Láhev #${completedBottlesCount + 1}`;
         bottleCurrentVal.innerText = `${currentBottleMilkMl} / ${maxBottleCapacityMl} ml`;
     }
 
@@ -1498,7 +1498,7 @@
             modalBioBox.style.display = 'none';
             modalTaskBox.style.display = 'none';
             modalTimeBox.style.display = 'none';
-            modalBtn.innerText = "Play Again 🔄";
+            modalBtn.innerText = "Hrát další hráč 🔄";
 
             summaryPlayer.innerText = playerName;
             summaryBranches.innerText = maxBranchesCreated;
@@ -1509,7 +1509,7 @@
                 scoreAlreadySaved = true;
                 if (window.saveAndLoadCloudLeaderboard) {
                     window.saveAndLoadCloudLeaderboard({
-                        name: playerName || "Guest",
+                        name: playerName || "Návštěvník",
                         milk: milkProducedMl,
                         branches: maxBranchesCreated,
                         alveoli: maxAlveoliCreated,
@@ -1525,14 +1525,14 @@
                 modalTaskBox.style.display = 'none';
                 modalTimeBox.style.display = 'none';
                 modalBio.innerText = data.bio;
-                modalBtn.innerText = "Next: Mission ➔";
+                modalBtn.innerText = "Dále k úkolu ➔";
             } else if (step === 2) {
                 modalBioBox.style.display = 'none';
                 modalTaskBox.style.display = 'block';
                 modalTimeBox.style.display = 'block';
                 modalTask.innerText = data.task;
                 modalTime.innerText = data.timeLimit;
-                modalBtn.innerText = "Start Phase ➔";
+                modalBtn.innerText = "Spustit fázi ➔";
             }
         }
 
@@ -1589,7 +1589,7 @@
 
     introStartBtn.addEventListener('click', () => {
         const val = playerNicknameInput.value.trim();
-        playerName = val ? val : "Guest";
+        playerName = val ? val : "Návštěvník";
         playerDisplayEl.innerText = playerName;
 
         introScreen.classList.add('hidden');
@@ -1835,25 +1835,25 @@
             phase2El.className = 'phase-step';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('💡 <b>Puberty:</b> Tap glowing red buds (TEBs) to branch!');
+            if (showNewInstruction) showInstructionBar('💡 <b>Puberta:</b> Klikejte na červená kolečka (TEB) pro větvení!');
         } else if (currentPhase === 2) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step active';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('💡 <b>Pregnancy:</b> Tap branches to form alveoli!');
+            if (showNewInstruction) showInstructionBar('💡 <b>Gravidita:</b> Klikáním na větve nechte vyrašit alveolární pupeny!');
         } else if (currentPhase === 3) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step active';
             phase4El.className = 'phase-step';
-            if (showNewInstruction) showInstructionBar('🍼 <b>Lactation:</b> Tap alveoli to pump milk into the bottle!');
+            if (showNewInstruction) showInstructionBar('🍼 <b>Laktace:</b> Klikejte na alveoly a naplňujte kojeneckou láhev!');
         } else if (currentPhase === 4) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step completed';
             phase4El.className = 'phase-step active';
-            if (showNewInstruction) showInstructionBar('🧹 <b>Involution:</b> Tap alveoli to start apoptosis and tissue cleanup!');
+            if (showNewInstruction) showInstructionBar('🧹 <b>Involuce:</b> Klikejte na fialové alveoly a spusťte apoptózu i úklid!');
         }
     }
 
@@ -1908,7 +1908,7 @@
         const areolaY = isMobile ? canvas.height - 65 : canvas.height - 110; 
         const areolaR = isMobile ? 32 : 52;
 
-        // Areola
+        // Dvorec (Areola)
         ctx.beginPath();
         ctx.arc(rootX, areolaY, areolaR, 0, Math.PI, false);
         ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
@@ -1927,7 +1927,7 @@
         ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        // Nipple
+        // Bradavka
         const nipW = isMobile ? 12 : 18;
         const nipH = isMobile ? 18 : 28;
         ctx.beginPath();
@@ -1950,14 +1950,14 @@
         ctx.fillStyle = '#fbcfe8';
         ctx.font = isMobile ? 'bold 8.5px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
         ctx.textAlign = 'right';
-        ctx.fillText('AREOLA', rootX - (areolaR + 4), areolaY + (isMobile ? 12 : 24));
+        ctx.fillText('DVOREC', rootX - (areolaR + 4), areolaY + (isMobile ? 12 : 24));
 
         ctx.fillStyle = '#ffffff';
         ctx.font = isMobile ? 'bold 8.5px "Segoe UI", sans-serif' : 'bold 11px "Segoe UI", sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText('NIPPLE', rootX, areolaY + areolaR + (isMobile ? 18 : 32));
+        ctx.fillText('BRADAVKA', rootX, areolaY + areolaR + (isMobile ? 18 : 32));
 
-        // Branches
+        // Větve stromu
         for (let branch of branches) {
             if (branch.isEaten) continue;
 
