@@ -39,7 +39,7 @@
         }
 
         header {
-            padding: clamp(6px, 1vh, 12px) clamp(10px, 2vw, 20px);
+            padding: clamp(6px, 1.2vh, 14px) clamp(10px, 2vw, 20px);
             background: rgba(15, 23, 42, 0.9);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(56, 189, 248, 0.2);
@@ -48,7 +48,7 @@
             align-items: center;
             z-index: 10;
             flex-shrink: 0;
-            min-height: clamp(40px, 5.5vh, 60px);
+            min-height: clamp(48px, 6.5vh, 64px);
         }
 
         .title-box {
@@ -58,17 +58,19 @@
         }
 
         .title-box h1 {
-            font-size: clamp(14px, 1.5vw, 20px);
+            font-size: clamp(14px, 1.6vw, 20px);
             font-weight: 800;
             background: linear-gradient(90deg, #38bdf8, #a855f7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 0.5px;
+            line-height: 1.2;
         }
 
         .title-box p {
             font-size: clamp(10px, 0.9vw, 13px);
             color: #94a3b8;
+            line-height: 1.2;
         }
 
         .phase-indicator {
@@ -614,7 +616,7 @@
         }
 
         .intro-left-content h1 {
-            font-size: clamp(22px, 2.6vw, 32px);
+            font-size: clamp(20px, 2.4vw, 32px);
             font-weight: 900;
             line-height: 1.1;
             text-transform: uppercase;
@@ -701,30 +703,36 @@
             max-height: 520px;
         }
 
+        /* Velké a jasně čitelné popisky ve schématu */
         .anatomy-label {
-            font-size: 11px;
-            font-weight: 700;
-            fill: #cbd5e1;
+            font-size: 14px;
+            font-weight: 800;
+            fill: #f8fafc;
         }
 
         .anatomy-sublabel {
-            font-size: 9.5px;
+            font-size: 12px;
+            font-weight: 600;
             fill: #94a3b8;
         }
 
         .pointer-line {
-            stroke-width: 1.5;
-            stroke-dasharray: 3, 3;
-            opacity: 0.8;
+            stroke-width: 2;
+            stroke-dasharray: 4, 3;
+            opacity: 0.9;
         }
 
         @media (max-width: 768px) {
             header { 
-                padding: 2px 8px; 
-                min-height: 36px;
+                padding: 4px 8px; 
+                min-height: 44px;
             }
-            .title-box h1 { font-size: 12.5px; }
-            .title-box p { display: none; }
+            .title-box h1 { font-size: 13px; }
+            .title-box p { 
+                display: block; 
+                font-size: 9px;
+                color: #94a3b8;
+            }
             .phase-indicator { display: none; }
 
             .intro-card { 
@@ -738,9 +746,16 @@
             }
             .intro-right-graphic { 
                 width: 100%; 
-                height: 220px;
-                min-height: 200px;
+                height: 260px;
+                min-height: 250px;
                 padding-bottom: 12px;
+            }
+
+            .anatomy-label {
+                font-size: 15px;
+            }
+            .anatomy-sublabel {
+                font-size: 13px;
             }
 
             #legend { display: none; }
@@ -772,7 +787,7 @@
     <header>
         <div class="title-box">
             <h1>Architekt Mléčné Žlázy</h1>
-            <p>Interaktivní simulace pro Noc vědců - Ústav molekulární genetiky AV ČR, v. v. i., Laboratoř vývoje tkání a nádorů</p>
+            <p>ÚMG AV ČR, v. v. i. • Laboratoř vývoje tkání a nádorů</p>
         </div>
         <div class="phase-indicator">
             <div id="phase-1" class="phase-step">1. Puberta</div>
@@ -960,33 +975,34 @@
                             </g>
                         </g>
 
-                        <text x="50" y="20" class="anatomy-label">Žebra a svaly</text>
-                        <path d="M 60 20 L 80 110" class="pointer-line" stroke="#64748b"/>
-                        <circle cx="85" cy="110" r="3.5" fill="#64748b"/>
+                        <!-- Zvýrazněné a zvětšené popisky schématu -->
+                        <text x="30" y="25" class="anatomy-label" fill="#f8fafc">Žebra a svaly</text>
+                        <path d="M 60 30 L 80 110" class="pointer-line" stroke="#94a3b8"/>
+                        <circle cx="85" cy="110" r="4" fill="#94a3b8"/>
 
-                        <text x="230" y="65" class="anatomy-label" fill="#facc15">Tuková tkáň</text>
-                        <text x="230" y="81" class="anatomy-sublabel">(Adipocyty)</text>
-                        <path d="M 280 90 L 280 140 L 250 155" stroke="#facc15" stroke-width="1" stroke-dasharray="4, 3" fill="none" opacity="0.95"/>
+                        <text x="210" y="55" class="anatomy-label" fill="#facc15">Tuková tkáň</text>
+                        <text x="210" y="72" class="anatomy-sublabel" fill="#fde047">(Adipocyty)</text>
+                        <path d="M 270 78 L 270 135 L 250 155" stroke="#facc15" stroke-width="2" stroke-dasharray="4, 3" fill="none"/>
                         <circle cx="250" cy="155" r="5" fill="#facc15" stroke="#080b10" stroke-width="1.5"/>
 
-                        <text x="100" y="140" class="anatomy-label" fill="#c084fc">Mléčné váčky</text>
-                        <text x="100" y="156" class="anatomy-sublabel">(Alveoly)</text>
-                        <path d="M 135 165 L 160 230 L 235 265" class="pointer-line" stroke="#c084fc"/>
-                        <circle cx="235" cy="265" r="3.5" fill="#c084fc"/>
+                        <text x="70" y="145" class="anatomy-label" fill="#e9d5ff">Mléčné váčky</text>
+                        <text x="70" y="162" class="anatomy-sublabel" fill="#c084fc">(Alveoly)</text>
+                        <path d="M 125 170 L 155 230 L 235 265" class="pointer-line" stroke="#c084fc"/>
+                        <circle cx="235" cy="265" r="4" fill="#c084fc"/>
 
-                        <text x="375" y="150" class="anatomy-label" fill="#f97316">Podpůrná tkáň</text>
-                        <text x="375" y="166" class="anatomy-sublabel">(Stroma)</text>
-                        <path d="M 390 175 L 345 205" class="pointer-line" stroke="#f97316"/>
-                        <circle cx="345" cy="205" r="3.5" fill="#f97316"/>
+                        <text x="375" y="140" class="anatomy-label" fill="#fdba74">Podpůrná tkáň</text>
+                        <text x="375" y="157" class="anatomy-sublabel" fill="#f97316">(Stroma)</text>
+                        <path d="M 390 165 L 345 205" class="pointer-line" stroke="#f97316"/>
+                        <circle cx="345" cy="205" r="4" fill="#f97316"/>
 
-                        <text x="300" y="280" class="anatomy-label" fill="#38bdf8">Mlékovody</text>
-                        <text x="300" y="296" class="anatomy-sublabel">(Duktální síť)</text>
-                        <path d="M 330 300 L 340 345" class="pointer-line" stroke="#38bdf8"/>
-                        <circle cx="340" cy="345" r="3.5" fill="#38bdf8"/>
+                        <text x="300" y="270" class="anatomy-label" fill="#7dd3fc">Mlékovody</text>
+                        <text x="300" y="287" class="anatomy-sublabel" fill="#38bdf8">(Duktální síť)</text>
+                        <path d="M 330 292 L 340 345" class="pointer-line" stroke="#38bdf8"/>
+                        <circle cx="340" cy="345" r="4" fill="#38bdf8"/>
 
-                        <text x="470" y="440" class="anatomy-label" fill="#f472b6">Dvorec a Bradavka</text>
+                        <text x="440" y="440" class="anatomy-label" fill="#f472b6">Dvorec a Bradavka</text>
                         <path d="M 515 425 L 495 380" class="pointer-line" stroke="#f472b6"/>
-                        <circle cx="495" cy="380" r="3.5" fill="#f472b6"/>
+                        <circle cx="495" cy="380" r="4" fill="#f472b6"/>
                     </svg>
                 </div>
             </div>
@@ -1831,7 +1847,6 @@
         }
     }
 
-    // 100% spolehlivá ochrana proti iOS dvojkliku a pinch-to-zoom
     canvas.addEventListener('touchstart', (e) => {
         e.preventDefault();
         const rect = canvas.getBoundingClientRect();
@@ -1844,7 +1859,6 @@
         handleInteraction(e.clientX - rect.left, e.clientY - rect.top);
     });
 
-    // Zákaz gest na celém okně
     document.addEventListener('gesturestart', (e) => e.preventDefault());
     document.addEventListener('gesturechange', (e) => e.preventDefault());
     document.addEventListener('gestureend', (e) => e.preventDefault());
