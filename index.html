@@ -161,7 +161,6 @@
             transition: transform 0.1s linear;
         }
 
-        /* Společný horní pruh zamezující překrývání */
         #hud-top-bar {
             position: absolute;
             top: clamp(6px, 1.2vh, 14px);
@@ -739,13 +738,13 @@
         }
 
         .anatomy-label {
-            font-size: 13px;
+            font-size: 24px;
             font-weight: 700;
             fill: #cbd5e1;
         }
 
         .anatomy-sublabel {
-            font-size: 11px;
+            font-size: 19px;
             fill: #94a3b8;
         }
 
@@ -755,7 +754,6 @@
             opacity: 0.8;
         }
 
-        /* --- MOBILNÍ SPECIFIKACE --- */
         @media (max-width: 768px) {
             header { 
                 padding: 6px 10px;
@@ -1293,7 +1291,6 @@
         if (isPortrait) {
             scaleFactor = Math.min(canvas.width / 400, canvas.height / 700);
             scaleFactor = Math.max(0.65, Math.min(scaleFactor, 1.1));
-            // Dostatečný odstup od spodní lišty a tlačítek pro mobil
             bottomNippleOffset = Math.max(100, canvas.height * 0.17);
         } else {
             scaleFactor = Math.min(canvas.width, canvas.height) / 780;
@@ -1641,7 +1638,7 @@
         const rootNode = new Node(rootX, areolaY, 0, -Math.PI / 2);
         
         const firstTipX = rootX;
-        const firstTipY = areolaY - Math.max(26, 36 * scaleFactor); 
+        const firstTipY = areolaY - Math.max(28, 44 * scaleFactor); 
         const firstTipNode = new Node(firstTipX, firstTipY, 1, -Math.PI / 2);
         rootNode.isTip = false;
 
@@ -1720,30 +1717,73 @@
         leftTimerContainer.style.display = 'none';
     }
 
+    // Matematická hranice tělesa prsu pro větvení
+    function getBreastBoundsAtY(y) {
+        const rootX = canvas.width / 2;
+        const areolaY = canvas.height - bottomNippleOffset;
+        const topY = 18 * scaleFactor;
+        const areolaR = Math.max(28, 48 * scaleFactor);
+
+        if (y < topY || y > areolaY) return { minX: rootX, maxX: rootX, valid: false };
+
+        const t = (areolaY - y) / (areolaY - topY);
+        const maxShieldHalfWidth = Math.min(canvas.width * 0.44, 430 * scaleFactor);
+        const baseWidth = areolaR * 1.05;
+
+        const widthProgress = Math.min(1, Math.pow(t, 0.48));
+        const currentHalfWidth = baseWidth + (maxShieldHalfWidth - baseWidth) * widthProgress;
+
+        return {
+            minX: rootX - currentHalfWidth,
+            maxX: rootX + currentHalfWidth,
+            valid: true
+        };
+    }
+
     function branchFromNode(node) {
         if (!node.isTip || currentPhase !== 1) return;
 
         const isPortrait = canvas.height > canvas.width;
-        const baseLen = isPortrait ? Math.min(canvas.height * 0.085, 52 * scaleFactor) : Math.min(canvas.height * 0.15, 115 * scaleFactor);
-        const branchLength = Math.max(26 * scaleFactor, baseLen - node.level * (3.8 * scaleFactor));
+        const baseLen = isPortrait ? Math.min(canvas.height * 0.082, 50 * scaleFactor) : Math.min(canvas.height * 0.13, 105 * scaleFactor);
+        let branchLength = Math.max(25 * scaleFactor, baseLen - node.level * (3.6 * scaleFactor));
         
-        const spreadAngle = isPortrait ? (0.34 + Math.random() * 0.08) : (0.52 + Math.random() * 0.16);
+        const spreadAngle = isPortrait ? (0.33 + Math.random() * 0.08) : (0.44 + Math.random() * 0.12);
 
-        const angle1 = node.angle - spreadAngle;
-        const angle2 = node.angle + spreadAngle;
+        let angle1 = node.angle - spreadAngle;
+        let angle2 = node.angle + spreadAngle;
 
-        const x1 = node.x + Math.cos(angle1) * branchLength;
-        const y1 = node.y + Math.sin(angle1) * branchLength;
+        const rootX = canvas.width / 2;
+        if (node.x > rootX + 100 * scaleFactor) {
+            angle1 -= 0.15;
+            angle2 -= 0.15;
+        } else if (node.x < rootX - 100 * scaleFactor) {
+            angle1 += 0.15;
+            angle2 += 0.15;
+        }
 
-        const x2 = node.x + Math.cos(angle2) * branchLength;
-        const y2 = node.y + Math.sin(angle2) * branchLength;
+        let x1 = node.x + Math.cos(angle1) * branchLength;
+        let y1 = node.y + Math.sin(angle1) * branchLength;
+        let x2 = node.x + Math.cos(angle2) * branchLength;
+        let y2 = node.y + Math.sin(angle2) * branchLength;
 
-        const marginX = 14 * scaleFactor;
-        const marginY = 20 * scaleFactor; 
+        const margin = 20 * scaleFactor;
+        const bounds1 = getBreastBoundsAtY(y1);
+        const bounds2 = getBreastBoundsAtY(y2);
 
-        if (x1 < marginX || x1 > canvas.width - marginX || y1 < marginY || y1 > canvas.height - (bottomNippleOffset - 10) ||
-            x2 < marginX || x2 > canvas.width - marginX || y2 < marginY || y2 > canvas.height - (bottomNippleOffset - 10)) {
-            return;
+        if (!bounds1.valid || x1 < bounds1.minX + margin || x1 > bounds1.maxX - margin) {
+            branchLength *= 0.65;
+            x1 = node.x + Math.cos(angle1 - 0.25) * branchLength;
+            y1 = node.y + Math.sin(angle1 - 0.25) * branchLength;
+            const b1Retry = getBreastBoundsAtY(y1);
+            if (!b1Retry.valid || x1 < b1Retry.minX + margin || x1 > b1Retry.maxX - margin) return;
+        }
+
+        if (!bounds2.valid || x2 < bounds2.minX + margin || x2 > bounds2.maxX - margin) {
+            branchLength *= 0.65;
+            x2 = node.x + Math.cos(angle2 + 0.25) * branchLength;
+            y2 = node.y + Math.sin(angle2 + 0.25) * branchLength;
+            const b2Retry = getBreastBoundsAtY(y2);
+            if (!b2Retry.valid || x2 < b2Retry.minX + margin || x2 > b2Retry.maxX - margin) return;
         }
 
         node.isTip = false;
@@ -1976,7 +2016,82 @@
         const areolaY = canvas.height - bottomNippleOffset; 
         const areolaR = Math.max(28, 48 * scaleFactor);
 
-        // Dvorec (Areola)
+        // ==========================================================
+        // 1. ANATOMICKÝ OBRYS PRSU V POZADÍ (Dle schváleného nákresu)
+        // ==========================================================
+        ctx.save();
+        const topY = 18 * scaleFactor;
+        const shieldHalfWidth = Math.min(canvas.width * 0.44, 430 * scaleFactor);
+        const topLeftX = rootX - shieldHalfWidth;
+        const topRightX = rootX + shieldHalfWidth;
+        const baseAreolaWidth = areolaR * 1.05;
+
+        ctx.beginPath();
+        // Horní linie
+        ctx.moveTo(topLeftX, topY);
+        ctx.quadraticCurveTo(rootX, topY - 4 * scaleFactor, topRightX, topY);
+        
+        // Pravá stěna směrem k dvorci
+        ctx.bezierCurveTo(
+            topRightX + 8 * scaleFactor, areolaY * 0.42,
+            topRightX - 6 * scaleFactor, areolaY * 0.72,
+            rootX + (shieldHalfWidth * 0.65), areolaY * 0.90
+        );
+        ctx.bezierCurveTo(
+            rootX + (shieldHalfWidth * 0.42), areolaY + 2 * scaleFactor,
+            rootX + baseAreolaWidth + 12 * scaleFactor, areolaY,
+            rootX + baseAreolaWidth, areolaY
+        );
+
+        // Spodní hrana u dvorce
+        ctx.lineTo(rootX - baseAreolaWidth, areolaY);
+
+        // Levá stěna zpět nahoru
+        ctx.bezierCurveTo(
+            rootX - baseAreolaWidth - 12 * scaleFactor, areolaY,
+            rootX - (shieldHalfWidth * 0.42), areolaY + 2 * scaleFactor,
+            rootX - (shieldHalfWidth * 0.65), areolaY * 0.90
+        );
+        ctx.bezierCurveTo(
+            topLeftX + 6 * scaleFactor, areolaY * 0.72,
+            topLeftX - 8 * scaleFactor, areolaY * 0.42,
+            topLeftX, topY
+        );
+        ctx.closePath();
+
+        // Výplň: jemný gradient tukové tkáně
+        const breastGrad = ctx.createLinearGradient(rootX, areolaY, rootX, topY);
+        breastGrad.addColorStop(0, 'rgba(234, 179, 8, 0.03)');
+        breastGrad.addColorStop(0.45, 'rgba(217, 119, 6, 0.10)');
+        breastGrad.addColorStop(1, 'rgba(234, 179, 8, 0.17)');
+        ctx.fillStyle = breastGrad;
+        ctx.fill();
+
+        // Šikmé šrafování
+        ctx.save();
+        ctx.clip();
+        ctx.strokeStyle = 'rgba(245, 158, 11, 0.055)';
+        ctx.lineWidth = 2.2 * scaleFactor;
+        const hatchSpacing = 30 * scaleFactor;
+        for (let x = -canvas.height; x < canvas.width + canvas.height; x += hatchSpacing) {
+            ctx.beginPath();
+            ctx.moveTo(x, 0);
+            ctx.lineTo(x + canvas.height, canvas.height);
+            ctx.stroke();
+        }
+        ctx.restore();
+
+        // Zlatavá neonová kontura
+        ctx.strokeStyle = 'rgba(250, 204, 21, 0.85)';
+        ctx.lineWidth = 3.6 * scaleFactor;
+        ctx.shadowColor = '#facc15';
+        ctx.shadowBlur = 12 * scaleFactor;
+        ctx.stroke();
+        ctx.restore();
+
+        // ==========================================================
+        // 2. DVOREC A BRADAVKA
+        // ==========================================================
         ctx.beginPath();
         ctx.arc(rootX, areolaY, areolaR, 0, Math.PI, false);
         ctx.fillStyle = 'rgba(236, 72, 153, 0.2)';
@@ -1995,7 +2110,6 @@
         ctx.lineWidth = 1.5 * scaleFactor;
         ctx.stroke();
 
-        // Bradavka
         const nipW = Math.max(12, 18 * scaleFactor);
         const nipH = Math.max(16, 26 * scaleFactor);
         ctx.beginPath();
@@ -2025,7 +2139,9 @@
         ctx.textAlign = 'center';
         ctx.fillText('BRADAVKA', rootX, areolaY + areolaR + (18 * scaleFactor));
 
-        // Větve stromu
+        // ==========================================================
+        // 3. VĚTVE STROMU
+        // ==========================================================
         for (let branch of branches) {
             if (branch.isEaten) continue;
 
