@@ -89,8 +89,9 @@
             align-items: center;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            padding-bottom: 2px;
+            padding-bottom: 3px;
             scrollbar-width: none;
+            scroll-behavior: smooth;
         }
 
         .phase-indicator::-webkit-scrollbar {
@@ -830,7 +831,7 @@
                 <p>Interaktivní simulace pro Noc vědců - Ústav molekulární genetiky AV ČR, v. v. i., Laboratoř vývoje tkání a nádorů</p>
             </div>
         </div>
-        <div class="phase-indicator">
+        <div class="phase-indicator" id="phase-indicator-bar">
             <div id="phase-1" class="phase-step">1. Dospívání (Puberta)</div>
             <div id="phase-2" class="phase-step">2. Těhotenství (Gravidita)</div>
             <div id="phase-3" class="phase-step">3. Kojení (Laktace)</div>
@@ -1949,30 +1950,41 @@
             singleBottleContainer.style.display = 'none';
         }
 
+        let activeStepEl = null;
+
         if (currentPhase === 1) {
             phase1El.className = 'phase-step active';
             phase2El.className = 'phase-step';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
+            activeStepEl = phase1El;
             if (showNewInstruction) showInstructionBar('💡 <b>Puberta:</b> Klikejte na červená kolečka (TEB) pro růst!');
         } else if (currentPhase === 2) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step active';
             phase3El.className = 'phase-step';
             phase4El.className = 'phase-step';
+            activeStepEl = phase2El;
             if (showNewInstruction) showInstructionBar('💡 <b>Gravidita:</b> Klikáním na větve tvořte fialové alveoly!');
         } else if (currentPhase === 3) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step active';
             phase4El.className = 'phase-step';
+            activeStepEl = phase3El;
             if (showNewInstruction) showInstructionBar('🍼 <b>Laktace:</b> Klikejte na alveoly a plňte kojeneckou láhev!');
         } else if (currentPhase === 4) {
             phase1El.className = 'phase-step completed';
             phase2El.className = 'phase-step completed';
             phase3El.className = 'phase-step completed';
             phase4El.className = 'phase-step active';
+            activeStepEl = phase4El;
             if (showNewInstruction) showInstructionBar('🧹 <b>Involuce:</b> Klikejte na alveoly pro úklid makrofágy!');
+        }
+
+        // Automatické vystředění aktivní fáze v horní liště na mobilu i PC
+        if (activeStepEl) {
+            activeStepEl.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
         }
     }
 
